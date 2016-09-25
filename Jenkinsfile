@@ -9,7 +9,7 @@ node ("arm-none-eabi-gcc") {
     // Define a Jenkins stage for logging purposes
     stage ("prepare environment") {
       // Create a directory and execute steps there
-      dir ("pal") {
+      dir ("mbed-client-pal") {
         // clone the sw under test, either branch or PR depending on trigger
         checkout scm
       }
