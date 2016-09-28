@@ -1,9 +1,9 @@
-# PAL porting guide
+## PAL porting guide
 
 This document describes the process of PAL porting to different operating systems. During the process, you need to work
 with the [**Port**](https://github.com/ARMmbed/mbed-client-pal/tree/master/Source/Port) folder that contains two sub-folders: *[Platform-API](./Platform-API)* and *[Reference-Impl](./Reference-Impl)*.
 
-## Platform-API
+### Platform-API
 
 The *[Platform-API](./Platform-API)* folder contains the header files declaring the interfaces that MUST be implemented by the platform. The APIs are documented in the header files and the Doxygen documentation with the same content is also available.
 The documentation declares the input/output parameters, return values and the eventual special return values. 
@@ -16,7 +16,7 @@ The header file names are related to the PAL modules they are declaring. For exa
 
 <span class="notes">The APIs are called directly from the *Service* implementation layer. Therefore, you MUST NOT change them.</span>
 
-## Reference-Impl
+### Reference-Impl
 
 The *[Reference-Impl](./Reference-Impl)* folder contains the reference platform implementations in their respective folders. 
 Each OS folder contains a list of folders of the required PAL modules to be implemented by the platform, for example:
@@ -25,14 +25,14 @@ Each OS folder contains a list of folders of the required PAL modules to be impl
     Networking --> contains networking related files.
   ```
 
-## Porting to a new platform
+### Porting to a new platform
 
 1. Add a new platform folder to the *[Reference-Impl](./Reference-Impl)* folder.  
 2. Add the module folders into the new platform folder.  
 3. Read the relevent API/Module documentation.
 4. Start coding.
 
-### Essential header files
+#### Essential header files
 
 Here is a list of tips that can help in porting:
 
