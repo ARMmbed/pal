@@ -35,6 +35,7 @@ Thumbs.db
 *.hex
 .cproject
 .project
+*.vc.*
 Build/
 out/
 mbed-os/
@@ -47,3 +48,4 @@ Test/RTOS_tests/*
 Workspace/VS2013/PAL/PAL.vcxproj.filters
 Workspace/VS2013/PAL/PAL.vcxproj
 Workspace/VS2013/PAL/PAL.sln
+.vscode/*
