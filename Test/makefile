@@ -18,7 +18,7 @@
 ###############################################################
 # make all target platforms
 #
-# Clive Bluston
+# 
 ###############################################################
 # Make platform detection and definitions
 include make_platform.mk 
@@ -27,29 +27,12 @@ include make_platform.mk
 .PHONY: all clean check
 
 #====================================================
-# Platform mbed-os
-TARGET_PLATFORM:=mbedosClassic
-TARGET_CONFIGURATION_DEFINES:=  HAS_RTOS HAS_UPDATE
-all: mbedosClassic_all
-check: mbedosClassic_check
-clean: mbedosClassic_clean 
-include all_tests.mk
-#====================================================
 # Platform morpheus
 TARGET_PLATFORM:=mbedOS
 TARGET_CONFIGURATION_DEFINES:=  HAS_RTOS HAS_SOCKET HAS_UPDATE HAS_ALL
 all: mbedOS_all
 check: mbedOS_check
 clean: mbedOS_clean 
-include all_tests.mk
-#====================================================
-# Platform FreeRTOS
-TARGET_PLATFORM:=FreeRTOS
-TARGET_CONFIGURATION_DEFINES:=  HAS_SOCKET
-# Make all tests
-all: FreeRTOS_all
-check: FreeRTOS_check
-clean: FreeRTOS_clean
 include all_tests.mk
 #====================================================
 
