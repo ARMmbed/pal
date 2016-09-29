@@ -21,6 +21,8 @@ try {
         }
         
         
+        // Add mbed components
+        execute ("mbed new .")
 
         // Execute shell command, edit file with sed
 
