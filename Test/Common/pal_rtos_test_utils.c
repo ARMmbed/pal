@@ -18,6 +18,7 @@
 #include "pal_rtos.h"
 #include "unity_fixture.h"
 
+#include "pal.h"
 
 uint32_t g_threadStorage[20];
 threadsArgument_t threadsArg;
