@@ -114,11 +114,7 @@ TST_SOURCES:=	$(INCLUDE_PATHS) \
 				$(PAL_ROOT)/Test/$(TYPE)/$(PROJECT)_test_main_$(TARGET_PLATFORM).cpp \
 				$($(PROJECT)_ADDITIONAL_SOURCES)
 ifeq ($(findstring HAS_UPDATE,$(TARGET_CONFIGURATION_DEFINES)),HAS_UPDATE)
-TST_SOURCES:= 	$(TST_SOURCES) \
-				$(MORPHEUS_ROOT)/storage-volume-manager \
-				$(MORPHEUS_ROOT)/storage-abstraction/ \
-				$(MORPHEUS_ROOT)/mbed-client-libservice \
-				$(MORPHEUS_ROOT)/mbed-trace/
+
 
 endif
 
