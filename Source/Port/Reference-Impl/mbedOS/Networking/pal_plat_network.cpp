@@ -529,6 +529,9 @@ void palSelectCallback7()
 palSelectCallbackFunction_t s_palSelectPalCallbackFunctions[PAL_NET_SOCKET_SELECT_MAX_SOCKETS] = { palSelectCallback0, palSelectCallback1, palSelectCallback2, palSelectCallback3, palSelectCallback4, palSelectCallback5, palSelectCallback6, palSelectCallback7 };
 
 
+void palSelectCallbackDummy()
+{
+}
 
 palStatus_t pal_plat_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t numberOfSockets, pal_timeVal_t* timeout,
 	uint8_t palSocketStatus[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t * numberOfSocketsSet)
@@ -606,8 +609,9 @@ palStatus_t pal_plat_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_S
 
 		 for (index = 0; index < numberOfSockets; index++)
 		 {
+			 
 			 Socket* socketObj = (Socket*)socketsToCheck[index];
-			 socketObj->attach(NULL);
+			 socketObj->attach(palSelectCallbackDummy);
 		 }
 		 return result ;
 }
