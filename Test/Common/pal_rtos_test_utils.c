@@ -20,7 +20,6 @@
 
 #include "pal.h"
 
-uint32_t g_threadStorage[20];
 threadsArgument_t threadsArg;
 timerArgument_t timerArgs;
 

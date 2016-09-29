@@ -33,7 +33,23 @@
 #include "net/network-socket/TCPServer.h"
 #endif
 
- 
+
+#if defined (__CC_ARM)
+
+
+void palSelectCallbackNull()
+{
+}
+
+#define NULL_FUNCTION palSelectCallbackNull
+
+
+#elif defined (__GNUC__)
+
+#define NULL_FUNCTION NULL
+
+#endif
+
 
 #define PAL_SOCKET_OPTION_ERROR (-1)
 
@@ -529,10 +545,6 @@ void palSelectCallback7()
 palSelectCallbackFunction_t s_palSelectPalCallbackFunctions[PAL_NET_SOCKET_SELECT_MAX_SOCKETS] = { palSelectCallback0, palSelectCallback1, palSelectCallback2, palSelectCallback3, palSelectCallback4, palSelectCallback5, palSelectCallback6, palSelectCallback7 };
 
 
-void palSelectCallbackDummy()
-{
-}
-
 palStatus_t pal_plat_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t numberOfSockets, pal_timeVal_t* timeout,
 	uint8_t palSocketStatus[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t * numberOfSocketsSet)
 {
@@ -611,7 +623,7 @@ palStatus_t pal_plat_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_S
 		 {
 			 
 			 Socket* socketObj = (Socket*)socketsToCheck[index];
-			 socketObj->attach(palSelectCallbackDummy);
+			 socketObj->attach(NULL_FUNCTION);
 		 }
 		 return result ;
 }

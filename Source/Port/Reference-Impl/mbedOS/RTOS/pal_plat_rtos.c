@@ -20,6 +20,10 @@
 #include "pal_errors.h"
 #include "stdlib.h"
 #include "string.h"
+
+
+#include "../../../../../mbed-os/hal/targets/cmsis/TARGET_Freescale/TARGET_MCU_K64F/cmsis_nvic.h"
+#include "../../../../../mbed-os/hal/targets/cmsis/core_cm4.h"
 #include "cmsis_os.h" // Revision:    V1.02
 
 #define PAL_RTOS_TRANSLATE_CMSIS_ERROR_CODE(cmsisCode)\
@@ -62,7 +66,7 @@ typedef struct palThread{
 	osThreadDef_t			osThread;
 } palThread_t;
 
-palThread_t g_palThreads[PAL_MAX_NUMBER_OF_THREADS] = {0};
+static palThread_t g_palThreads[PAL_MAX_NUMBER_OF_THREADS] = {0};
 
 //! Timer structure
 typedef struct palTimer{
@@ -154,7 +158,6 @@ static void threadFunctionWrapper(void const* arg)
 	}
 }
 
-void NVIC_SystemReset(void);
 
 void pal_plat_osReboot()
 {
