@@ -30,9 +30,9 @@ TEST_GROUP(pal_rtos);
 uint32_t g_threadStorage[20] = { 0 };
 threadsArgument_t g_threadsArg = {0};
 timerArgument_t g_timerArgs = {0};
-palMutexID_t mutex1 = NULLP;
-palMutexID_t mutex2 = NULLP;
-palSemaphoreID_t semaphore1 = NULLP;
+palMutexID_t mutex1 = NULLPTR;
+palMutexID_t mutex2 = NULLPTR;
+palSemaphoreID_t semaphore1 = NULLPTR;
 
 //forward declarations
 void palRunThreads();
@@ -148,8 +148,8 @@ TEST(pal_rtos, BasicTimeScenario)
 TEST(pal_rtos, TimerUnityTest)
 { 
   palStatus_t status = PAL_SUCCESS;
-  palTimerID_t timerID1 = NULLP;
-  palTimerID_t timerID2 = NULLP;
+  palTimerID_t timerID1 = NULLPTR;
+  palTimerID_t timerID2 = NULLPTR;
   status = pal_init();
   TEST_ASSERT_EQUAL(PAL_SUCCESS, status);
 
@@ -223,7 +223,7 @@ TEST(pal_rtos, PrimitivesUnityTest2)
 {
   palStatus_t status = PAL_SUCCESS;
   int32_t tmp = 0;
-  palThreadID_t threadID = NULLP;
+  palThreadID_t threadID = NULLPTR;
   uint32_t stack1; //we have small stack just to pass NON-NULL paramter
 
 //Check Thread parameter validation
@@ -249,21 +249,21 @@ TEST(pal_rtos, PrimitivesUnityTest2)
   status = pal_osSemaphoreDelete(NULL);
   TEST_ASSERT_EQUAL(PAL_ERR_INVALID_ARGUMENT, status);
 
-  status = pal_osSemaphoreWait(NULLP, 1000, &tmp);
+  status = pal_osSemaphoreWait(NULLPTR, 1000, &tmp);
   TEST_ASSERT_EQUAL(PAL_ERR_INVALID_ARGUMENT, status);
 
   status = pal_osSemaphoreWait(tmp, 1000, NULL);
   TEST_ASSERT_EQUAL(PAL_ERR_INVALID_ARGUMENT, status);
   
-  status = pal_osSemaphoreRelease(NULLP);
+  status = pal_osSemaphoreRelease(NULLPTR);
   TEST_ASSERT_EQUAL(PAL_ERR_INVALID_ARGUMENT, status);
 }
 
 TEST(pal_rtos, MemoryPoolUnityTest)
 {
   palStatus_t status = PAL_SUCCESS;
-  palMemoryPoolID_t poolID1 = NULLP;
-  palMemoryPoolID_t poolID2 = NULLP;
+  palMemoryPoolID_t poolID1 = NULLPTR;
+  palMemoryPoolID_t poolID2 = NULLPTR;
   uint8_t* ptr1[MEMORY_POOL1_BLOCK_COUNT] = {0};
   uint8_t* ptr2[MEMORY_POOL2_BLOCK_COUNT] = {0};
 
@@ -311,7 +311,7 @@ TEST(pal_rtos, MemoryPoolUnityTest)
 TEST(pal_rtos, MessageUnityTest)
 {
   palStatus_t status = PAL_SUCCESS;
-  palMessageQID_t messageQID = NULLP;
+  palMessageQID_t messageQID = NULLPTR;
   uint32_t infoToSend = 3215;
   uint32_t infoToGet = 0;
 
@@ -373,8 +373,8 @@ TEST(pal_rtos, pal_init_test)
 TEST(pal_rtos, CustomizedTest)
 {
   palStatus_t status = PAL_SUCCESS;
-  palThreadID_t threadID1 = NULLP;
-  palThreadID_t threadID2 = NULLP;
+  palThreadID_t threadID1 = NULLPTR;
+  palThreadID_t threadID2 = NULLPTR;
   uint32_t *stack1 = (uint32_t*)malloc(sizeof(uint32_t) * 512);
   uint32_t *stack2 = (uint32_t*)malloc(sizeof(uint32_t) * 512);
 

@@ -21,7 +21,7 @@
 #include "unity_fixture.h"
 #include "pal_test_utils.h"
 #include "pal_socket_test_utils.h"
-
+#include "string.h"
 
 
 
@@ -36,7 +36,7 @@ TEST_GROUP(pal_socket);
 #define PAL_NET_TEST_SERVER_NAME "e109180-lin.kfn.arm.com"
 #define PAL_NET_TEST_SERVER_IP   {10,45,48,190}
 #define PAL_NET_TEST_SERVER_IP_STRING   "10.45.48.190"
-#define PAL_NET_TEST_SERVER_HTTP_PORT 8000
+#define PAL_NET_TEST_SERVER_HTTP_PORT 8686
 #define PAL_NET_TEST_SERVER_UDP_PORT 8383
 #define PAL_NET_TEST_INCOMING_PORT 8000
 
@@ -82,13 +82,14 @@ TEST(pal_socket, socketUDPCreationOptionsTest)
 	palSocket_t sock3 = 0;
 	palSocket_t sock5 = 0;
 	uint32_t numInterface = 0;
-	palNetInterfaceInfo_t interfaceInfo = {0};
+	palNetInterfaceInfo_t interfaceInfo;
 	uint32_t interfaceIndex = 0;
 	uint32_t sockOptVal = 5000;
 	uint32_t sockOptLen = sizeof(sockOptVal);
 
 	TEST_PRINTF("start socket test\r\n");
 
+	memset(&interfaceInfo,0,sizeof(interfaceInfo));
 	// check that re-addignt he network interface returns the same index
 	pal_registerNetworkInterface(g_networkInterface, &interfaceIndex);
 	TEST_ASSERT_EQUAL(interfaceIndex, 0);
@@ -325,15 +326,17 @@ TEST(pal_socket, basicSocketScenario5)
 	palSocket_t sock = 0;
 	palSocket_t sock2 = 0;
 	palSocket_t sock3 = 0;
-	palSocketAddress_t address = { 0 };
+
 	palSocketAddress_t address2 = { 0 };
-	palIpV4Addr_t ipv4 = { 10,45,48,192 };
+
 	char buffer[100] = { 0 };
 	const char* messageOut = "HTTP/1.0 200 OK";
 	size_t sent = 0;
 	size_t read = 0;
 	palSocketLength_t addrlen = 16;
-	palNetInterfaceInfo_t interfaceInfo = { 0 };
+	palNetInterfaceInfo_t interfaceInfo;
+
+	memset(&interfaceInfo,0,sizeof(interfaceInfo));
 
 
 	result = pal_socket(PAL_AF_INET, PAL_SOCK_STREAM_SERVER, false, 0, &sock);

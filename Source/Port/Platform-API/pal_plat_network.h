@@ -35,7 +35,7 @@ extern "C" {
 * @param[in] context Optional context - if not available/applicable use NULL.
 \return The status in the form of palStatus_t; PAL_SUCCESS (0) in case of success, a specific negative error code in case of failure.
 */
-palStatus_t pal_plat_sockets_init(void* context);
+palStatus_t pal_plat_socketsInit(void* context);
 
 /*! Register a network interface for use with PAL sockets - must be called before other socket functions - most APIs will not work before a single interface is added.
 * @param[in] networkInterfaceContext The context of the network interface to be added (OS specific. In mbed OS, this is the NetworkInterface object pointer for the network adapter [note: we assume connect has already been called on this]). - if not available use NULL (may not be required on some OSs).
@@ -48,7 +48,7 @@ palStatus_t pal_plat_RegisterNetworkInterface(void* networkInterfaceContext, uin
 * @param[in] context Optional context - if not available use NULL.
 \return The status in the form of palStatus_t; PAL_SUCCESS (0) in case of success, a specific negative error code in case of failure.
 */
-palStatus_t pal_plat_sockets_terminate(void* context);
+palStatus_t pal_plat_socketsTerminate(void* context);
 
 /*! Get a network socket.
 * @param[in] domain The domain of the created socket (see palSocketDomain_t for supported types).

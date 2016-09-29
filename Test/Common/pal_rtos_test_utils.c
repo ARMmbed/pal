@@ -235,12 +235,12 @@ void palThreadFuncCustom4(void const *argument)
 void palRunThreads()
 {
   palStatus_t status = PAL_SUCCESS;
-  palThreadID_t threadID1 = NULLP;
-  palThreadID_t threadID2 = NULLP;
-  palThreadID_t threadID3 = NULLP;
-  palThreadID_t threadID4 = NULLP;
-  palThreadID_t threadID5 = NULLP;
-  palThreadID_t threadID6 = NULLP;
+  palThreadID_t threadID1 = NULLPTR;
+  palThreadID_t threadID2 = NULLPTR;
+  palThreadID_t threadID3 = NULLPTR;
+  palThreadID_t threadID4 = NULLPTR;
+  palThreadID_t threadID5 = NULLPTR;
+  palThreadID_t threadID6 = NULLPTR;
 
   uint32_t *stack1 = malloc(1024*sizeof(uint32_t));
   uint32_t *stack2 = malloc(1024*sizeof(uint32_t));
@@ -252,7 +252,7 @@ void palRunThreads()
   status = pal_init(NULL);
   TEST_ASSERT_EQUAL(PAL_SUCCESS, status);
 
-  status = pal_osThreadCreate(palThreadFunc1, &g_threadsArg, PAL_osPriorityIdle, 1024, stack1, g_threadStorage, &threadID1);
+  status = pal_osThreadCreate(palThreadFunc1, &g_threadsArg, PAL_osPriorityIdle, 1024, stack1, (palThreadLocalStore_t *)g_threadStorage, &threadID1);
   TEST_ASSERT_EQUAL(PAL_SUCCESS, status); 
 
   status = pal_osThreadCreate(palThreadFunc2, &g_threadsArg, PAL_osPriorityLow, 1024, stack2, NULL, &threadID2);

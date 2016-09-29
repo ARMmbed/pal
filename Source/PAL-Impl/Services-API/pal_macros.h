@@ -107,8 +107,8 @@ extern "C" {
 #endif
 
 
-#define PAL_MODULE_INIT(INIT) INIT=pal_plat_osAtomicIncrement(&INIT, 1)
-#define PAL_MODULE_DEINIT(INIT) INIT=pal_plat_osAtomicIncrement(&INIT, -1)
+#define PAL_MODULE_INIT(INIT) INIT= 1
+#define PAL_MODULE_DEINIT(INIT) INIT= 0
 
 #ifdef DEBUG
 #include "pal.h"

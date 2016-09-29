@@ -86,7 +86,7 @@ static palStatus_t translateErrorToPALError(int errnoValue)
 	return status;
 }
 
-palStatus_t pal_plat_sockets_init(void* context)
+palStatus_t pal_plat_socketsInit(void* context)
 {
 	(void)context; // replace with macro
 	int result = PAL_SUCCESS;
@@ -137,7 +137,7 @@ palStatus_t pal_plat_RegisterNetworkInterface(void* context, uint32_t* interface
 	return result;
 }
 
-palStatus_t pal_plat_sockets_terminate(void* context)
+palStatus_t pal_plat_socketsTerminate(void* context)
 {
 	(void)context; // replace with macro
 	return PAL_SUCCESS;
@@ -460,7 +460,6 @@ palStatus_t pal_plat_getNumberOfNetInterfaces( uint32_t* numInterfaces)
 palStatus_t pal_plat_getNetInterfaceInfo(uint32_t interfaceNum, palNetInterfaceInfo_t * interfaceInfo)
 {
 	palStatus_t result = PAL_SUCCESS;
-	uint32_t index = 0;
 	const char* address = NULL;
 	SocketAddress addr;
 	if ((interfaceNum >= s_pal_numberOFInterfaces) || (NULL == interfaceInfo))
@@ -575,7 +574,7 @@ palStatus_t pal_plat_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_S
 			 }
 			 
 		 }
-		 for (int index = 0; index < numberOfSockets; index++)
+		 for (uint32_t index = 0; index < numberOfSockets; index++)
 		 {
 			 s_select_event_happened[index] = 0; 
 			 palSocketStatus[index] = 0;

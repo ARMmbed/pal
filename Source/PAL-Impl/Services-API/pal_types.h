@@ -26,7 +26,7 @@ extern "C" {
 #include <stddef.h>
 
 #define PAL_SUCCESS 0
-#define NULLP 0
+#define NULLPTR 0
 
 typedef int32_t palStatus_t;
 

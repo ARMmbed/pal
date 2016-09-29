@@ -20,46 +20,56 @@
 #include "pal_plat_network.h"
 #include "pal_macros.h"
 
-int g_palIntialized = 0;
+//this variable must be a int32_t for using atomic increment
+static int32_t g_palIntialized = 0;
 
 
 palStatus_t pal_init()
 {
 
 	palStatus_t status = PAL_SUCCESS;
-	
-	if (1 <= g_palIntialized)
+	int32_t currentInitValue;
+	//  get the return value of g_palIntialized+1 to save it locally
+	currentInitValue = pal_osAtomicIncrement(&g_palIntialized,1);
+	// if increased for the 1st time
+	if (1 == currentInitValue)
 	{
-		PAL_MODULE_INIT(g_palIntialized);
-		return PAL_SUCCESS;
-	}
+		DEBUG_PRINT("Init for the 1st time, initializing the modules\r\n");
+		status = pal_plat_RTOSInitialize(NULL);
+		if (PAL_SUCCESS == status)
+		{
 
-	status = pal_plat_RTOSInitialize(NULL);
+			status = pal_plat_socketsInit(NULL);
+			if (PAL_SUCCESS != status)
+			{
+				DEBUG_PRINT("init of network module has failed with status %d\r\n",status);
+			}
+		}
+		else
+		{
+			DEBUG_PRINT("init of RTOS module has failed with status %d\r\n",status);
+		}
+	}
+	// if failed decrees the value of g_palIntialized
 	if (PAL_SUCCESS != status)
 	{
+		pal_plat_socketsTerminate(NULL);
 		pal_plat_RTOSDestroy();
+		pal_osAtomicIncrement(&g_palIntialized, -1);
 	}
-
-	else 
-	{
-		status = pal_plat_sockets_init(NULL);
-	}
-
-	if (PAL_SUCCESS == status)
-	{
-		PAL_MODULE_INIT(g_palIntialized);
-	}
-
 	return status;
 }
 
 
 void pal_destroy()
 {
-	PAL_MODULE_DEINIT(g_palIntialized);
-	if(0 == g_palIntialized)
+	int32_t currentInitValue;
+	// get the current value of g_palIntialized locally
+	currentInitValue = pal_osAtomicIncrement(&g_palIntialized, -1);
+	if (0 == currentInitValue)
 	{
+		DEBUG_PRINT("Destroying modules\r\n");
 		pal_plat_RTOSDestroy();
-		pal_plat_sockets_terminate(NULL);
+		pal_plat_socketsTerminate(NULL);
 	}
 }

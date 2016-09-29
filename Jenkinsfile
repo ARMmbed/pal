@@ -17,25 +17,16 @@ try {
         
         dir ("mbed-os") {
           git "git@github.com:ARMmbed/mbed-os"
-          execute ("git checkout tags/latest")
+          execute ("git checkout tags/mbed-os-5.1.4")
         }
         
-        dir ("storage-volume-manager") {
-          git "git@github.com:LiyouZhou/storage-volume-manager"
-          execute ("sed -is \"s/\\#include \\\"mbed-trace\\/mbed_trace.h\\\"/\\#define tr_debug(fmt, ...)/\" source/storage_volume.cpp")
-        }
         
-        // Add mbed components
-        execute ("mbed new .")
-        execute ("mbed add --protocol ssh storage-abstraction")
-        execute ("mbed add --protocol ssh mbed-trace")
-        execute ("mbed add --protocol ssh mbed-client-libservice")
 
         // Execute shell command, edit file with sed
-        execute ("sed -is \"s/MBED_CONF_MBED_TRACE_ENABLE || YOTTA_CFG_MBED_TRACE/defined(MBED_CONF_MBED_TRACE_ENABLE) || defined(YOTTA_CFG_MBED_TRACE)/\" mbed-trace/mbed-trace/mbed_trace.h")
-        writeFile file: 'storage-abstraction/test/.mbedignore', text: '*'
+
+
         writeFile file: 'mbed-os/features/frameworks/.mbedignore', text: '*'
-        writeFile file: 'storage-volume-manager/test/.mbedignore', text: '*'
+
       }
       
       stage ("build") {

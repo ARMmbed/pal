@@ -39,13 +39,12 @@ extern "C" {
 //!	PAL_osPriorityAboveNormal --> g_palThreadPriorities[4]
 //!	PAL_osPriorityHigh --> g_palThreadPriorities[5]
 //!	PAL_osPriorityRealtime --> g_palThreadPriorities[6]
+
+//! An array of PAL thread priorities. The size of the array is defined in the Service API (pal_rtos.h) by "PAL_MAX_NUMBER_OF_THREADS"
 extern uint8_t g_palThreadPriorities[PAL_MAX_NUMBER_OF_THREADS];
 
 #define PRIORYT_INDEX_OFFSET 3
 #endif //PAL_UNIQUE_THREAD_PRIORITY
-
-//! An array of PAL thread priorities. The size of the array is defined in the Service API (pal_rtos.h) by "PAL_MAX_NUMBER_OF_THREADS"
-extern uint8_t g_palThreadPriorities[PAL_MAX_NUMBER_OF_THREADS];
 
 /*! Initiate a system reboot.
 */
@@ -301,7 +300,7 @@ palStatus_t pal_plat_osPoolDestroy(palMemoryPoolID_t* memoryPoolID);
 *
 * \return PAL_SUCCESS when the message queue was created successfully, a specific error in case of failure.
 */
-palStatus_t pal_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t* messageQID);
+palStatus_t pal_plat_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t* messageQID);
 
 /*! Put a message to a queue.
 *
@@ -344,7 +343,7 @@ palStatus_t pal_plat_osMessageQueueDestroy(palMessageQID_t* messageQID);
 int32_t pal_plat_osAtomicIncrement(int32_t* valuePtr, int32_t increment);
 
 #ifdef DEBUG
-
+#include "stdio.h"
 #define pal_plat_printf(ARGS...) printf(ARGS)
 #define pal_plat_vprintf(FORMAT,LIST) vprintf(FORMAT,LIST)	
 

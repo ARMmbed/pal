@@ -279,7 +279,7 @@ palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgumen
 		g_palThreads[firstAvailableThreadIndex].threadID = (uintptr_t)osThreadCreate(&g_palThreads[firstAvailableThreadIndex].osThread, &g_palThreads[firstAvailableThreadIndex].threadFuncWrapper);
 		*threadID = g_palThreads[firstAvailableThreadIndex].threadID;
 		
-		if(NULLP == *threadID)
+		if(NULLPTR == *threadID)
 		{
 			//! in case of error in the thread creation, reset the data of the given index in the threads array.
 			threadCleanUp(g_palThreads, firstAvailableThreadIndex);
@@ -302,7 +302,7 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
 	palStatus_t status = PAL_SUCCESS;
 	osStatus platStatus = osOK;
 
-	if (NULL == threadID || NULLP == *threadID)
+	if (NULL == threadID || NULLPTR == *threadID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -315,7 +315,7 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
 			if (osOK == platStatus)
 			{
 				threadCleanUp(g_palThreads, i);
-				*threadID = NULLP;
+				*threadID = NULLPTR;
 			}
 			else
 			{
@@ -326,7 +326,7 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
 		}
 		else if (!g_palThreads[i].initialized && (*threadID == g_palThreads[i].threadID))
 		{
-			*threadID = NULLP;
+			*threadID = NULLPTR;
 		}
 	}
 	return status;
@@ -372,7 +372,7 @@ palStatus_t pal_plat_osTimerCreate(palTimerFuncPtr function, void* funcArgument,
 		memset(timer->osTimer.timer, 0, sizeof(uint32_t)*PAL_TIMER_DATA_SIZE);
 	
 		timer->timerID = (uintptr_t)osTimerCreate(&timer->osTimer, timerType, funcArgument);
-		if (NULLP == timer->timerID)
+		if (NULLPTR == timer->timerID)
 		{
 			free(timer);
 			timer = NULL;
@@ -392,7 +392,7 @@ palStatus_t pal_plat_osTimerStart(palTimerID_t timerID, uint32_t millisec)
 	osStatus platStatus = osOK;
 	palTimer_t* timer = NULL;
 	
-	if (NULLP == timerID)
+	if (NULLPTR == timerID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -417,7 +417,7 @@ palStatus_t pal_plat_osTimerStop(palTimerID_t timerID)
 	osStatus platStatus = osOK;
 	palTimer_t* timer = NULL;
 	
-	if(NULLP == timerID)
+	if(NULLPTR == timerID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -442,7 +442,7 @@ palStatus_t pal_plat_osTimerDelete(palTimerID_t* timerID)
 	osStatus platStatus = osOK;
 	palTimer_t* timer = NULL;
 	
-	if(NULL == timerID || NULLP == *timerID)
+	if(NULL == timerID || NULLPTR == *timerID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -452,7 +452,7 @@ palStatus_t pal_plat_osTimerDelete(palTimerID_t* timerID)
 	if (osOK == platStatus)
 	{
 		free(timer);
-		*timerID = NULLP;
+		*timerID = NULLPTR;
 		status = PAL_SUCCESS;
 	}
 	else
@@ -485,7 +485,7 @@ palStatus_t pal_plat_osMutexCreate(palMutexID_t* mutexID)
 		memset(mutex->osMutex.mutex, 0, sizeof(uint32_t)*PAL_MUTEX_DATA_SIZE);
 	
 		mutex->mutexID = (uintptr_t)osMutexCreate(&mutex->osMutex);
-		if (NULLP == mutex->mutexID)
+		if (NULLPTR == mutex->mutexID)
 		{
 			free(mutex);
 			mutex = NULL;
@@ -506,7 +506,7 @@ palStatus_t pal_plat_osMutexWait(palMutexID_t mutexID, uint32_t millisec)
 	osStatus platStatus = osOK;
 	palMutex_t* mutex = NULL;
 	
-	if(NULLP == mutexID)
+	if(NULLPTR == mutexID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -532,7 +532,7 @@ palStatus_t pal_plat_osMutexRelease(palMutexID_t mutexID)
 	osStatus platStatus = osOK;
 	palMutex_t* mutex = NULL;
 	
-	if(NULLP == mutexID)
+	if(NULLPTR == mutexID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -557,7 +557,7 @@ palStatus_t pal_plat_osMutexDelete(palMutexID_t* mutexID)
 	osStatus platStatus = osOK;
 	palMutex_t* mutex = NULL;
 	
-	if(NULL == mutexID || NULLP == *mutexID)
+	if(NULL == mutexID || NULLPTR == *mutexID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -567,7 +567,7 @@ palStatus_t pal_plat_osMutexDelete(palMutexID_t* mutexID)
 	if (osOK == platStatus)
 	{
 		free(mutex);
-		*mutexID = NULLP;
+		*mutexID = NULLPTR;
 		status = PAL_SUCCESS;
 	}
 	else
@@ -599,7 +599,7 @@ palStatus_t pal_plat_osSemaphoreCreate(uint32_t count, palSemaphoreID_t* semapho
 		memset(semaphore->osSemaphore.semaphore, 0, sizeof(uint32_t)*PAL_SEMAPHORE_DATA_SIZE);
 	
 		semaphore->semaphoreID = (uintptr_t)osSemaphoreCreate(&semaphore->osSemaphore, count);
-		if (NULLP == semaphore->semaphoreID)
+		if (NULLPTR == semaphore->semaphoreID)
 		{
 			free(semaphore);
 			semaphore = NULL;
@@ -617,7 +617,7 @@ palStatus_t pal_plat_osSemaphoreWait(palSemaphoreID_t semaphoreID, uint32_t mill
 {
 	palStatus_t status = PAL_SUCCESS;
 	palSemaphore_t* semaphore = NULL;
-	if(NULLP == semaphoreID || NULL == countersAvailable)
+	if(NULLPTR == semaphoreID || NULL == countersAvailable)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}	
@@ -642,7 +642,7 @@ palStatus_t pal_plat_osSemaphoreRelease(palSemaphoreID_t semaphoreID)
 	osStatus platStatus = osOK;
 	palSemaphore_t* semaphore = NULL;
 	
-	if(NULLP == semaphoreID)
+	if(NULLPTR == semaphoreID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -667,7 +667,7 @@ palStatus_t pal_plat_osSemaphoreDelete(palSemaphoreID_t* semaphoreID)
 	osStatus platStatus = osOK;
 	palSemaphore_t* semaphore = NULL;
 	
-	if(NULL == semaphoreID || NULLP == *semaphoreID)
+	if(NULL == semaphoreID || NULLPTR == *semaphoreID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -677,7 +677,7 @@ palStatus_t pal_plat_osSemaphoreDelete(palSemaphoreID_t* semaphoreID)
 	if (osOK == platStatus)
 	{
 		free(semaphore);
-		*semaphoreID = NULLP;
+		*semaphoreID = NULLPTR;
 		status = PAL_SUCCESS;
 	}
 	else
@@ -712,7 +712,7 @@ palStatus_t pal_plat_osPoolCreate(uint32_t blockSize, uint32_t blockCount, palMe
 		if (NULL == memoryPool->osPool.pool)
 		{
 			free(memoryPool);
-			*memoryPoolID = NULLP;
+			*memoryPoolID = NULLPTR;
 			status = PAL_ERR_NO_MEMORY;
 		}
 		else
@@ -722,7 +722,7 @@ palStatus_t pal_plat_osPoolCreate(uint32_t blockSize, uint32_t blockCount, palMe
 			memoryPool->osPool.item_sz = blockSize;		///< size of an item
 		
 			memoryPool->memoryPoolID = (uintptr_t)osPoolCreate(&memoryPool->osPool);
-			if (NULLP == memoryPool->memoryPoolID)
+			if (NULLPTR == memoryPool->memoryPoolID)
 			{
 				free(memoryPool->osPool.pool);
 				free(memoryPool);
@@ -743,7 +743,7 @@ void* pal_plat_osPoolAlloc(palMemoryPoolID_t memoryPoolID)
 	void* result = NULL;
 	palMemoryPool_t* memoryPool = NULL;
 	
-	if(NULLP == memoryPoolID)
+	if(NULLPTR == memoryPoolID)
 	{
 		return NULL;
 	}
@@ -759,7 +759,7 @@ void* pal_plat_osPoolCAlloc(palMemoryPoolID_t memoryPoolID)
 	void* result = NULL;
 	palMemoryPool_t* memoryPool = NULL;
 	
-	if(NULLP == memoryPoolID)
+	if(NULLPTR == memoryPoolID)
 	{
 		return NULL;
 	}
@@ -776,7 +776,7 @@ palStatus_t pal_plat_osPoolFree(palMemoryPoolID_t memoryPoolID, void* block)
 	osStatus platStatus = osOK;
 	palMemoryPool_t* memoryPool = NULL;
 	
-	if(NULLP == memoryPoolID || NULL == block)
+	if(NULLPTR == memoryPoolID || NULL == block)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -800,7 +800,7 @@ palStatus_t pal_plat_osPoolDestroy(palMemoryPoolID_t* memoryPoolID)
 	palStatus_t status = PAL_SUCCESS;
 	palMemoryPool_t* memoryPool = NULL;
 	
-	if(NULL == memoryPoolID || NULLP == *memoryPoolID)
+	if(NULL == memoryPoolID || NULLPTR == *memoryPoolID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}	
@@ -808,7 +808,7 @@ palStatus_t pal_plat_osPoolDestroy(palMemoryPoolID_t* memoryPoolID)
 	memoryPool = (palMemoryPool_t*)*memoryPoolID;
 	free(memoryPool->osPool.pool);
 	free(memoryPool);
-	*memoryPoolID = NULLP;
+	*memoryPoolID = NULLPTR;
 	return status;
 }
 
@@ -845,7 +845,7 @@ palStatus_t pal_plat_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t
 			messageQ->osMessageQ.queue_sz = messageQSize; 	///< number of items (elements) in the queue
 		
 			messageQ->messageQID = (uintptr_t)osMessageCreate(&(messageQ->osMessageQ), NULL);
-			if (NULLP == messageQ->messageQID)
+			if (NULLPTR == messageQ->messageQID)
 			{
 				free(messageQ->osMessageQ.pool);
 				free(messageQ);
@@ -867,7 +867,7 @@ palStatus_t pal_plat_osMessagePut(palMessageQID_t messageQID, uint32_t info, uin
 	osStatus platStatus = osOK;
 	palMessageQ_t* messageQ = NULL;
 	
-	if(NULLP == messageQID)
+	if(NULLPTR == messageQID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -892,7 +892,7 @@ palStatus_t	pal_plat_osMessageGet(palMessageQID_t messageQID, uint32_t timeout, 
 	osEvent event;
 	palMessageQ_t* messageQ = NULL;
 
-	if (NULLP == messageQID)
+	if (NULLPTR == messageQID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}
@@ -927,7 +927,7 @@ palStatus_t pal_plat_osMessageQueueDestroy(palMessageQID_t* messageQID)
 	palStatus_t status = PAL_SUCCESS;
 	palMessageQ_t* messageQ = NULL;
 	
-	if(NULL == messageQID || NULLP == *messageQID)
+	if(NULL == messageQID || NULLPTR == *messageQID)
 	{
 		return PAL_ERR_INVALID_ARGUMENT;
 	}	
@@ -935,7 +935,7 @@ palStatus_t pal_plat_osMessageQueueDestroy(palMessageQID_t* messageQID)
 	messageQ = (palMessageQ_t*)*messageQID;
 	free(messageQ->osMessageQ.pool);
 	free(messageQ);
-	*messageQID = NULLP;
+	*messageQID = NULLPTR;
 	return status;
 }
 

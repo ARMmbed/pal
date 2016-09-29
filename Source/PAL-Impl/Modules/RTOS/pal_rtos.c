@@ -21,7 +21,7 @@
 #if PAL_UNIQUE_THREAD_PRIORITY
 //! Threads priorities array.
 uint8_t g_palThreadPriorities[PAL_MAX_NUMBER_OF_THREADS] = {0};
-#endif PAL_UNIQUE_THREAD_PRIORITY
+#endif //PAL_UNIQUE_THREAD_PRIORITY
 
 void pal_osReboot(void)
 {
@@ -82,10 +82,9 @@ uint64_t pal_osKernelSysTickFrequency(void)
 palStatus_t pal_osThreadCreate(palThreadFuncPtr function, void* funcArgument, palThreadPriority_t priority, uint32_t stackSize, uint32_t* stackPtr, palThreadLocalStore_t* store, palThreadID_t* threadID)
 {
 	palStatus_t status = PAL_SUCCESS;
-	uint32_t i;
 
 #if PAL_UNIQUE_THREAD_PRIORITY
-	//! check if the priotrity have been used by other thread before
+	//! check if the priority have been used by other thread before
 	if(PAL_osPriorityError == priority)
 	{
 		status = PAL_ERR_INVALID_ARGUMENT;
@@ -93,7 +92,7 @@ palStatus_t pal_osThreadCreate(palThreadFuncPtr function, void* funcArgument, pa
 
 	if ((PAL_SUCCESS == status) && (g_palThreadPriorities[priority+PRIORYT_INDEX_OFFSET]))
 	{
-		*threadID = NULL;
+		*threadID = NULLPTR;
 		status = PAL_ERR_RTOS_PRIORITY;
 	}
 #endif //PAL_IGNORE_UNIQUE_THREAD_PRIORITY
@@ -298,7 +297,7 @@ int32_t pal_osAtomicIncrement(int32_t* valuePtr, int32_t increment)
 void dbgPrintf( const char* function, uint32_t line, const char * format, ... )
 {
 #ifdef DEBUG
-	static palMutexID_t printfMutex = NULL;
+	static palMutexID_t printfMutex = NULLPTR;
 
 	va_list args;
 	if (!printfMutex)
@@ -307,7 +306,7 @@ void dbgPrintf( const char* function, uint32_t line, const char * format, ... )
 	}
 	pal_osMutexWait(printfMutex, PAL_MAX_UINT32);
 #ifdef VERBOSE
-	pal_plat_printf("%s:%d\t",function,line);
+	pal_plat_printf("%s:%ld\t",function,line);
 #endif
 	va_start (args, format);
 	pal_plat_vprintf (format, args);
