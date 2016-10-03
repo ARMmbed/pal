@@ -19,18 +19,7 @@
 #include "pal_plat_network.h"
 #include "pal_rtos.h"
 
-
-#include "Socket.h"
-#include "UDPSocket.h"
-#include "SocketAddress.h"
-#include "NetworkInterface.h"
-#include "NetworkStack.h"
-
-
-#ifdef PAL_NET_TCP_AND_TLS_SUPPORT // functionality below supported only in case TCP is supported.
-#include "TCPSocket.h"
-#include "TCPServer.h"
-#endif
+#include "mbed.h"
 
 
 #if defined (__CC_ARM)
