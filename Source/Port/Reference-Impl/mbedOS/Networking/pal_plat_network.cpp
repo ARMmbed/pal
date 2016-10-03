@@ -20,17 +20,16 @@
 #include "pal_rtos.h"
 
 
-#include "net/network-socket/Socket.h"
-
-#include "net/network-socket/UDPSocket.h"
-#include "net/network-socket/SocketAddress.h"
-#include "net/network-socket/NetworkInterface.h"
-#include "net/network-socket/NetworkStack.h"
+#include "Socket.h"
+#include "UDPSocket.h"
+#include "SocketAddress.h"
+#include "NetworkInterface.h"
+#include "NetworkStack.h"
 
 
 #ifdef PAL_NET_TCP_AND_TLS_SUPPORT // functionality below supported only in case TCP is supported.
-#include "net/network-socket/TCPSocket.h"
-#include "net/network-socket/TCPServer.h"
+#include "TCPSocket.h"
+#include "TCPServer.h"
 #endif
 
 

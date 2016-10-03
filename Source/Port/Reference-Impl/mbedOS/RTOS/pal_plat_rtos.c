@@ -21,9 +21,8 @@
 #include "stdlib.h"
 #include "string.h"
 
-
-#include "../../../../../mbed-os/hal/targets/cmsis/TARGET_Freescale/TARGET_MCU_K64F/cmsis_nvic.h"
-#include "../../../../../mbed-os/hal/targets/cmsis/core_cm4.h"
+#include "cmsis/TARGET_Freescale/TARGET_MCU_K64F/cmsis_nvic.h"
+#include "targets/cmsis/core_cm4.h"
 #include "cmsis_os.h" // Revision:    V1.02
 
 #define PAL_RTOS_TRANSLATE_CMSIS_ERROR_CODE(cmsisCode)\
