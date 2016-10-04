@@ -21,9 +21,22 @@
 #include "stdlib.h"
 #include "string.h"
 
-#include "cmsis/TARGET_Freescale/TARGET_MCU_K64F/cmsis_nvic.h"
-#include "targets/cmsis/core_cm4.h"
 #include "cmsis_os.h" // Revision:    V1.02
+// these includes try to find declaration of NVIC_SystemReset
+#include "cmsis_nvic.h"
+#if defined (__CORTEX_M0)
+#include "core_cm0.h"
+#elif defined (__CORTEX_M3)
+#include "core_cm3.h"
+#elif defined (__CORTEX_M4)
+#include "core_cm4.h"
+#elif defined (__CORTEX_M7)
+#include "core_cm7.h"
+#else
+#error "unsupported CPU arch"
+#endif
+
+#include "critical.h"
 
 #define PAL_RTOS_TRANSLATE_CMSIS_ERROR_CODE(cmsisCode)\
 	((int32_t)(cmsisCode + PAL_ERR_RTOS_ERROR_BASE))
@@ -941,77 +954,15 @@ palStatus_t pal_plat_osMessageQueueDestroy(palMessageQID_t* messageQID)
 	return status;
 }
 
-#if defined (__CC_ARM)          /* ARM Compiler */
-
-#pragma push
-#pragma O0
-
-#if ((defined(__TARGET_ARCH_7_M) || defined(__TARGET_ARCH_7E_M)) && !defined(NO_EXCLUSIVE_ACCESS))
-#define __USE_EXCLUSIVE_ACCESS
-#else
-#undef  __USE_EXCLUSIVE_ACCESS
-#endif // ARMCC end
-
-#elif defined (__GNUC__)        /* GNU Compiler */
-
-#undef  __USE_EXCLUSIVE_ACCESS
-#pragma GCC push_options
-#pragma GCC optimize ("O0")
-
-#if defined (__CORTEX_M0)
-#define __TARGET_ARCH_6S_M
-#endif
-
-#if defined (__VFP_FP__) && !defined(__SOFTFP__)
-#define __TARGET_FPU_VFP
-#endif
-#endif
 
 int32_t pal_plat_osAtomicIncrement(int32_t* valuePtr, int32_t increment)
 {
-#ifdef __USE_EXCLUSIVE_ACCESS
-		int32_t res;
-		res = __ldrex(valuePtr) + increment;
-		do {
-		} while (__strex(res, valuePtr));
-		return (res);
-#elif !defined (__CORTEX_M0)	
-	if (valuePtr != NULL)
+	if (increment >= 0)
 	{
-		asm volatile(
-		"try:\n\t"
-		    "LDREX   R0, [%[valuePtr]]\n\t"      
-		    "ADD	 R0, %[increment]\n\t"        
-		    "CMP     R0, R0\n\t"      
-		    "ITT     EQ\n\t"                  
-		    "STREXEQ R1, R0, [%[valuePtr]]\n\t"  
-		    "CMPEQ   R1, #0\n\t"              
-		    "BNE     try\n\t"
-		    :[valuePtr]"+r"(valuePtr)
-		    :[increment]"r"(increment)
-		    );
-		return *valuePtr;
+		return core_util_atomic_incr_u32((uint32_t*)valuePtr, increment);
 	}
 	else
 	{
-		return 0;
+		return core_util_atomic_decr_u32((uint32_t*)valuePtr, 0 - increment);
 	}
-#else
-	int32_t res;
-	__disable_irq();
-	 res = *valuePtr + increment;
-	*valuePtr = res;
-	__enable_irq();
-	return (res);
-#endif
-
 }
-#if defined (__CC_ARM)          /* ARM Compiler */
-
-#pragma pop
-
-#elif defined (__GNUC__)
-
-#pragma GCC pop_options
-
-#endif

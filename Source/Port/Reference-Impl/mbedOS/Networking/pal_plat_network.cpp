@@ -22,7 +22,7 @@
 #include "mbed.h"
 
 
-#if defined (__CC_ARM)
+#if defined (__CC_ARM) || defined(__IAR_SYSTEMS_ICC__)
 
 
 void palSelectCallbackNull()
