@@ -35,7 +35,11 @@ void palSelectCallbackNull()
 #elif defined (__GNUC__)
 
 #define NULL_FUNCTION NULL
-
+#else 
+void palSelectCallbackNull()
+{
+}
+#define NULL_FUNCTION palSelectCallbackNull
 #endif
 
 

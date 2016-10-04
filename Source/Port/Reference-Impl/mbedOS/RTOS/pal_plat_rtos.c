@@ -21,8 +21,8 @@
 #include "stdlib.h"
 #include "string.h"
 
-#include "cmsis/TARGET_Freescale/TARGET_MCU_K64F/cmsis_nvic.h"
-#include "targets/cmsis/core_cm4.h"
+//#include "cmsis/TARGET_Freescale/TARGET_MCU_K64F/cmsis_nvic.h"
+//#include "targets/cmsis/core_cm4.h"
 #include "cmsis_os.h" // Revision:    V1.02
 
 #define PAL_RTOS_TRANSLATE_CMSIS_ERROR_CODE(cmsisCode)\
@@ -160,7 +160,7 @@ static void threadFunctionWrapper(void const* arg)
 
 void pal_plat_osReboot()
 {
-	NVIC_SystemReset();
+	//NVIC_SystemReset(); // removed support untill better solution is found (ARMCC/IAR issues)
 }
 
 palStatus_t pal_plat_RTOSInitialize(void* opaqueContext)
