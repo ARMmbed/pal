@@ -22,18 +22,25 @@
 #include "string.h"
 
 #include "cmsis_os.h" // Revision:    V1.02
-// these includes try to find declaration of NVIC_SystemReset
-#include "cmsis_nvic.h"
+// These includes try to find declaration of NVIC_SystemReset.
+// Note: At least on A9 the cmsis_nvic.h can not be included without previous
+// board specific includes, so it has to be included only when known to work.
 #if defined (__CORTEX_M0)
+#include "cmsis_nvic.h"
 #include "core_cm0.h"
 #elif defined (__CORTEX_M3)
+#include "cmsis_nvic.h"
 #include "core_cm3.h"
 #elif defined (__CORTEX_M4)
+#include "cmsis_nvic.h"
 #include "core_cm4.h"
 #elif defined (__CORTEX_M7)
+#include "cmsis_nvic.h"
 #include "core_cm7.h"
 #else
-#error "unsupported CPU arch"
+// Declaration of NVIC_SystemReset is not present on core_ca9.h, but in the
+// board specific files. 
+void NVIC_SystemReset(void);
 #endif
 
 #include "critical.h"
