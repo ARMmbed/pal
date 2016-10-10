@@ -1,6 +1,7 @@
 # PAL
 This is the main repository for the Platform Abstraction Layer (PAL) project.
 
+
 # Releases
 
 In order to get the latest stable and tested code, plesae goto [releases](https://github.com/ARMmbed/mbed-client-pal/releases)
