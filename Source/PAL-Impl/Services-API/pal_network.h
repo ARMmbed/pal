@@ -275,7 +275,7 @@ palStatus_t pal_recv(palSocket_t socket, void* buf, size_t len, size_t* recieved
 
 /*! send a given buffer via the given connected socket
 * @param[in] socket the connected socket on which to send data [we expect sockets passed to this function to be of type PAL_SOCK_STREAM ( the implementation may support other types as well) ]
-* @param[in] buf the output buffer for the message data
+* @param[in] buf the buffer for the message data
 * @param[in] len the length of the input data buffer
 * @param[out] sentDataSize the length of the data sent
 \return the function returns the status as in the form of PalStatus_t which will be PAL_SUCCESS (0) in case of success or a specific negative error code in case of failure
