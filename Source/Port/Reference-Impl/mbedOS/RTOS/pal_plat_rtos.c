@@ -37,6 +37,9 @@
 #elif defined (__CORTEX_M7)
 #include "cmsis_nvic.h"
 #include "core_cm7.h"
+#elif defined (__CORTEX_A9)
+#include "cmsis_nvic.h"
+#include "core_ca9.h"
 #else
 // Declaration of NVIC_SystemReset is not present on core_ca9.h, but in the
 // board specific files. 
