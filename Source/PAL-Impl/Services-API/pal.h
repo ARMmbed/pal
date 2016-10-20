@@ -38,16 +38,16 @@ extern "C" {
 //declarations for global init and destroy of PAL
 
 /*! PAL initialization
-*	This function will call each module's initialization function (if exist)
-*	to allocate required resources and initiate them.
+*   This function will call each module's initialization function (if exist)
+*   to allocate required resources and initiate them.
 * \return the function returns the status in the form of palStatus_t which will be PAL_SUCCESS(0) in case of success 
-* 	and another negative value indicating a specific error code in case of failure
+*   and another negative value indicating a specific error code in case of failure
 */
 palStatus_t pal_init();
 
 /*! PAL destruction
-*	This function will call each module's destroy function (if exist)
-*	to free resources.
+*   This function will call each module's destroy function (if exist)
+*   to free resources.
 */
 void pal_destroy();
 

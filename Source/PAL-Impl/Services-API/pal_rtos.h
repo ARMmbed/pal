@@ -40,8 +40,8 @@ typedef uintptr_t palMessageQID_t;
 
 //! Timers types supported in PAL
 typedef enum  palTimerType {
-	palOsTimerOnce = 0, /*! One shot timer*/
-	palOsTimerPeriodic = 1 /*! Periodic (repeating) timer*/
+    palOsTimerOnce = 0, /*! One shot timer*/
+    palOsTimerPeriodic = 1 /*! Periodic (repeating) timer*/
 } palTimerType_t;
 
 //! PAL timer function prototype
@@ -51,21 +51,21 @@ typedef void(*palTimerFuncPtr)(void const *funcArgument);
 typedef void(*palThreadFuncPtr)(void const *funcArgument); 
 
 //! Available priorities in PAL implementation, each priority can appear only once.
-typedef enum  	pal_osPriority {
-	PAL_osPriorityIdle = -3,
-	PAL_osPriorityLow = -2,
-	PAL_osPriorityBelowNormal = -1,
-	PAL_osPriorityNormal = 0,
-	PAL_osPriorityAboveNormal = +1,
-	PAL_osPriorityHigh = +2,
-	PAL_osPriorityRealtime = +3,
-	PAL_osPriorityError = 0x84
+typedef enum    pal_osPriority {
+    PAL_osPriorityIdle = -3,
+    PAL_osPriorityLow = -2,
+    PAL_osPriorityBelowNormal = -1,
+    PAL_osPriorityNormal = 0,
+    PAL_osPriorityAboveNormal = +1,
+    PAL_osPriorityHigh = +2,
+    PAL_osPriorityRealtime = +3,
+    PAL_osPriorityError = 0x84
 } palThreadPriority_t; /*! Thread priority levels for PAL threads - each thread must have a different priority*/
 
 //! Thread Local Store struct.
 //! Can be used to hold: State, configurations and etc inside the thread.
 typedef struct pal_threadLocalStore{
-	void* storeData;
+    void* storeData;
 } palThreadLocalStore_t;
 
 //------- system general functions
@@ -117,11 +117,11 @@ uint64_t pal_osKernelSysTickFrequency(void);
 * @param[out] threadID: holds the created thread ID handle - zero value indecates an error.
 *
 * \return PAL_SUCCESS when thread created successfully.
-*		  PAL_ERR_RTOS_PRIORITY : the given priority already used before in the system.
+*         PAL_ERR_RTOS_PRIORITY : the given priority already used before in the system.
 *
 * \note Each thread MUST be with unique priority.
 * \note When the priority of the created thread function is higher than the current running thread, the 
-* 		created thread function starts instantly and becomes the new running thread. 
+*       created thread function starts instantly and becomes the new running thread. 
 */
 palStatus_t pal_osThreadCreate(palThreadFuncPtr function, void* funcArgument, palThreadPriority_t priority, uint32_t stackSize, uint32_t* stackPtr, palThreadLocalStore_t* store, palThreadID_t* threadID);
 
@@ -131,7 +131,7 @@ palStatus_t pal_osThreadCreate(palThreadFuncPtr function, void* funcArgument, pa
 * @param[in] threadID: thread ID to stop and terminate.
 *
 * \return palStatus_t which will be PAL_SUCCESS(0) in case of success and another negative value indicating a specific error code in case of failure
-*		  PAL_ERR_RTOS_RESOURCE: if the thread ID is not correct.
+*         PAL_ERR_RTOS_RESOURCE: if the thread ID is not correct.
 */
 palStatus_t pal_osThreadTerminate(palThreadID_t* threadID);
 
@@ -161,7 +161,9 @@ palStatus_t pal_osDelay(uint32_t milliseconds);
 * @param[out] timerID: holds the created timer ID handle - zero value indecates an error.
 *
 * \return PAL_SUCCESS when timer created successfully.
-*		  Specific error in case of failure.
+*         PAL_ERR_NO_MEMORY: no memory resource available to create timer object.
+*
+* \note the timer function runs according to the platform resources of stack-size and priority.
 */
 palStatus_t pal_osTimerCreate(palTimerFuncPtr function, void* funcArgument, palTimerType_t timerType, palTimerID_t* timerID);
 
@@ -185,7 +187,7 @@ palStatus_t pal_osTimerStop(palTimerID_t timerID);
 * @param[inout] timerID: the handle for the timer to delete, in success:(*timerID = NULL).
 *
 * \return PAL_SUCCESS when timer deleted successfully.
-*		  PAL_ERR_RTOS_PARAMETER when timerID is incorrect.
+*         PAL_ERR_RTOS_PARAMETER when timerID is incorrect.
 */
 palStatus_t pal_osTimerDelete(palTimerID_t* timerID);
 
@@ -194,7 +196,7 @@ palStatus_t pal_osTimerDelete(palTimerID_t* timerID);
 * @param[out] mutexID: holds the created mutex ID handle - zero value indecates an error.
 *
 * \return PAL_SUCCESS when mutex created successfully.
-*		  Specific error in case of failure.
+*         PAL_ERR_NO_MEMORY: no memory resource available to create mutex object.
 */
 palStatus_t pal_osMutexCreate(palMutexID_t* mutexID);
 
@@ -202,14 +204,14 @@ palStatus_t pal_osMutexCreate(palMutexID_t* mutexID);
 *
 * @param[in] mutexID the handle for the mutex
 * @param[in] millisec the timeout for the waiting operation if the 
-			 timeout expires before the semaphore is released and 
-			 error will be returned from the function, PAL_RTOS_WAIT_FOREVER can be used.
+             timeout expires before the semaphore is released and 
+             error will be returned from the function, PAL_RTOS_WAIT_FOREVER can be used.
 *
 * \return the function returns the status in the form of palStatus_t which will be PAL_SUCCESS(0) in case of success and one of the following error codes in case of failure:
-* 		  PAL_ERR_RTOS_RESOURCE - mutex not avaialbe but no time out set.
-* 		  PAL_ERR_RTOS_TIMEOUT - mutex was not available until timeout expired.
-* 		  PAL_ERR_RTOS_PARAMETER - mutex id is invalid
-* 		  PAL_ERR_RTOS_ISR - cannot be called from interrupt service routines
+*         PAL_ERR_RTOS_RESOURCE - mutex not avaialbe but no time out set.
+*         PAL_ERR_RTOS_TIMEOUT - mutex was not available until timeout expired.
+*         PAL_ERR_RTOS_PARAMETER - mutex id is invalid
+*         PAL_ERR_RTOS_ISR - cannot be called from interrupt service routines
 */
 palStatus_t pal_osMutexWait(palMutexID_t mutexID, uint32_t millisec);
 
@@ -225,9 +227,9 @@ palStatus_t pal_osMutexRelease(palMutexID_t mutexID);
 * @param[inout] mutexID: Mutex handle to delete, in success:(*mutexID = NULL).
 *
 * \return PAL_SUCCESS when mutex deleted successfully.
-* 		  PAL_ERR_RTOS_RESOURCE - mutex already released.
-* 		  PAL_ERR_RTOS_PARAMETER - mutex id is invalid.
-* 		  PAL_ERR_RTOS_ISR - cannot be called from interrupt service routines.
+*         PAL_ERR_RTOS_RESOURCE - mutex already released.
+*         PAL_ERR_RTOS_PARAMETER - mutex id is invalid.
+*         PAL_ERR_RTOS_ISR - cannot be called from interrupt service routines.
 * \note After this call the mutex_id is no longer valid and cannot be used.
 */
 palStatus_t pal_osMutexDelete(palMutexID_t* mutexID);
@@ -237,8 +239,8 @@ palStatus_t pal_osMutexDelete(palMutexID_t* mutexID);
 * @param[in] count: number of available resources
 * @param[out] semaphoreID: holds the created semaphore ID handle - zero value indecates an error.
 *
-* \return PAL_SUCCESS when mutex created successfully.
-*		  Specific error in case of failure.
+* \return PAL_SUCCESS when semaphore created successfully.
+*         PAL_ERR_NO_MEMORY: no memory resource available to create semaphore object.
 */
 palStatus_t pal_osSemaphoreCreate(uint32_t count, palSemaphoreID_t* semaphoreID);
 
@@ -246,12 +248,12 @@ palStatus_t pal_osSemaphoreCreate(uint32_t count, palSemaphoreID_t* semaphoreID)
 *
 * @param[in] semaphoreID the handle for the semaphore
 * @param[in] millisec the timeout for the waiting operation if the timeout 
-			 expires before the semaphore is released and error will be 
-			 returned from the function, PAL_RTOS_WAIT_FOREVER can be used.
+             expires before the semaphore is released and error will be 
+             returned from the function, PAL_RTOS_WAIT_FOREVER can be used.
 * @param[out] counteresAvailable the number of semaphore available at the call if semaphore is available, if semaphore was not available (timeout/error) zero is returned. 
 * \return the function returns the status in the form of palStatus_t which will be PAL_SUCCESS(0) in case of success and one of the following error codes in case of failure:
-* 		PAL_ERR_RTOS_TIMEOUT - semaphore was not available until timeout expired.
-*	    PAL_ERR_RTOS_PARAMETER - semaphore id is invalid.
+*       PAL_ERR_RTOS_TIMEOUT - semaphore was not available until timeout expired.
+*       PAL_ERR_RTOS_PARAMETER - semaphore id is invalid.
 */
 palStatus_t pal_osSemaphoreWait(palSemaphoreID_t semaphoreID, uint32_t millisec, int32_t* countersAvailable);
 
@@ -268,8 +270,8 @@ palStatus_t pal_osSemaphoreRelease(palSemaphoreID_t semaphoreID);
 * @param[inout] semaphoreID: Semaphore handle to delete, in success:(*semaphoreID = NULL).
 *
 * \return PAL_SUCCESS when semaphore deleted successfully.
-* 		  PAL_ERR_RTOS_RESOURCE - semaphore already released.
-* 		  PAL_ERR_RTOS_PARAMETER - semaphore id is invalid.
+*         PAL_ERR_RTOS_RESOURCE - semaphore already released.
+*         PAL_ERR_RTOS_PARAMETER - semaphore id is invalid.
 * \note After this call the semaphore_id is no longer valid and cannot be used.
 */
 palStatus_t pal_osSemaphoreDelete(palSemaphoreID_t* semaphoreID);
@@ -280,8 +282,8 @@ palStatus_t pal_osSemaphoreDelete(palSemaphoreID_t* semaphoreID);
 * @param[in] blockCount: maximum number of blocks in memory pool.
 * @param[out] memoryPoolID: holds the created memory pool ID handle - zero value indecates an error.
 *
-* \return PAL_SUCCESS when mutex created successfully.
-*		  Specific error in case of failure.
+* \return PAL_SUCCESS when memory pool created successfully.
+*         PAL_ERR_NO_MEMORY: no memory resource available to create memory pool object.
 */
 palStatus_t pal_osPoolCreate(uint32_t blockSize, uint32_t blockCount, palMemoryPoolID_t* memoryPoolID);
 
@@ -325,7 +327,7 @@ palStatus_t pal_osPoolDestroy(palMemoryPoolID_t* memoryPoolID);
 * @param[out] memoryPoolID: holds the created memory pool ID handle - zero value indecates an error.
 *
 * \return PAL_SUCCESS when message queue created successfully.
-*		  Specific error in case of failure.
+*         PAL_ERR_NO_MEMORY: no memory resource available to create message queue object.
 */
 palStatus_t pal_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t* messageQID);
 
@@ -382,8 +384,8 @@ int32_t pal_osAtomicIncrement(int32_t* valuePtr, int32_t increment);
 */
 void dbgPrintf( const char* function, uint32_t line, const char * format, ... );
 
-#define	PAL_PRINTF( ARGS...) \
-		dbgPrintf(__FUNCTION__,__LINE__, ARGS);
+#define PAL_PRINTF( ARGS...) \
+        dbgPrintf(__FUNCTION__,__LINE__, ARGS);
 
 
 

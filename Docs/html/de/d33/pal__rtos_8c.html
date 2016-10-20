@@ -448,7 +448,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when message queue created successfully. Specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when message queue created successfully. PAL_ERR_NO_MEMORY: no memory resource available to create message queue object. </dd></dl>
 
 </div>
 </div>
@@ -496,7 +496,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when mutex created successfully. Specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when mutex created successfully. PAL_ERR_NO_MEMORY: no memory resource available to create mutex object. </dd></dl>
 
 </div>
 </div>
@@ -670,7 +670,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when mutex created successfully. Specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when memory pool created successfully. PAL_ERR_NO_MEMORY: no memory resource available to create memory pool object. </dd></dl>
 
 </div>
 </div>
@@ -781,7 +781,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when mutex created successfully. Specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when semaphore created successfully. PAL_ERR_NO_MEMORY: no memory resource available to create semaphore object. </dd></dl>
 
 </div>
 </div>
@@ -1053,7 +1053,8 @@ When the priority of the created thread function is higher than the current runn
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when timer created successfully. Specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when timer created successfully. PAL_ERR_NO_MEMORY: no memory resource available to create timer object.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the timer function runs according to the platform resources of stack-size and priority. </dd></dl>
 
 </div>
 </div>

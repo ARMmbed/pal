@@ -54,8 +54,6 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aa1b662a1198e5729d6d0934a7efb02c4"><param name="Name" value="DEBUG_PRINT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d2a/pal__socket__test_8c.html#a702871d3d9057fa4fc99031298fb425c"><param name="Name" value="g_networkInterface"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#aacb92bd33e1dcdb1c7dedb6b0aff7162"><param name="Name" value="g_palThreadPriorities"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#aac664ea7d2fecac06224f1b44cca0011"><param name="Name" value="g_palThreads"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="da/d2d/pal__rtos__test_8c.html#a8f9b1f133f82ce955405d453f0c506d6"><param name="Name" value="g_threadsArg"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="da/d2d/pal__rtos__test_8c.html#a8f9b1f133f82ce955405d453f0c506d6"><param name="Name" value="pal_rtos_test.c"></OBJECT>
@@ -64,7 +62,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="da/d2d/pal__rtos__test_8c.html#a9beaf51023e475986b8b182c80ccc023"><param name="Name" value="g_threadStorage"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="da/d2d/pal__rtos__test_8c.html#a9beaf51023e475986b8b182c80ccc023"><param name="Name" value="pal_rtos_test.c"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a9beaf51023e475986b8b182c80ccc023"><param name="Name" value="pal_rtos_test_utils.c"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a9beaf51023e475986b8b182c80ccc023"><param name="Name" value="pal_rtos_test_utils.h"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="da/d2d/pal__rtos__test_8c.html#a1a09db2f0cd5dd2d0929b34afad51ba1"><param name="Name" value="g_timerArgs"></OBJECT>
@@ -153,7 +150,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d16/pal_8h.html#a312dfda15122dbd2abff67b580c811ad"><param name="Name" value="pal.h"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d7/d66/pal__init_8c.html#a312dfda15122dbd2abff67b580c811ad"><param name="Name" value="pal_init.c"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ac8c34ec6f36f29175ad64f709e8aa6f3"><param name="Name" value="PAL_DIVIDE_ROUND_UP"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a966411fe41e3830553bb1b8cf8baf730"><param name="Name" value="PAL_DIVIDE_ROUND_UP"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="da/dfe/pal__errors_8h.html#a480f42f9c6533ec9a36f3312a285a7d5a46dd726962c185841ba6b2a6a51716f9"><param name="Name" value="PAL_ERR_BUFFER_TOO_SMALL"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="da/dfe/pal__errors_8h.html#a480f42f9c6533ec9a36f3312a285a7d5aed6967ecb83464f0d078f210da21c308"><param name="Name" value="PAL_ERR_CREATION_FAILED"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="da/dfe/pal__errors_8h.html#a480f42f9c6533ec9a36f3312a285a7d5ad147e6a77995779cf9cd4bc996816f35"><param name="Name" value="PAL_ERR_GENERAL_BASE"></OBJECT>
@@ -333,7 +330,7 @@
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aa1b662a1198e5729d6d0934a7efb02c4"><param name="Name" value="DEBUG_PRINT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a1651594dc71abf466bddd0f6393edb8b"><param name="Name" value="LITTLE__ENDIAN"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ac8c34ec6f36f29175ad64f709e8aa6f3"><param name="Name" value="PAL_DIVIDE_ROUND_UP"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a966411fe41e3830553bb1b8cf8baf730"><param name="Name" value="PAL_DIVIDE_ROUND_UP"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a9bd4f76c3897b4338fe50a8d69830fe5"><param name="Name" value="PAL_HOST_TO_LITTLE_ENDIAN_16BIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ab01046a25df49d7fe1d85a8bf722975f"><param name="Name" value="PAL_HOST_TO_LITTLE_ENDIAN_32BIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#adc0a4752569188800a75e1601a7e11b5"><param name="Name" value="PAL_HOST_TO_LITTLE_ENDIAN_64BIT"></OBJECT>
@@ -345,14 +342,14 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ad1c98870c5eeba8fe649345e371ef866"><param name="Name" value="PAL_LITTLE_ENDIAN_TO_HOST_16BIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aa6229ece344478c07677c8b0436b1bb0"><param name="Name" value="PAL_LITTLE_ENDIAN_TO_HOST_32BIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a4ae1ca0100a3eee36eb95931cbec633e"><param name="Name" value="PAL_LITTLE_ENDIAN_TO_HOST_64BIT"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aa7fb918bff4d9a4c5d7dd007c6fa910c"><param name="Name" value="PAL_MAX"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a117c6ce53646b65b4cdcb5da01801675"><param name="Name" value="PAL_MAX"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a6ee734c1fc41affa0926797e382fc8d4"><param name="Name" value="PAL_MAX_INT32"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ada154fcb4b3ef9b641486f30de56c7b7"><param name="Name" value="PAL_MAX_INT64"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#af8d58ab12b0f655fe922fc40b3e52ca2"><param name="Name" value="PAL_MAX_UINT16"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ac7e2d509703ff033a302b325aa664f6e"><param name="Name" value="PAL_MAX_UINT32"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a28a8006d7bca3b64235ca4d0cb39bf2b"><param name="Name" value="PAL_MAX_UINT64"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a08c56fc189bfb1a6864a7b5d68433e7e"><param name="Name" value="PAL_MAX_UINT8"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a733c131f13d1d95ade183a0b61f0124c"><param name="Name" value="PAL_MIN"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a29066dd6aaf6aa8fa21f3a88feb6da59"><param name="Name" value="PAL_MIN"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ac3a2f334767728e9bc57512139e0bd61"><param name="Name" value="PAL_MIN_INT32"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aaeb3e06c7119793239368c0fe74cda05"><param name="Name" value="PAL_MODULE_DEINIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ad2109677fa03720f6ab0df072c755529"><param name="Name" value="PAL_MODULE_INIT"></OBJECT>
@@ -361,7 +358,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a55fbcf7a453813fec69016916802de2c"><param name="Name" value="PAL_NTOHS"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a92e2ad3a6b8c71818b6a08720fa84ba5"><param name="Name" value="PAL_SUCCESS"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aa7fb918bff4d9a4c5d7dd007c6fa910c"><param name="Name" value="PAL_MAX"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a117c6ce53646b65b4cdcb5da01801675"><param name="Name" value="PAL_MAX"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a6ee734c1fc41affa0926797e382fc8d4"><param name="Name" value="PAL_MAX_INT32"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ada154fcb4b3ef9b641486f30de56c7b7"><param name="Name" value="PAL_MAX_INT64"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d2/d87/pal__configuration_8h.html#abb1ceb83ff6a709614d1394e7e39391d"><param name="Name" value="PAL_MAX_NUMBER_OF_THREADS"></OBJECT>
@@ -370,7 +367,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ac7e2d509703ff033a302b325aa664f6e"><param name="Name" value="PAL_MAX_UINT32"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a28a8006d7bca3b64235ca4d0cb39bf2b"><param name="Name" value="PAL_MAX_UINT64"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a08c56fc189bfb1a6864a7b5d68433e7e"><param name="Name" value="PAL_MAX_UINT8"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a733c131f13d1d95ade183a0b61f0124c"><param name="Name" value="PAL_MIN"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#a29066dd6aaf6aa8fa21f3a88feb6da59"><param name="Name" value="PAL_MIN"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ac3a2f334767728e9bc57512139e0bd61"><param name="Name" value="PAL_MIN_INT32"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#aaeb3e06c7119793239368c0fe74cda05"><param name="Name" value="PAL_MODULE_DEINIT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="db/dcf/pal__macros_8h.html#ad2109677fa03720f6ab0df072c755529"><param name="Name" value="PAL_MODULE_INIT"></OBJECT>
@@ -381,8 +378,8 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d2/d87/pal__configuration_8h.html#ad7e2f6ebd028faacc239229cce972fa7"><param name="Name" value="PAL_NET_DNS_SUPPORT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#ac831e2e5064065e10c741da1003ff039"><param name="Name" value="PAL_NET_MAX_ADDR_SIZE"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#ac2b7451d38e150079fbef20b57ee3fe9"><param name="Name" value="PAL_NET_SELECT_IS_ERR"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a7cba728e49a9a691b4f91b7bc031b02a"><param name="Name" value="PAL_NET_SELECT_IS_RX"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#ab08db8b66ab060b6ce9c98a570383ae8"><param name="Name" value="PAL_NET_SELECT_IS_TX"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a8894a96773018ba6058811087b4b2ac8"><param name="Name" value="PAL_NET_SELECT_IS_RX"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a31ca79ac9ae5c2ddd890263a989fc4d8"><param name="Name" value="PAL_NET_SELECT_IS_TX"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#aa66d7131cc6c44ac6c5ab6a9dda3f69a"><param name="Name" value="PAL_NET_SOCKET_SELECT_ERR_BIT"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a5607f2af4b642ef0548bd47c891c6d31"><param name="Name" value="PAL_NET_SOCKET_SELECT_MAX_SOCKETS"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#aae14933b48cd31821913f2bfb15e18b2"><param name="Name" value="PAL_NET_SOCKET_SELECT_RX_BIT"></OBJECT>
@@ -436,8 +433,8 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#aefc09884590381a71433c34b3f2e2aa5"><param name="Name" value="PAL_NET_DEFAULT_INTERFACE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#ac831e2e5064065e10c741da1003ff039"><param name="Name" value="PAL_NET_MAX_ADDR_SIZE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#ac2b7451d38e150079fbef20b57ee3fe9"><param name="Name" value="PAL_NET_SELECT_IS_ERR"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a7cba728e49a9a691b4f91b7bc031b02a"><param name="Name" value="PAL_NET_SELECT_IS_RX"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#ab08db8b66ab060b6ce9c98a570383ae8"><param name="Name" value="PAL_NET_SELECT_IS_TX"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a8894a96773018ba6058811087b4b2ac8"><param name="Name" value="PAL_NET_SELECT_IS_RX"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a31ca79ac9ae5c2ddd890263a989fc4d8"><param name="Name" value="PAL_NET_SELECT_IS_TX"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#aa66d7131cc6c44ac6c5ab6a9dda3f69a"><param name="Name" value="PAL_NET_SOCKET_SELECT_ERR_BIT"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#a5607f2af4b642ef0548bd47c891c6d31"><param name="Name" value="PAL_NET_SOCKET_SELECT_MAX_SOCKETS"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d17/pal__network_8h.html#aae14933b48cd31821913f2bfb15e18b2"><param name="Name" value="PAL_NET_SOCKET_SELECT_RX_BIT"></OBJECT>
@@ -881,7 +878,6 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html"><param name="Name" value="pal_plat_rtos.c"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#aac664ea7d2fecac06224f1b44cca0011"><param name="Name" value="g_palThreads"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#a1b47d17e90b6a03e7bd1ec6a0d549b46"><param name="Name" value="NVIC_SystemReset"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#af12d673085039783ab1d2613eff7e4a4"><param name="Name" value="PAL_MUTEX_DATA_SIZE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#a9b3b50428d7ad199287a291137041c43"><param name="Name" value="PAL_NUM_OF_THREAD_INSTANCES"></OBJECT>
@@ -935,7 +931,6 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html"><param name="Name" value="pal_plat_rtos.h"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#aacb92bd33e1dcdb1c7dedb6b0aff7162"><param name="Name" value="g_palThreadPriorities"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#ac62a5b36fc159e12670c44a12dc08beb"><param name="Name" value="pal_plat_osAtomicIncrement"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#a140b31a48ac23c909f1a94ad11b04aac"><param name="Name" value="pal_plat_osDelay"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#a82eade9e7b100bd9dc9ab8312f98f827"><param name="Name" value="pal_plat_osKernelSysMilliSecTick"></OBJECT>
@@ -1153,7 +1148,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="dd/df6/pal__rtos__test__runner_8c.html"><param name="Name" value="pal_rtos_test_runner.c"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html"><param name="Name" value="pal_rtos_test_utils.c"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a9beaf51023e475986b8b182c80ccc023"><param name="Name" value="g_threadStorage"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a393f7a6e534c05e534cfdaf46473db45"><param name="Name" value="palRunThreads"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a0a153da028aee8f220377b516ff065c8"><param name="Name" value="palThreadFunc1"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a29dc69cbcc48b55d48a5fd668da7fe15"><param name="Name" value="palThreadFunc2"></OBJECT>
@@ -1194,6 +1188,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#abac822ed4b356b85117101aa0d8701d6"><param name="Name" value="palTimerFunc1"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a8581bcb8f9f435a87c3dd651d65e32c8"><param name="Name" value="palTimerFunc2"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a2f8d675e43058c8f8b853b52366abf38"><param name="Name" value="semaphore1"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a90b7a8cb7bc3fdbd98014a3e15ee6e9a"><param name="Name" value="THREAD_STACK_SIZE"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a33d89580fea8198de226a62220e20bd0"><param name="Name" value="threadsArgument_t"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a8c22b8a190b07232b36b748fbf706e76"><param name="Name" value="timerArgument_t"></OBJECT>
   </UL>
@@ -1494,6 +1489,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="df/d12/pal__rtos__test__main__mbed_o_s_8cpp.html#a7d37e93ff0246ad7bf396650eaf84487"><param name="Name" value="pal_rtos_test_main_mbedOS.cpp"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/dc0/pal__socket__test__main__mbed_o_s_8cpp.html#a7d37e93ff0246ad7bf396650eaf84487"><param name="Name" value="pal_socket_test_main_mbedOS.cpp"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a90b7a8cb7bc3fdbd98014a3e15ee6e9a"><param name="Name" value="THREAD_STACK_SIZE"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#aecb21b545f5a0c542dc82a8ef0b89b3f"><param name="Name" value="threadsArg"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="d3/d30/structthreads_argument.html"><param name="Name" value="threadsArgument"></OBJECT>
   <UL>

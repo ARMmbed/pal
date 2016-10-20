@@ -27,21 +27,21 @@ extern "C" {
 #define PAL_SUCCESS 0
 
 // maximum integer types
-#define PAL_MAX_UINT8		0xFFU
-#define PAL_MAX_UINT16		0xFFFFU
-#define PAL_MAX_UINT32		0xFFFFFFFFUL
-#define PAL_MAX_INT32		0x7FFFFFFFL
-#define PAL_MIN_INT32		0x80000000L
-#define PAL_MAX_UINT64		0xFFFFFFFFFFFFFFFFULL
-#define PAL_MAX_INT64		0x7FFFFFFFFFFFFFFFLL
+#define PAL_MAX_UINT8       0xFFU
+#define PAL_MAX_UINT16      0xFFFFU
+#define PAL_MAX_UINT32      0xFFFFFFFFUL
+#define PAL_MAX_INT32       0x7FFFFFFFL
+#define PAL_MIN_INT32       0x80000000L
+#define PAL_MAX_UINT64      0xFFFFFFFFFFFFFFFFULL
+#define PAL_MAX_INT64       0x7FFFFFFFFFFFFFFFLL
 
 // useful macros
 
-#define PAL_MAX(a,b)			((a) > (b) ? (a) : (b))
+#define PAL_MAX(a,b)            ((a) > (b) ? (a) : (b))
 
-#define PAL_MIN(a,b)			((a) < (b) ? (a) : (b))
+#define PAL_MIN(a,b)            ((a) < (b) ? (a) : (b))
 
-#define PAL_DIVIDE_ROUND_UP(num, divider)			(((num) + (divider) - 1) / (divider))
+#define PAL_DIVIDE_ROUND_UP(num, divider)           (((num) + (divider) - 1) / (divider))
 
 #if PAL_COMPILATION_ENDIANITY == 1
 #define BIG__ENDIAN 1
@@ -55,13 +55,13 @@ extern "C" {
 #ifdef LITTLE__ENDIAN
 
 #define PAL_HTONS(x) (((((unsigned short)(x)) >> 8) & 0xff) | \
-			((((unsigned short)(x)) & 0xff) << 8))
+            ((((unsigned short)(x)) & 0xff) << 8))
 #define PAL_NTOHS(x) (((((unsigned short)(x)) >> 8) & 0xff) | \
-			((((unsigned short)(x)) & 0xff) << 8) )
+            ((((unsigned short)(x)) & 0xff) << 8) )
 #define PAL_HTONL(x) ((((x)>>24) & 0xffL) | (((x)>>8) & 0xff00L) | \
-			(((x)<<8) & 0xff0000L) | (((x)<<24) & 0xff000000L))
+            (((x)<<8) & 0xff0000L) | (((x)<<24) & 0xff000000L))
 #define PAL_NTOHL(x) ((((x)>>24) & 0xffL) | (((x)>>8) & 0xff00L) | \
-			(((x)<<8) & 0xff0000L) | (((x)<<24) & 0xff000000L))
+            (((x)<<8) & 0xff0000L) | (((x)<<24) & 0xff000000L))
 
 #elif defined(BIG__ENDIAN)
 
@@ -76,13 +76,13 @@ extern "C" {
 
 
 #define PAL_INVERSE_UINT16_BYTES( val ) \
-	( ((val) << 8) | (((val) & 0x0000FF00) >> 8))
+    ( ((val) << 8) | (((val) & 0x0000FF00) >> 8))
 
 #define PAL_INVERSE_UINT32_BYTES( val ) \
    ( ((val) >> 24) | (((val) & 0x00FF0000) >> 8) | (((val) & 0x0000FF00) << 8) | (((val) & 0x000000FF) << 24) )
 
 #define PAL_INVERSE_UINT64_BYTES( val ) \
-	((PAL_INVERSE_UINT32_BYTES( ((val >> 16) >> 16)) &0xffffffff)  | ((((uint64_t)PAL_INVERSE_UINT32_BYTES(val & 0xffffffff))<<16)<<16)) 
+    ((PAL_INVERSE_UINT32_BYTES( ((val >> 16) >> 16)) &0xffffffff)  | ((((uint64_t)PAL_INVERSE_UINT32_BYTES(val & 0xffffffff))<<16)<<16)) 
 
 /* Set of Macros similar to the HTONS/L, NTOHS/L ones but converting to/from little endian instead of big endian*/
 #ifdef LITTLE__ENDIAN 

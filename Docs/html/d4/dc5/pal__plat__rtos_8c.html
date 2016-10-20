@@ -49,8 +49,7 @@
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">pal_plat_rtos.c File Reference</div>  </div>
 </div><!--header-->
@@ -62,6 +61,7 @@
 <code>#include &quot;stdlib.h&quot;</code><br />
 <code>#include &quot;string.h&quot;</code><br />
 <code>#include &quot;cmsis_os.h&quot;</code><br />
+<code>#include &quot;critical.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -179,11 +179,6 @@ Functions</h2></td></tr>
 <tr class="separator:a0e0e6dc9958a9efd9beb62493bc3f67a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac62a5b36fc159e12670c44a12dc08beb"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dc5/pal__plat__rtos_8c.html#ac62a5b36fc159e12670c44a12dc08beb">pal_plat_osAtomicIncrement</a> (int32_t *valuePtr, int32_t increment)</td></tr>
 <tr class="separator:ac62a5b36fc159e12670c44a12dc08beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:aac664ea7d2fecac06224f1b44cca0011"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/dc5/pal__plat__rtos_8c.html#a06ecfc14d166863199ebfc4372d61127">palThread_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dc5/pal__plat__rtos_8c.html#aac664ea7d2fecac06224f1b44cca0011">g_palThreads</a> [<a class="el" href="../../d2/d87/pal__configuration_8h.html#abb1ceb83ff6a709614d1394e7e39391d">PAL_MAX_NUMBER_OF_THREADS</a>] = {0}</td></tr>
-<tr class="separator:aac664ea7d2fecac06224f1b44cca0011"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="af12d673085039783ab1d2613eff7e4a4"></a>
@@ -518,8 +513,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the RTOS kernel system timer counter. </p><dl class="section note"><dt>Note</dt><dd>This counter wraps around very often (for example, once every 42 sec for 100Mhz). </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The RTOS kernel system timer counter. </dd></dl>
+<p>Get the RTOS kernel system timer counter.</p>
+<dl class="section return"><dt>Returns</dt><dd>The RTOS kernel system timer counter.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The required tick counter is the OS (platform) kernel system tick counter. </dd>
+<dd>
+This counter wraps around very often (for example, once every 42 sec for 100Mhz). </dd></dl>
 
 </div>
 </div>
@@ -672,7 +670,8 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the message queue was created successfully, a specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the message queue was created successfully, a specific error in case of failure. PAL_ERR_NO_MEMORY: no memory resource available to create message queue object. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the create function MUST not wait for platform resources and it should return "PAL_ERR_RTOS_RESOURCE", unless the platform API is blocking. </dd></dl>
 
 </div>
 </div>
@@ -720,7 +719,8 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the mutex was created successfully, a specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the mutex was created successfully, a specific error in case of failure. PAL_ERR_NO_MEMORY: no memory resource available to create mutex object. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the create function MUST not wait for platform resources and it should return "PAL_ERR_RTOS_RESOURCE", unless the platform API is blocking. </dd></dl>
 
 </div>
 </div>
@@ -894,7 +894,8 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the memory pool was created successfully, a specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the memory pool was created successfully, a specific error in case of failure. PAL_ERR_NO_MEMORY: no memory resource available to create memory pool object. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the create function MUST not wait for platform resources and it should return "PAL_ERR_RTOS_RESOURCE", unless the platform API is blocking. </dd></dl>
 
 </div>
 </div>
@@ -1005,7 +1006,8 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the semaphore was created successfully, a specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the semaphore was created successfully, a specific error in case of failure. PAL_ERR_NO_MEMORY: no memory resource available to create semaphore object. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the create function MUST not wait for platform resources and it should return "PAL_ERR_RTOS_RESOURCE", unless the platform API is blocking. </dd></dl>
 
 </div>
 </div>
@@ -1169,7 +1171,9 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The ID of the created thread, in case of error return zero. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Each thread MUST have a unique priority. </dd>
 <dd>
-When the priority of the created thread function is higher than the current running thread, the created thread function starts instantly and becomes the new running thread. </dd></dl>
+When the priority of the created thread function is higher than the current running thread, the created thread function starts instantly and becomes the new running thread. </dd>
+<dd>
+the create function MUST not wait for platform resources and it should return "PAL_ERR_RTOS_RESOURCE", unless the platform API is blocking. </dd></dl>
 
 </div>
 </div>
@@ -1275,7 +1279,10 @@ When the priority of the created thread function is higher than the current runn
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the timer was created successfully. A specific error in case of failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PAL_SUCCESS when the timer was created successfully. A specific error in case of failure. PAL_ERR_NO_MEMORY: no memory resource available to create timer object.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>the timer callback function runs according to the platform resources of stack-size and priority. </dd>
+<dd>
+the create function MUST not wait for platform resources and it should return "PAL_ERR_RTOS_RESOURCE", unless the platform API is blocking. </dd></dl>
 
 </div>
 </div>
@@ -1399,19 +1406,6 @@ When the priority of the created thread function is higher than the current runn
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d6/dc2/pal__types_8h.html#a92e2ad3a6b8c71818b6a08720fa84ba5">PAL_SUCCESS(0)</a> in case of success, PAL_ERR_CREATION_FAILED in case of failure. </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a class="anchor" id="aac664ea7d2fecac06224f1b44cca0011"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d4/dc5/pal__plat__rtos_8c.html#a06ecfc14d166863199ebfc4372d61127">palThread_t</a> g_palThreads[<a class="el" href="../../d2/d87/pal__configuration_8h.html#abb1ceb83ff6a709614d1394e7e39391d">PAL_MAX_NUMBER_OF_THREADS</a>] = {0}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>

@@ -22,25 +22,25 @@
 TEST_GROUP_RUNNER(pal_socket)
 {
 #if (PAL_INCLUDE || socketUDPCreationOptionsTest)
-	RUN_TEST_CASE(pal_socket, socketUDPCreationOptionsTest);
+    RUN_TEST_CASE(pal_socket, socketUDPCreationOptionsTest);
 #endif
 #if (PAL_INCLUDE || basicTCPclinetSendRecieve)
-	RUN_TEST_CASE(pal_socket, basicTCPclinetSendRecieve);
+    RUN_TEST_CASE(pal_socket, basicTCPclinetSendRecieve);
 #endif
 #if (PAL_INCLUDE || basicUDPclinetSendRecieve)
-	RUN_TEST_CASE(pal_socket, basicUDPclinetSendRecieve);
+    RUN_TEST_CASE(pal_socket, basicUDPclinetSendRecieve);
 #endif
 #if (PAL_INCLUDE || basicSocketScenario3)
-	RUN_TEST_CASE(pal_socket, basicSocketScenario3);
+    RUN_TEST_CASE(pal_socket, basicSocketScenario3);
 #endif
 #if (PAL_INCLUDE || basicSocketScenario4)
-	RUN_TEST_CASE(pal_socket, basicSocketScenario4);
+    RUN_TEST_CASE(pal_socket, basicSocketScenario4);
 #endif
 #if (PAL_INCLUDE || tProvUDPTest)
-	RUN_TEST_CASE(pal_socket, tProvUDPTest);
+    RUN_TEST_CASE(pal_socket, tProvUDPTest);
 #endif
 #if (PAL_INCLUDE || basicSocketScenario5)
-	RUN_TEST_CASE(pal_socket, basicSocketScenario5);
+    RUN_TEST_CASE(pal_socket, basicSocketScenario5);
 #endif
 }
 
@@ -55,7 +55,7 @@ TEST_GROUP_RUNNER(pal_socket)
 /* Run all the tests
 void RunAllTests(void)
 {
-	  RUN_TEST_GROUP(pal_socket);
-	  //RUN_TEST_GROUP(pal_OS);
+      RUN_TEST_GROUP(pal_socket);
+      //RUN_TEST_GROUP(pal_OS);
 }*/
 

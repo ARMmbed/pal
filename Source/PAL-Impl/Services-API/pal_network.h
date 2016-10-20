@@ -35,38 +35,38 @@ typedef void* palSocket_t; /*! PAL socket handle type */
 #define  PAL_NET_MAX_ADDR_SIZE 32 // check if we can make this more efficient
 
 typedef struct palSocketAddress {
-	unsigned short    addressType;    /*! address family for the socket*/
-	char              addressData[PAL_NET_MAX_ADDR_SIZE];  /*! address (based on protocol)*/
+    unsigned short    addressType;    /*! address family for the socket*/
+    char              addressData[PAL_NET_MAX_ADDR_SIZE];  /*! address (based on protocol)*/
 } palSocketAddress_t; /*! address data structure with enough room to support IPV4 and IPV6*/
 
 typedef struct palNetInterfaceInfo{
-	char interfaceName[16]; //15 + ‘\0’
-	palSocketAddress_t address;
-	uint32_t addressSize;
+    char interfaceName[16]; //15 + ‘\0’
+    palSocketAddress_t address;
+    uint32_t addressSize;
 } palNetInterfaceInfo_t;
 
 typedef enum {
-	PAL_AF_UNSPEC = 0,
-	PAL_AF_INET = 2,	/*! Internet IP Protocol 	*/
-	PAL_AF_INET6 = 10, /*! IP version 6		*/
+    PAL_AF_UNSPEC = 0,
+    PAL_AF_INET = 2,    /*! Internet IP Protocol    */
+    PAL_AF_INET6 = 10, /*! IP version 6     */
 } palSocketDomain_t;/*! network domains supported by PAL*/
 
 typedef enum {
 #if PAL_NET_TCP_AND_TLS_SUPPORT
-	PAL_SOCK_STREAM = 1,    /*! stream socket 	*/
-	PAL_SOCK_STREAM_SERVER = 99,    /*! stream socket 	*/
+    PAL_SOCK_STREAM = 1,    /*! stream socket   */
+    PAL_SOCK_STREAM_SERVER = 99,    /*! stream socket   */
 #endif //PAL_NET_TCP_AND_TLS_SUPPORT
-	PAL_SOCK_DGRAM = 2	/*! datagram socket 	*/
+    PAL_SOCK_DGRAM = 2  /*! datagram socket     */
 } palSocketType_t;/*! socket types supported by PAL */
 
 
 typedef enum {
-	PAL_SO_REUSEADDR = 0x0004,  /*! allow local address reuse */
+    PAL_SO_REUSEADDR = 0x0004,  /*! allow local address reuse */
 #if PAL_NET_TCP_AND_TLS_SUPPORT // socket options below supported only if TCP is supported.
-	PAL_SO_KEEPALIVE = 0x0008, /*! keep TCP connection open even if idle using periodic messages*/
+    PAL_SO_KEEPALIVE = 0x0008, /*! keep TCP connection open even if idle using periodic messages*/
 #endif //PAL_NET_TCP_AND_TLS_SUPPORT
-	PAL_SO_SNDTIMEO = 0x1005,  /*! send timeout */
-	PAL_SO_RCVTIMEO = 0x1006,  /*! receive timeout */
+    PAL_SO_SNDTIMEO = 0x1005,  /*! send timeout */
+    PAL_SO_RCVTIMEO = 0x1006,  /*! receive timeout */
 } palSocketOptionName_t;/*! socket options supported by PAL */
 
 #define PAL_NET_DEFAULT_INTERFACE 0xFFFFFFFF
@@ -78,8 +78,8 @@ typedef uint8_t palIpV4Addr_t[PAL_IPV4_ADDRESS_SIZE];
 typedef uint8_t palIpV6Addr_t[PAL_IPV6_ADDRESS_SIZE];
 
 typedef struct pal_timeVal{
-	int32_t    pal_tv_sec;      /*! seconds */
-	int32_t    pal_tv_usec;     /*! microseconds */
+    int32_t    pal_tv_sec;      /*! seconds */
+    int32_t    pal_tv_usec;     /*! microseconds */
 } pal_timeVal_t;
 
 
@@ -218,9 +218,9 @@ palStatus_t pal_getNetInterfaceInfo(uint32_t interfaceNum, palNetInterfaceInfo_t
 #define PAL_NET_SOCKET_SELECT_TX_BIT (2)
 #define PAL_NET_SOCKET_SELECT_ERR_BIT (4)
 
-#define PAL_NET_SELECT_IS_RX(socketStatus, index)	((socketStatus[index] | PAL_NET_SOCKET_SELECT_RX_BIT) != 0) /*! check if RX bit is set in select result for a given socket index*/
-#define PAL_NET_SELECT_IS_TX(socketStatus, index)	((socketStatus[index] | PAL_NET_SOCKET_SELECT_TX_BIT) != 0) /*! check if TX bit is set in select result for a given socket index*/
-#define PAL_NET_SELECT_IS_ERR(socketStatus, index)	((socketStatus[index] | PAL_NET_SOCKET_SELECT_ERR_BIT) != 0) /*! check if ERR bit is set in select result for a given socket index*/
+#define PAL_NET_SELECT_IS_RX(socketStatus, index)   ((socketStatus[index] | PAL_NET_SOCKET_SELECT_RX_BIT) != 0) /*! check if RX bit is set in select result for a given socket index*/
+#define PAL_NET_SELECT_IS_TX(socketStatus, index)   ((socketStatus[index] | PAL_NET_SOCKET_SELECT_TX_BIT) != 0) /*! check if TX bit is set in select result for a given socket index*/
+#define PAL_NET_SELECT_IS_ERR(socketStatus, index)  ((socketStatus[index] | PAL_NET_SOCKET_SELECT_ERR_BIT) != 0) /*! check if ERR bit is set in select result for a given socket index*/
 
 /*! check if one or more (up to PAL_NET_SOCKET_SELECT_MAX_SOCKETS) sockets given has data available for reading/writing/error, the function will block until data is available for one of the given sockets or the timeout expires.
 To use the function: set the sockets you want to check in the socketsToCheck array and set a timeout, when it returns the socketStatus output will indicate the status of each socket passed in.
@@ -233,7 +233,7 @@ To use the function: set the sockets you want to check in the socketsToCheck arr
 \note the entry in index x in the socketStatus array corresponds to the socket at index x in the sockets to check array.
 */
 palStatus_t pal_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t numberOfSockets, pal_timeVal_t* timeout,
-								uint8_t palSocketStatus[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t* numberOfSocketsSet);
+                                uint8_t palSocketStatus[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t* numberOfSocketsSet);
 
 
 #if PAL_NET_TCP_AND_TLS_SUPPORT // functionality below supported only in case TCP is supported.
@@ -275,7 +275,7 @@ palStatus_t pal_recv(palSocket_t socket, void* buf, size_t len, size_t* recieved
 
 /*! send a given buffer via the given connected socket
 * @param[in] socket the connected socket on which to send data [we expect sockets passed to this function to be of type PAL_SOCK_STREAM ( the implementation may support other types as well) ]
-* @param[in] buf the buffer for the message data
+* @param[in] buf the output buffer for the message data
 * @param[in] len the length of the input data buffer
 * @param[out] sentDataSize the length of the data sent
 \return the function returns the status as in the form of PalStatus_t which will be PAL_SUCCESS (0) in case of success or a specific negative error code in case of failure

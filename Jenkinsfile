@@ -17,7 +17,7 @@ try {
         
         dir ("mbed-os") {
           git "git@github.com:ARMmbed/mbed-os"
-          execute ("git checkout tags/mbed-os-5.1.4")
+          execute ("git checkout tags/mbed-os-5.2")
         }
         
         

@@ -29,7 +29,7 @@ include make_platform.mk
 #====================================================
 # Platform morpheus
 TARGET_PLATFORM:=mbedOS
-TARGET_CONFIGURATION_DEFINES:=  HAS_RTOS HAS_SOCKET HAS_UPDATE HAS_ALL
+TARGET_CONFIGURATION_DEFINES:=  HAS_RTOS HAS_SOCKET 
 all: mbedOS_all
 check: mbedOS_check
 clean: mbedOS_clean 

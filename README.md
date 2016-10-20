@@ -20,7 +20,7 @@ development and testing.
 
 1. Define the environment variable: `MBEDOS_ROOT` to be the father folder of "mbed-os".
 2. `cd $(PAL_FOLDER)/Test/`
-3. make mbedOS_all - This will build the tests for mbedOS5.14 (mbed-os-5.1.4)over Freescale-K64F board.
+3. make mbedOS_all - This will build the tests for mbedOS5.2 (mbed-os-5.2)over Freescale-K64F board.
 4. In order to build and run the tests over the platform please run: 
 
 		$ make mbedOS_check

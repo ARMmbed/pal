@@ -21,15 +21,16 @@
 #include "pal_rtos.h"
 #include "pal_test_utils.h"
 
+#define THREAD_STACK_SIZE 1024*sizeof(uint32_t)
 
 typedef struct threadsArgument{
-	uint32_t arg1;
-	uint32_t arg2;
-	uint32_t arg3;
-	uint32_t arg4;
-	uint32_t arg5;
-	uint32_t arg6;
-	uint32_t arg7;
+    uint32_t arg1;
+    uint32_t arg2;
+    uint32_t arg3;
+    uint32_t arg4;
+    uint32_t arg5;
+    uint32_t arg6;
+    uint32_t arg7;
 }threadsArgument_t;
 
 
@@ -46,9 +47,9 @@ void palThreadFunc6(void const *argument);
 
 
 typedef struct timerArgument{
-	uint32_t ticksBeforeTimer;
-	uint32_t ticksInFunc1;
-	uint32_t ticksInFunc2;
+    uint32_t ticksBeforeTimer;
+    uint32_t ticksInFunc1;
+    uint32_t ticksInFunc2;
 }timerArgument_t;
 
 extern timerArgument_t g_timerArgs;

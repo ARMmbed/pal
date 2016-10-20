@@ -230,7 +230,7 @@
             <UL>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="DEBUG_PRINT"><param name="Local" value="db/dcf/pal__macros_8h.html#aa1b662a1198e5729d6d0934a7efb02c4"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="LITTLE__ENDIAN"><param name="Local" value="db/dcf/pal__macros_8h.html#a1651594dc71abf466bddd0f6393edb8b"><param name="ImageNumber" value="11"></OBJECT>
-            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_DIVIDE_ROUND_UP"><param name="Local" value="db/dcf/pal__macros_8h.html#ac8c34ec6f36f29175ad64f709e8aa6f3"><param name="ImageNumber" value="11"></OBJECT>
+            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_DIVIDE_ROUND_UP"><param name="Local" value="db/dcf/pal__macros_8h.html#a966411fe41e3830553bb1b8cf8baf730"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_HOST_TO_LITTLE_ENDIAN_16BIT"><param name="Local" value="db/dcf/pal__macros_8h.html#a9bd4f76c3897b4338fe50a8d69830fe5"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_HOST_TO_LITTLE_ENDIAN_32BIT"><param name="Local" value="db/dcf/pal__macros_8h.html#ab01046a25df49d7fe1d85a8bf722975f"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_HOST_TO_LITTLE_ENDIAN_64BIT"><param name="Local" value="db/dcf/pal__macros_8h.html#adc0a4752569188800a75e1601a7e11b5"><param name="ImageNumber" value="11"></OBJECT>
@@ -242,14 +242,14 @@
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_LITTLE_ENDIAN_TO_HOST_16BIT"><param name="Local" value="db/dcf/pal__macros_8h.html#ad1c98870c5eeba8fe649345e371ef866"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_LITTLE_ENDIAN_TO_HOST_32BIT"><param name="Local" value="db/dcf/pal__macros_8h.html#aa6229ece344478c07677c8b0436b1bb0"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_LITTLE_ENDIAN_TO_HOST_64BIT"><param name="Local" value="db/dcf/pal__macros_8h.html#a4ae1ca0100a3eee36eb95931cbec633e"><param name="ImageNumber" value="11"></OBJECT>
-            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX"><param name="Local" value="db/dcf/pal__macros_8h.html#aa7fb918bff4d9a4c5d7dd007c6fa910c"><param name="ImageNumber" value="11"></OBJECT>
+            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX"><param name="Local" value="db/dcf/pal__macros_8h.html#a117c6ce53646b65b4cdcb5da01801675"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX_INT32"><param name="Local" value="db/dcf/pal__macros_8h.html#a6ee734c1fc41affa0926797e382fc8d4"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX_INT64"><param name="Local" value="db/dcf/pal__macros_8h.html#ada154fcb4b3ef9b641486f30de56c7b7"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX_UINT16"><param name="Local" value="db/dcf/pal__macros_8h.html#af8d58ab12b0f655fe922fc40b3e52ca2"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX_UINT32"><param name="Local" value="db/dcf/pal__macros_8h.html#ac7e2d509703ff033a302b325aa664f6e"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX_UINT64"><param name="Local" value="db/dcf/pal__macros_8h.html#a28a8006d7bca3b64235ca4d0cb39bf2b"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MAX_UINT8"><param name="Local" value="db/dcf/pal__macros_8h.html#a08c56fc189bfb1a6864a7b5d68433e7e"><param name="ImageNumber" value="11"></OBJECT>
-            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MIN"><param name="Local" value="db/dcf/pal__macros_8h.html#a733c131f13d1d95ade183a0b61f0124c"><param name="ImageNumber" value="11"></OBJECT>
+            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MIN"><param name="Local" value="db/dcf/pal__macros_8h.html#a29066dd6aaf6aa8fa21f3a88feb6da59"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MIN_INT32"><param name="Local" value="db/dcf/pal__macros_8h.html#ac3a2f334767728e9bc57512139e0bd61"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MODULE_DEINIT"><param name="Local" value="db/dcf/pal__macros_8h.html#aaeb3e06c7119793239368c0fe74cda05"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_MODULE_INIT"><param name="Local" value="db/dcf/pal__macros_8h.html#ad2109677fa03720f6ab0df072c755529"><param name="ImageNumber" value="11"></OBJECT>
@@ -281,8 +281,8 @@
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_DEFAULT_INTERFACE"><param name="Local" value="d9/d17/pal__network_8h.html#aefc09884590381a71433c34b3f2e2aa5"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_MAX_ADDR_SIZE"><param name="Local" value="d9/d17/pal__network_8h.html#ac831e2e5064065e10c741da1003ff039"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SELECT_IS_ERR"><param name="Local" value="d9/d17/pal__network_8h.html#ac2b7451d38e150079fbef20b57ee3fe9"><param name="ImageNumber" value="11"></OBJECT>
-            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SELECT_IS_RX"><param name="Local" value="d9/d17/pal__network_8h.html#a7cba728e49a9a691b4f91b7bc031b02a"><param name="ImageNumber" value="11"></OBJECT>
-            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SELECT_IS_TX"><param name="Local" value="d9/d17/pal__network_8h.html#ab08db8b66ab060b6ce9c98a570383ae8"><param name="ImageNumber" value="11"></OBJECT>
+            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SELECT_IS_RX"><param name="Local" value="d9/d17/pal__network_8h.html#a8894a96773018ba6058811087b4b2ac8"><param name="ImageNumber" value="11"></OBJECT>
+            <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SELECT_IS_TX"><param name="Local" value="d9/d17/pal__network_8h.html#a31ca79ac9ae5c2ddd890263a989fc4d8"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SOCKET_SELECT_ERR_BIT"><param name="Local" value="d9/d17/pal__network_8h.html#aa66d7131cc6c44ac6c5ab6a9dda3f69a"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SOCKET_SELECT_MAX_SOCKETS"><param name="Local" value="d9/d17/pal__network_8h.html#a5607f2af4b642ef0548bd47c891c6d31"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="PAL_NET_SOCKET_SELECT_RX_BIT"><param name="Local" value="d9/d17/pal__network_8h.html#aae14933b48cd31821913f2bfb15e18b2"><param name="ImageNumber" value="11"></OBJECT>
@@ -482,7 +482,6 @@
             <LI><OBJECT type="text/sitemap"><param name="Name" value="pal_plat_osTimerStop"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#a2f1fdb410c4d6ae382622ef4f1884808"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="pal_plat_RTOSDestroy"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#a8a484abc75cf595862459d6ab21c7a0c"><param name="ImageNumber" value="11"></OBJECT>
             <LI><OBJECT type="text/sitemap"><param name="Name" value="pal_plat_RTOSInitialize"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#a2e7aaf20f2cad3b04061e1c3fd748c42"><param name="ImageNumber" value="11"></OBJECT>
-            <LI><OBJECT type="text/sitemap"><param name="Name" value="g_palThreadPriorities"><param name="Local" value="d5/d59/pal__plat__rtos_8h.html#aacb92bd33e1dcdb1c7dedb6b0aff7162"><param name="ImageNumber" value="11"></OBJECT>
             </UL>
           </UL>
         <LI><OBJECT type="text/sitemap"><param name="Name" value="Reference-Impl"><param name="Local" value="dir_c08386f3c1aee312ced83a5951d11ed6.html"><param name="ImageNumber" value="1"></OBJECT>
@@ -574,7 +573,6 @@
                 <LI><OBJECT type="text/sitemap"><param name="Name" value="pal_plat_osTimerStop"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#a2f1fdb410c4d6ae382622ef4f1884808"><param name="ImageNumber" value="11"></OBJECT>
                 <LI><OBJECT type="text/sitemap"><param name="Name" value="pal_plat_RTOSDestroy"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#a8a484abc75cf595862459d6ab21c7a0c"><param name="ImageNumber" value="11"></OBJECT>
                 <LI><OBJECT type="text/sitemap"><param name="Name" value="pal_plat_RTOSInitialize"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#a2e7aaf20f2cad3b04061e1c3fd748c42"><param name="ImageNumber" value="11"></OBJECT>
-                <LI><OBJECT type="text/sitemap"><param name="Name" value="g_palThreads"><param name="Local" value="d4/dc5/pal__plat__rtos_8c.html#aac664ea7d2fecac06224f1b44cca0011"><param name="ImageNumber" value="11"></OBJECT>
                 </UL>
               </UL>
             </UL>
@@ -600,7 +598,6 @@
           <LI><OBJECT type="text/sitemap"><param name="Name" value="palThreadFuncCustom4"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#aa5b1f9c927c18d821a46d99dfe533cb0"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="palTimerFunc1"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#abac822ed4b356b85117101aa0d8701d6"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="palTimerFunc2"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a8581bcb8f9f435a87c3dd651d65e32c8"><param name="ImageNumber" value="11"></OBJECT>
-          <LI><OBJECT type="text/sitemap"><param name="Name" value="g_threadStorage"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#a9beaf51023e475986b8b182c80ccc023"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="threadsArg"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#aecb21b545f5a0c542dc82a8ef0b89b3f"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="timerArgs"><param name="Local" value="d1/dee/pal__rtos__test__utils_8c.html#ad4897778c444c8e8fbcb65c84901ac78"><param name="ImageNumber" value="11"></OBJECT>
           </UL>
@@ -626,6 +623,7 @@
           <LI><OBJECT type="text/sitemap"><param name="Name" value="MEMORY_POOL1_BLOCK_SIZE"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#ae3c2c737bcf6b45c3bf394dfe8349c4d"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="MEMORY_POOL2_BLOCK_COUNT"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a593d40fc26d9d1664c57988a846a888e"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="MEMORY_POOL2_BLOCK_SIZE"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a3c85d7e7f47d26444477603d8e2fd5d5"><param name="ImageNumber" value="11"></OBJECT>
+          <LI><OBJECT type="text/sitemap"><param name="Name" value="THREAD_STACK_SIZE"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a90b7a8cb7bc3fdbd98014a3e15ee6e9a"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="threadsArgument_t"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a33d89580fea8198de226a62220e20bd0"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="timerArgument_t"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a8c22b8a190b07232b36b748fbf706e76"><param name="ImageNumber" value="11"></OBJECT>
           <LI><OBJECT type="text/sitemap"><param name="Name" value="palThreadFunc1"><param name="Local" value="d9/d28/pal__rtos__test__utils_8h.html#a0a153da028aee8f220377b516ff065c8"><param name="ImageNumber" value="11"></OBJECT>

@@ -73,7 +73,7 @@ endif
 
 ifeq ($(DEBUG), 1)
   $(info "DEBUG")
-  $(TARGET_PLATFORM)_$(PROJECT) : DEBUG_FLAGS += -o debug-info -DDEBUG
+  $(TARGET_PLATFORM)_$(PROJECT) : DEBUG_FLAGS += -DDEBUG
 endif
 
 ifeq ($(PAL_IGNORE_UNIQUE_THREAD_PRIORITY), 1)
@@ -114,7 +114,11 @@ TST_SOURCES:=	$(INCLUDE_PATHS) \
 				$(PAL_ROOT)/Test/$(TYPE)/$(PROJECT)_test_main_$(TARGET_PLATFORM).cpp \
 				$($(PROJECT)_ADDITIONAL_SOURCES)
 ifeq ($(findstring HAS_UPDATE,$(TARGET_CONFIGURATION_DEFINES)),HAS_UPDATE)
-
+TST_SOURCES:= 	$(TST_SOURCES) \
+				$(MORPHEUS_ROOT)/storage-volume-manager \
+				$(MORPHEUS_ROOT)/storage-abstraction/ \
+				$(MORPHEUS_ROOT)/mbed-client-libservice \
+				$(MORPHEUS_ROOT)/mbed-trace/
 
 endif
 
@@ -129,7 +133,7 @@ $(OUT)/$(PROJECT).bin:  $(TST_SOURCES)
 	# Always remove the test runner since PAL_TEST argument change requires that it is recompiled
 	$(RM) $(dir $@)obj/$(PROJECT)_test_runner.o
 	# Ignore some mbed libraries in the subsequent build. (The minus ignores the error if the library does not exist)
-	-$(ECHO) "*" > $(MORPHEUS_ROOT)/storage-volume-manager/test/.mbedignore
+	-$(ECHO) "*" > $(strip $(MORPHEUS_ROOT))/mbed-os/features/frameworks/unity/.mbedignore
 	# Morpheus build.
 	mbed compile -v -N ../$(notdir $(basename $@)) --build $(dir $@)obj -t GCC_ARM -m K64F $(addprefix  --source=, $^) $(MORPHEUS_CC_TESTS_D) $(DEBUG_FLAGS)
 

@@ -140,7 +140,7 @@ Note: The entry in index x in the socketStatus array corresponds to the socket a
 \return The status in the form of PalStatus_t; PAL_SUCCESS (0) in case of success, a specific negative error code in case of failure.
 */
 palStatus_t pal_plat_socketMiniSelect(const palSocket_t socketsToCheck[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t numberOfSockets, pal_timeVal_t* timeout,
-										uint8_t palSocketStatus[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t * numberOfSocketsSet);
+                                        uint8_t palSocketStatus[PAL_NET_SOCKET_SELECT_MAX_SOCKETS], uint32_t * numberOfSocketsSet);
 
 
 #if PAL_NET_TCP_AND_TLS_SUPPORT // functionality below supported only in case TCP is supported.

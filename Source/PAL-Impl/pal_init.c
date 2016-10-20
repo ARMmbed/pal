@@ -27,49 +27,49 @@ static int32_t g_palIntialized = 0;
 palStatus_t pal_init()
 {
 
-	palStatus_t status = PAL_SUCCESS;
-	int32_t currentInitValue;
-	//  get the return value of g_palIntialized+1 to save it locally
-	currentInitValue = pal_osAtomicIncrement(&g_palIntialized,1);
-	// if increased for the 1st time
-	if (1 == currentInitValue)
-	{
-		DEBUG_PRINT("Init for the 1st time, initializing the modules\r\n");
-		status = pal_plat_RTOSInitialize(NULL);
-		if (PAL_SUCCESS == status)
-		{
+    palStatus_t status = PAL_SUCCESS;
+    int32_t currentInitValue;
+    //  get the return value of g_palIntialized+1 to save it locally
+    currentInitValue = pal_osAtomicIncrement(&g_palIntialized,1);
+    // if increased for the 1st time
+    if (1 == currentInitValue)
+    {
+        DEBUG_PRINT("Init for the 1st time, initializing the modules\r\n");
+        status = pal_plat_RTOSInitialize(NULL);
+        if (PAL_SUCCESS == status)
+        {
 
-			status = pal_plat_socketsInit(NULL);
-			if (PAL_SUCCESS != status)
-			{
-				DEBUG_PRINT("init of network module has failed with status %d\r\n",status);
-			}
-		}
-		else
-		{
-			DEBUG_PRINT("init of RTOS module has failed with status %d\r\n",status);
-		}
-	}
-	// if failed decrees the value of g_palIntialized
-	if (PAL_SUCCESS != status)
-	{
-		pal_plat_socketsTerminate(NULL);
-		pal_plat_RTOSDestroy();
-		pal_osAtomicIncrement(&g_palIntialized, -1);
-	}
-	return status;
+            status = pal_plat_socketsInit(NULL);
+            if (PAL_SUCCESS != status)
+            {
+                DEBUG_PRINT("init of network module has failed with status %d\r\n",status);
+            }
+        }
+        else
+        {
+            DEBUG_PRINT("init of RTOS module has failed with status %d\r\n",status);
+        }
+    }
+    // if failed decrees the value of g_palIntialized
+    if (PAL_SUCCESS != status)
+    {
+        pal_plat_socketsTerminate(NULL);
+        pal_plat_RTOSDestroy();
+        pal_osAtomicIncrement(&g_palIntialized, -1);
+    }
+    return status;
 }
 
 
 void pal_destroy()
 {
-	int32_t currentInitValue;
-	// get the current value of g_palIntialized locally
-	currentInitValue = pal_osAtomicIncrement(&g_palIntialized, -1);
-	if (0 == currentInitValue)
-	{
-		DEBUG_PRINT("Destroying modules\r\n");
-		pal_plat_RTOSDestroy();
-		pal_plat_socketsTerminate(NULL);
-	}
+    int32_t currentInitValue;
+    // get the current value of g_palIntialized locally
+    currentInitValue = pal_osAtomicIncrement(&g_palIntialized, -1);
+    if (0 == currentInitValue)
+    {
+        DEBUG_PRINT("Destroying modules\r\n");
+        pal_plat_RTOSDestroy();
+        pal_plat_socketsTerminate(NULL);
+    }
 }

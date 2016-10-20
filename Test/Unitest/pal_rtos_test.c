@@ -54,7 +54,6 @@ TEST(pal_rtos, pal_osKernelSysTick_Unity)
   tick1 = pal_osKernelSysTick();
   tick2 = pal_osKernelSysTick();
   
-  TEST_ASSERT_TRUE(tick1 > 0);
   TEST_ASSERT_TRUE(tick2 != tick1);
 }
 
@@ -65,17 +64,16 @@ TEST(pal_rtos, pal_osKernelSysTick64_Unity)
   tick1 = pal_osKernelSysTick64();
   tick2 = pal_osKernelSysTick64();
   
-  TEST_ASSERT_TRUE(tick1 > 0);
   TEST_ASSERT_TRUE(tick2 > tick1);
 }
 
 TEST(pal_rtos, pal_osKernelSysTickMicroSec_Unity)
 {
   uint64_t tick = 0;
-  
-  tick = pal_osKernelSysTickMicroSec(2000 * 1000);
-  
-  TEST_ASSERT_TRUE(tick > 0);
+  uint64_t microSec = 2000 * 1000;
+
+  tick = pal_osKernelSysTickMicroSec(microSec);
+  TEST_ASSERT_TRUE(0 != tick);
 }
 
 TEST(pal_rtos, pal_osKernelSysMilliSecTick_Unity)
@@ -85,8 +83,8 @@ TEST(pal_rtos, pal_osKernelSysMilliSecTick_Unity)
   uint64_t milliseconds = 0;
   
   tick = pal_osKernelSysTickMicroSec(microSec);
-  TEST_ASSERT_TRUE(tick > 0);
-
+  TEST_ASSERT_TRUE(0 != tick);
+  
   milliseconds = pal_osKernelSysMilliSecTick(tick);
   TEST_ASSERT_EQUAL(milliseconds, microSec/1000);
 }

@@ -17,23 +17,23 @@
 #include "pal.h"
 #include "pal_network.h"
 #include "pal_socket_test_utils.h"
-#include "net/network-socket/NetworkInterface.h"
-#include "net/FEATURE_IPV4/lwip-interface/EthernetInterface.h"
+#include "NetworkInterface.h"
+#include "EthernetInterface.h"
 
 #define TEST_PRINTF printf
 
 void* palTestGetNetWorkInterfaceContext()
 {
-	palStatus_t result = PAL_SUCCESS;
-	EthernetInterface* netInterface = new EthernetInterface();
-	if (NULL != netInterface)
-	{
-		TEST_PRINTF("new interface created\r\n");
-		result = netInterface->connect();
-		if (PAL_SUCCESS == result)
-		{
-			TEST_PRINTF("interface registered : OK \r\n");
-		}
-	}
-	return netInterface;
+    palStatus_t result = PAL_SUCCESS;
+    EthernetInterface* netInterface = new EthernetInterface();
+    if (NULL != netInterface)
+    {
+        TEST_PRINTF("new interface created\r\n");
+        result = netInterface->connect();
+        if (PAL_SUCCESS == result)
+        {
+            TEST_PRINTF("interface registered : OK \r\n");
+        }
+    }
+    return netInterface;
 }

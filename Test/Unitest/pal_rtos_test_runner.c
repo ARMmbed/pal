@@ -64,7 +64,7 @@ TEST_GROUP_RUNNER(pal_rtos)
 RUN_TEST_CASE(pal_rtos, pal_init_test);
 #endif
 #if (CustomizedTest)
-	  RUN_TEST_CASE(pal_rtos, CustomizedTest);
+    RUN_TEST_CASE(pal_rtos, CustomizedTest);
 #endif
 }
 

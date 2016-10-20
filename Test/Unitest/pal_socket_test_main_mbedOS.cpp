@@ -54,13 +54,13 @@ extern "C" void TEST_pal_socket_GROUP_RUNNER(void);
 
 int main(int argc, const char * argv[])
 {
-	const char * myargv[] = {"app","-v"};
+    const char * myargv[] = {"app","-v"};
 
-	Thread::wait(2000);
-	printf("Start tests\n");
-	fflush(stdout);
+    Thread::wait(2000);
+    printf("Start tests\n");
+    fflush(stdout);
 
-	UnityMain(sizeof(myargv)/sizeof(myargv[0]), myargv, TEST_pal_socket_GROUP_RUNNER);
+    UnityMain(sizeof(myargv)/sizeof(myargv[0]), myargv, TEST_pal_socket_GROUP_RUNNER);
 
     // This is detected by test runner app, so that it can know when to terminate without waiting for timeout.
     printf("***END OF TESTS**\n");for(int i=0;i<1000;i++)putchar('x');putchar('\n');
