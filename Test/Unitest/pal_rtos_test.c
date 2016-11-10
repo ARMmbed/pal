@@ -27,9 +27,8 @@ TEST_GROUP(pal_rtos);
 //for example: If you plan to pass by reference, this could be useful
 //however, it should often be avoided
 //extern int Counter;
-uint32_t g_threadStorage[20] = { 0 };
-threadsArgument_t g_threadsArg = {0};
-timerArgument_t g_timerArgs = {0};
+
+extern timerArgument_t g_timerArgs;
 palMutexID_t mutex1 = NULLPTR;
 palMutexID_t mutex2 = NULLPTR;
 palSemaphoreID_t semaphore1 = NULLPTR;

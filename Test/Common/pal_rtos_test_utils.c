@@ -23,6 +23,10 @@
 threadsArgument_t threadsArg;
 timerArgument_t timerArgs;
 
+uint32_t g_threadStorage[20] = { 0 };
+threadsArgument_t g_threadsArg = {0};
+timerArgument_t g_timerArgs = {0};
+
 void palThreadFunc1(void const *argument)
 {
     palThreadID_t threadID = 10;
