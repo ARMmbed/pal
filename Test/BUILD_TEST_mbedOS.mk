@@ -86,6 +86,14 @@ ifeq ($(VERBOSE), 1)
   $(TARGET_PLATFORM)_$(PROJECT) : DEBUG_FLAGS += -DVERBOSE
 endif
 
+# compilers & target defialts
+ifeq ($(strip $(MBEDOS_COMP)),)
+	MBEDOS_COMP = GCC_ARM
+endif
+ifeq ($(strip $(MBEDOS_TARGET)),)
+	MBEDOS_TARGET = K64F
+endif
+
 #################################################################################################################
 
 ### UNITY FILES ###
@@ -131,11 +139,11 @@ $(TARGET_PLATFORM)_$(PROJECT):  MORPHEUS_ROOT:=$(MORPHEUS_ROOT)
 
 $(OUT)/$(PROJECT).bin:  $(TST_SOURCES) 
 	# Always remove the test runner since PAL_TEST argument change requires that it is recompiled
-	$(RM) $(dir $@)obj/$(PROJECT)_test_runner.o
+	-$(RM) $(dir $@)obj/$(PROJECT)_test_runner.o
 	# Ignore some mbed libraries in the subsequent build. (The minus ignores the error if the library does not exist)
 	-$(ECHO) "*" > $(strip $(MORPHEUS_ROOT))/mbed-os/features/frameworks/unity/.mbedignore
 	# Morpheus build.
-	mbed compile -v -N ../$(notdir $(basename $@)) --build $(dir $@)obj -t GCC_ARM -m K64F $(addprefix  --source=, $^) $(MORPHEUS_CC_TESTS_D) $(DEBUG_FLAGS)
+	mbed compile -v -N ../$(notdir $(basename $@)) --build $(dir $@)obj -t $(MBEDOS_COMP) -m $(MBEDOS_TARGET) $(addprefix  --source=, $^) $(MORPHEUS_CC_TESTS_D) $(DEBUG_FLAGS)
 
 # Create a list of files to delete for each target on the first pass of the make
 $(TARGET_PLATFORM)_clean_$(PROJECT) : OUTPUTS:= $(OUT)

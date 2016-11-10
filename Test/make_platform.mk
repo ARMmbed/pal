@@ -33,7 +33,7 @@ ifeq ($(OS),Linux)
   ECHO = echo
 else
   $(info OS =  Windows)
-  MKDIR_QUIET  =  mkdir
+  MKDIR_QUIET  =  mkdir -p
   RM = del
   CAT = type
   ECHO = echo
