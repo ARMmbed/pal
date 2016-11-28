@@ -42,7 +42,8 @@ RTOS_SRC   = $(PAL_ROOT)/Source/PAL-Impl/Modules/RTOS/pal_rtos.c \
 SOCKET_SRC = $(PAL_ROOT)/Source/PAL-Impl/Modules/Networking/pal_network.c \
 			 $(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/Networking/pal_plat_network.cpp
 			 
-UPDATE_SRC = 
+UPDATE_SRC = $(PAL_ROOT)/Source/PAL-Impl/Modules/Update/pal_update.c \
+			 $(PAL_ROOT)/Source/Port/Reference-Impl/mbedOS/Update/pal_plat_update.cpp	 
 
 
 
@@ -70,7 +71,7 @@ ifeq ($(findstring HAS_SOCKET,$(TARGET_CONFIGURATION_DEFINES)),HAS_SOCKET)
 PROJECT=pal_socket
 TYPE=Unitest
 
-$(PROJECT)_ADDITIONAL_SOURCES:=  $(ALL_SRC) 
+$(PROJECT)_ADDITIONAL_SOURCES:=  $(INIT_SRC) $(RTOS_SRC)  $(SOCKET_SRC)  
 
 
 
@@ -81,7 +82,7 @@ ifeq ($(findstring HAS_RTOS,$(TARGET_CONFIGURATION_DEFINES)),HAS_RTOS)
 PROJECT=pal_rtos
 TYPE=Unitest
 
-$(PROJECT)_ADDITIONAL_SOURCES:= $(ALL_SRC) 
+$(PROJECT)_ADDITIONAL_SOURCES:= $(INIT_SRC) $(RTOS_SRC) $(SOCKET_SRC)  
 
 include BUILD_TEST_$(TARGET_PLATFORM).mk
 endif
