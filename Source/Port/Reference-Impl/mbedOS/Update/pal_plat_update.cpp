@@ -54,6 +54,16 @@ extern int32_t flashJournalStrategySequential_format(ARM_DRIVER_STORAGE      *mt
 
 
 
+
+typedef enum {
+    PAL_PI_WRITE_UNINITIALIZED,
+    PAL_PI_WRITE_METADATA_LOGGED,
+    PAL_PI_WRITE_RESIDUAL_LOGGED,
+    PAL_PI_WRITE_DONE,
+    PAL_PI_WRITE_ERROR,
+} pal_pi_mbed_write_state_t;
+
+
 typedef enum {
     PAL_PI_MBED_FSM_NONE,
 	PAL_PI_MBED_FSM_SETUP,
@@ -126,6 +136,64 @@ static int32_t palTranslateDriverErr(int32_t platErr)
 	return palErr;
 }
 
+typedef struct FirmwareHeader {
+    uint32_t magic;                         /** Metadata-header specific magic code */
+    uint32_t version;                       /** Revision number for this generic metadata header. */
+    uint32_t checksum;                      /** A checksum of this header. This field should be considered to be zeroed out for
+                                             *  the sake of computing the checksum. */
+    uint32_t totalSize;                     /** Total space (in bytes) occupied by the firmware BLOB, including headers and any padding. */
+    uint64_t firmwareVersion;               /** Version number for the accompanying firmware. Larger numbers imply more preferred (recent)
+                                             *  versions. This defines the selection order when multiple versions are available. */
+    uint8_t  firmwareSHA256[SIZEOF_SHA256]; /** A SHA-2 using a block-size of 256-bits of the firmware, including any firmware-padding. */
+} FirmwareHeader_t;
+
+
+typedef struct {
+    uint32_t package_id;
+    uint32_t fragment_offset;
+    palBuffer_t* buffer;
+    int32_t numberOfByesRemain;
+} pal_pi_mbed_read_context_t;
+
+typedef struct {
+    uint32_t package_id;
+    const uint8_t* package_fragment;
+    int32_t fragment_size;
+    uint32_t fragment_offset;
+} pal_pi_mbed_write_context_t;
+
+
+
+void PAL_PI_MBED_journal_callbackHandler(int32_t status, FlashJournal_OpCode_t cmd_code);
+void PAL_PI_MBED_journalMTD_callbackHandler(int32_t status, ARM_STORAGE_OPERATION operation);
+void PAL_PI_MBED_volumeManager_initializeCallbackHandler(int32_t status);
+
+
+
+FlashJournal_t pal_pi_mbed_journal;
+FlashJournal_Info_t pal_pi_mbed_journal_info;
+uint8_t *pal_pi_mbed_overflow_buffer;
+uint32_t pal_pi_mbed_overflow_buffer_size = 0;
+extern ARM_DRIVER_STORAGE ARM_Driver_Storage_MTD_K64F;
+ARM_DRIVER_STORAGE *mtd = &ARM_Driver_Storage_MTD_K64F;
+uint8_t pal_pi_mbed_metadata_logged;
+static uint8_t flag_hash_volumne_intialized = 0;
+static palBuffer_t* pal_pi_mbed_hash_buffer = NULL;
+
+ extern StorageVolumeManager volumeManager;
+
+static _ARM_DRIVER_STORAGE journalMTD;
+static _ARM_DRIVER_STORAGE metadataHeaderMTD;
+static pal_pi_mbed_getativehash_state_t pal_pi_mbed_getativehash_state;
+static pal_pi_mbed_read_state_t pal_pi_mbed_read_state;
+static pal_pi_mbed_read_context_t pal_pi_mbed_read_context;
+static pal_pi_mbed_fsm_t pal_pi_mbed_active_fsm = PAL_PI_MBED_FSM_NONE;
+static pal_pi_mbed_setup_state_t pal_pi_mbed_setup_state;
+static FirmwareHeader_t pal_pi_mbed_firmware_header;
+static pal_pi_mbed_commit_state_t pal_pi_mbed_commit_state;
+static pal_pi_mbed_write_state_t pal_pi_mbed_write_state;
+static pal_pi_mbed_write_context_t pal_pi_mbed_write_context;
+static palImageSignalEvent_t g_palUpdateServiceCBfunc;
 
 
 static int32_t palTranslateJournalErr(int32_t platErr)
@@ -175,58 +243,6 @@ static int32_t palTranslateJournalErr(int32_t platErr)
 	return  palErr;
 }
 
-typedef struct FirmwareHeader {
-    uint32_t magic;                         /** Metadata-header specific magic code */
-    uint32_t version;                       /** Revision number for this generic metadata header. */
-    uint32_t checksum;                      /** A checksum of this header. This field should be considered to be zeroed out for
-                                             *  the sake of computing the checksum. */
-    uint32_t totalSize;                     /** Total space (in bytes) occupied by the firmware BLOB, including headers and any padding. */
-    uint64_t firmwareVersion;               /** Version number for the accompanying firmware. Larger numbers imply more preferred (recent)
-                                             *  versions. This defines the selection order when multiple versions are available. */
-    uint8_t  firmwareSHA256[SIZEOF_SHA256]; /** A SHA-2 using a block-size of 256-bits of the firmware, including any firmware-padding. */
-} FirmwareHeader_t;
-
-
-typedef struct {
-    uint32_t package_id;
-    uint32_t fragment_offset;
-    palBuffer_t* buffer;
-    int32_t numberOfByesRemain;
-} pal_pi_mbed_read_context_t;
-
-
-
-
-void PAL_PI_MBED_journal_callbackHandler(int32_t status, FlashJournal_OpCode_t cmd_code);
-void PAL_PI_MBED_journalMTD_callbackHandler(int32_t status, ARM_STORAGE_OPERATION operation);
-void PAL_PI_MBED_volumeManager_initializeCallbackHandler(int32_t status);
-
-
-
-FlashJournal_t pal_pi_mbed_journal;
-FlashJournal_Info_t pal_pi_mbed_journal_info;
-uint8_t *pal_pi_mbed_overflow_buffer;
-uint32_t pal_pi_mbed_overflow_buffer_size = 0;
-extern ARM_DRIVER_STORAGE ARM_Driver_Storage_MTD_K64F;
-ARM_DRIVER_STORAGE *mtd = &ARM_Driver_Storage_MTD_K64F;
-uint8_t pal_pi_mbed_metadata_logged;
-static uint8_t flag_volumne_manager_intialized = 0;
-static uint8_t flag_hash_volumne_intialized = 0;
-static palBuffer_t* pal_pi_mbed_hash_buffer = NULL;
-
- extern StorageVolumeManager volumeManager;
-
-static _ARM_DRIVER_STORAGE journalMTD;
-static _ARM_DRIVER_STORAGE metadataHeaderMTD;
-static pal_pi_mbed_getativehash_state_t pal_pi_mbed_getativehash_state;
-static pal_pi_mbed_read_state_t pal_pi_mbed_read_state;
-static pal_pi_mbed_read_context_t pal_pi_mbed_read_context;
-static pal_pi_mbed_fsm_t pal_pi_mbed_active_fsm = PAL_PI_MBED_FSM_NONE;
-static pal_pi_mbed_setup_state_t pal_pi_mbed_setup_state;
-static FirmwareHeader_t pal_pi_mbed_firmware_header;
-static pal_pi_mbed_commit_state_t pal_pi_mbed_commit_state;
-
-
 
 
 //forward declaration
@@ -246,7 +262,7 @@ void PAL_PI_MBED_Commit_StateMachine_Advance(int32_t status);
  *
  */
 
-static palImageSignalEvent_t g_palUpdateServiceCBfunc;
+
 
 /*
  * WARNING: please do not change this function!
@@ -271,7 +287,6 @@ palStatus_t pal_plat_imageDeInit(void)
 	return status;
 }
 
-#if 1
 void PAL_PI_MBED_journal_callbackHandler(int32_t status, FlashJournal_OpCode_t cmd_code)
 {
 	int32_t rc = 0;
@@ -316,130 +331,6 @@ void PAL_PI_MBED_journal_callbackHandler(int32_t status, FlashJournal_OpCode_t c
 
 
 
-
-
-
-#else
-void PAL_PI_MBED_journal_callbackHandler(int32_t status, FlashJournal_OpCode_t cmd_code)
-{
-    int32_t rc = 0;
-    DEBUG_PRINT("pal_pi_mbed_active_fsm %u cmd_code %u\n", pal_pi_mbed_active_fsm, cmd_code);
-    switch (cmd_code)
-    {
-    	case FLASH_JOURNAL_OPCODE_FORMAT:
-            DEBUG_PRINT("FLASH_JOURNAL_OPCODE_FORMAT\r\n");
-            switch (pal_pi_mbed_active_fsm)
-            {
-                case PAL_PI_MBED_FSM_NONE:
-                    PAL_PI_MBED_Setup_StateMachine_Advance(status);
-                    rc = PAL_PI_MBED_Setup_StateMachine_Enter();
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-        case FLASH_JOURNAL_OPCODE_INITIALIZE:
-            DEBUG_PRINT("FLASH_JOURNAL_OPCODE_INITIALIZE\r\n");
-            switch (pal_pi_mbed_active_fsm)
-            {
-                case PAL_PI_MBED_FSM_SETUP:
-                    PAL_PI_MBED_Setup_StateMachine_Advance(status);
-                    rc = PAL_PI_MBED_Setup_StateMachine_Enter();
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-
-        case FLASH_JOURNAL_OPCODE_READ_BLOB:
-            DEBUG_PRINT("FLASH_JOURNAL_OPCODE_READ_BLOB\r\n");
-            switch (pal_pi_mbed_active_fsm)
-            {
-                case PAL_PI_MBED_FSM_READ:
-                    PAL_PI_MBED_Read_StateMachine_Advance(status);
-                    rc = PAL_PI_MBED_Read_StateMachine_Enter();
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-
-        case FLASH_JOURNAL_OPCODE_LOG_BLOB:
-            DEBUG_PRINT("FLASH_JOURNAL_OPCODE_LOG_BLOB\r\n");
-            switch (pal_pi_mbed_active_fsm)
-            {
-                case PAL_PI_MBED_FSM_WRITE:
-                    PAL_PI_MBED_Write_StateMachine_Advance(status);
-                    rc = PAL_PI_MBED_Write_StateMachine_Enter(status);
-                    break;
-
-                case PAL_PI_MBED_FSM_COMMIT:
-                    PAL_PI_MBED_Commit_StateMachine_Advance(status);
-                    rc = PAL_PI_MBED_Commit_StateMachine_Enter();
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-
-        case FLASH_JOURNAL_OPCODE_COMMIT:
-            DEBUG_PRINT("FLASH_JOURNAL_OPCODE_COMMIT\r\n");
-            switch (pal_pi_mbed_active_fsm)
-            {
-                case PAL_PI_MBED_FSM_COMMIT:
-                    PAL_PI_MBED_Commit_StateMachine_Advance(status);
-                    rc = PAL_PI_MBED_Commit_StateMachine_Enter();
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-
-        case FLASH_JOURNAL_OPCODE_RESET:
-            DEBUG_PRINT("FLASH_JOURNAL_OPCODE_RESET\r\n");
-            break;
-
-        default:
-            break;
-    }
-
-    if (rc < 0)
-    {
-        switch (pal_pi_mbed_active_fsm)
-        {
-            case PAL_PI_MBED_FSM_SETUP:
-                PAL_PI_MBED_Setup_StateMachine_Advance(rc);
-                PAL_PI_MBED_Setup_StateMachine_Enter();
-                break;
-
-            case PAL_PI_MBED_FSM_READ:
-                PAL_PI_MBED_Read_StateMachine_Advance(rc);
-                PAL_PI_MBED_Read_StateMachine_Enter();
-                break;
-
-            case PAL_PI_MBED_FSM_WRITE:
-                PAL_PI_MBED_Write_StateMachine_Advance(rc);
-                PAL_PI_MBED_Write_StateMachine_Enter(0);
-                break;
-
-            case PAL_PI_MBED_FSM_COMMIT:
-                PAL_PI_MBED_Commit_StateMachine_Advance(rc);
-                PAL_PI_MBED_Commit_StateMachine_Enter();
-                break;
-
-            default:
-                break;
-        }
-    }
-}
-#endif
-
-
 void PAL_PI_MBED_journalMTD_callbackHandler(int32_t status, ARM_STORAGE_OPERATION operation)
 {
     DEBUG_PRINT("in journalMTD_callbackHandler for operation %d with status %d\r\n", operation, status);
@@ -478,13 +369,6 @@ void PAL_PI_MBED_volumeManager_initializeCallbackHandler(int32_t status)
             break;
     }
 }
-
-
-
-
-
-
-
 
 palStatus_t pal_plat_imageGetMaxNumberOfImages(uint8_t *imageNumber)
 {
@@ -533,7 +417,6 @@ int PAL_PI_MBED_GetAtiveHash_StateMachine()
             else if (rc > ARM_DRIVER_OK)
             {
                 /* sychronous completion */
-                flag_volumne_manager_intialized = 1;
                 pal_pi_mbed_getativehash_state = PAL_PI_GETATIVEHASH_VOLUME_MANAGER_INITIALIZED;
                 rc = PAL_PI_MBED_GetAtiveHash_StateMachine();
             }
@@ -834,27 +717,6 @@ palStatus_t pal_plat_imageReserveSpace(palImageId_t imageId, size_t imageSize)
 
 
 
-
-
-
-typedef enum {
-    PAL_PI_WRITE_UNINITIALIZED,
-    PAL_PI_WRITE_METADATA_LOGGED,
-    PAL_PI_WRITE_RESIDUAL_LOGGED,
-    PAL_PI_WRITE_DONE,
-    PAL_PI_WRITE_ERROR,
-} pal_pi_mbed_write_state_t;
-
-static pal_pi_mbed_write_state_t pal_pi_mbed_write_state;
-
-typedef struct {
-    uint32_t package_id;
-    const uint8_t* package_fragment;
-    int32_t fragment_size;
-    uint32_t fragment_offset;
-} pal_pi_mbed_write_context_t;
-
-static pal_pi_mbed_write_context_t pal_pi_mbed_write_context;
 
 int PAL_PI_MBED_Write_LogResidual()
 {
