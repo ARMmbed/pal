@@ -44,7 +44,7 @@ extern "C" {
 //! An array of PAL thread priorities. The size of the array is defined in the Service API (pal_rtos.h) by "PAL_MAX_NUMBER_OF_THREADS"
 extern uint8_t g_palThreadPriorities[PAL_MAX_NUMBER_OF_THREADS];
 
-#define PRIORYT_INDEX_OFFSET 3
+#define PRIORITY_INDEX_OFFSET 3
 #endif //PAL_UNIQUE_THREAD_PRIORITY
 
 /*! Initiate a system reboot.

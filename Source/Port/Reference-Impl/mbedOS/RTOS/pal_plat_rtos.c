@@ -125,7 +125,7 @@ typedef struct palMessageQ{
 inline static void setDefaultThreadValues(palThread_t* thread)
 {
 #if PAL_UNIQUE_THREAD_PRIORITY      
-    g_palThreadPriorities[thread->osThread.tpriority+PRIORYT_INDEX_OFFSET] = false;
+    g_palThreadPriorities[thread->osThread.tpriority+PRIORITY_INDEX_OFFSET] = false;
 #endif //PAL_UNIQUE_THREAD_PRIORITY     
     thread->threadStore = NULL;
     thread->threadFuncWrapper.realThreadArgs = NULL;
@@ -293,7 +293,7 @@ palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgumen
         g_palThreads[firstAvailableThreadIndex].osThread.stack_pointer = stackPtr;
         g_palThreads[firstAvailableThreadIndex].initialized = true;
 #if PAL_UNIQUE_THREAD_PRIORITY      
-        g_palThreadPriorities[priority+PRIORYT_INDEX_OFFSET] = true;
+        g_palThreadPriorities[priority+PRIORITY_INDEX_OFFSET] = true;
 #endif //PAL_UNIQUE_THREAD_PRIORITY     
 
         status = PAL_SUCCESS;

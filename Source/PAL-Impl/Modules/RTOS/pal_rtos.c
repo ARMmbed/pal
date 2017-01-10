@@ -90,7 +90,7 @@ palStatus_t pal_osThreadCreate(palThreadFuncPtr function, void* funcArgument, pa
         status = PAL_ERR_INVALID_ARGUMENT;
     }
 
-    if ((PAL_SUCCESS == status) && (g_palThreadPriorities[priority+PRIORYT_INDEX_OFFSET]))
+    if ((PAL_SUCCESS == status) && (g_palThreadPriorities[priority+PRIORITY_INDEX_OFFSET]))
     {
         *threadID = NULLPTR;
         status = PAL_ERR_RTOS_PRIORITY;
