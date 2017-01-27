@@ -12,4 +12,4 @@ See the [Files](files.html) section to find documentation about a specific API.
 ## Further documentation
 
 - [A brief PAL porting guide](https://github.com/ARMmbed/pal/blob/master/Source/Port/Readme.md).
-- <a href="https://github.com/ARMmbed/pal/blob/master/Source/Port/Readme.md">The complete PAL porting guide</a>.
+- <a href="https://github.com/ARMmbed/pal/blob/master/Docs/PAL_Porting_Guide.pdf">The complete PAL porting guide</a>.
