@@ -18,10 +18,10 @@
 ###############################################################
 # make all target platforms
 #
-# 
+#
 ###############################################################
 # Make platform detection and definitions
-include make_platform.mk 
+include make_platform.mk
 
 
 .PHONY: all clean check
@@ -29,10 +29,9 @@ include make_platform.mk
 #====================================================
 # Platform morpheus
 TARGET_PLATFORM:=mbedOS
-TARGET_CONFIGURATION_DEFINES:=  HAS_UPDATE HAS_RTOS HAS_SOCKET 
+TARGET_CONFIGURATION_DEFINES:=  HAS_UPDATE HAS_RTOS HAS_SOCKET HAS_CFSTORE
 all: mbedOS_all
 check: mbedOS_check
-clean: mbedOS_clean 
+clean: mbedOS_clean
 include all_tests.mk
 #====================================================
-
