@@ -28,7 +28,7 @@ extern "C" {
 #include "pal_configuration.h"
 #include "pal_errors.h"
 #include "pal_types.h"
-
+#include "pal_cfstore.h"
 //includes for modules headers.
 #include "pal_rtos.h"
 //#include "pal_socket.h"
