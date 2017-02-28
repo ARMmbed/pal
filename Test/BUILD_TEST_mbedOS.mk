@@ -99,7 +99,7 @@ endif
 ### UNITY FILES ###
 UNITY_ROOT=$(PAL_ROOT)/Test/Unity
 UNITY_INCLUDE_PATHS=$(UNITY_ROOT)/src $(UNITY_ROOT)/extras/fixture/src
-INCLUDE_PATHS = $(UNITY_INCLUDE_PATHS) $(PAL_ROOT)/Source/PAL-Impl/Services-API $(PAL_ROOT)/Source/Port/Platform-API  $(PAL_ROOT)/Test/Common $(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/CFStore
+INCLUDE_PATHS = $(UNITY_INCLUDE_PATHS) $(PAL_ROOT)/Source/PAL-Impl/Services-API $(PAL_ROOT)/Source/Port/Platform-API  $(PAL_ROOT)/Test/Common
 # mbed compile command searches include folders for c files, so it will find unity c files
 # If we were to specify them here, they would be muliply defined.
 UNITY_OBJECTS =

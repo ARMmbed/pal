@@ -49,3 +49,4 @@ Workspace/VS2013/PAL/PAL.vcxproj.filters
 Workspace/VS2013/PAL/PAL.vcxproj
 Workspace/VS2013/PAL/PAL.sln
 .vscode/*
+.idea/*
