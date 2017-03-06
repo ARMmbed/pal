@@ -16,6 +16,16 @@
 
 #include "mbed.h"
 #include "rtos.h"
+#include <flash-journal-strategy-sequential/flash_journal_strategy_sequential.h>
+#include <storage-volume-manager/storage_volume_manager.h>
+#include "flash-journal-strategy-sequential/flash_journal_crc.h"
+
+
+/*MBED_LIBRARY_VERSION 129 stands for mbed-os 5.2.2*/
+#if (MBED_LIBRARY_VERSION < 129)
+    StorageVolumeManager volumeManager;
+#endif
+
 
 DigitalOut led1(LED1);
 InterruptIn sw2(SW2);
