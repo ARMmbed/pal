@@ -61,7 +61,7 @@ for device in deviceList:
 			# Capture test results from the serial port
 			if mbed.run_and_capture_till_timeout(intermediateResultsFile,baud=9600,read_timeout=10,endOfData="***END OF TESTS**"):
 				# Success. Convert results to Junit format and write to xml file.
-				unity_to_junit.unity_to_junit("mbedos_" + os.path.basename(noSuffix), intermediateResultsFile, noSuffix+".xml", resultFile)
+				#unity_to_junit.unity_to_junit("mbedos_" + os.path.basename(noSuffix), intermediateResultsFile, noSuffix+".xml", resultFile)
 				# Output intermediate results to the console.
 				with open(intermediateResultsFile, 'r') as fin:
 					print fin.read()

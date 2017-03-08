@@ -66,12 +66,10 @@ $(PROJECT)_ADDITIONAL_SOURCES:= $(ALL_SRC) \
 								$(PAL_ROOT)/Test/$(TYPE)/pal_rtos_test_runner.c \
 								$(PAL_ROOT)/Test/$(TYPE)/pal_cfstore_test.c \
 								$(PAL_ROOT)/Test/$(TYPE)/pal_cfstore_test_runner.c \
-								$(PAL_ROOT)/Test/$(TYPE)/pal_update_test.c \
-								$(PAL_ROOT)/Test/$(TYPE)/pal_update_test_runner.c \
 
 
 include BUILD_TEST_$(TARGET_PLATFORM).mk
-else
+endif
 #========================================================================
 #=======================================================================
 ifeq ($(findstring HAS_SOCKET,$(TARGET_CONFIGURATION_DEFINES)),HAS_SOCKET)
@@ -118,4 +116,4 @@ include BUILD_TEST_$(TARGET_PLATFORM).mk
 endif
 #========================================================================
 
-endif
+
