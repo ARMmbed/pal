@@ -39,8 +39,8 @@
 #define PAL_NUM_OF_THREAD_INSTANCES 1
 #define PAL_MAX_SEMAPHORE_COUNT 1024
 
-PAL_PRIVATE uint8_t g_randomBuffer[PAL_INITIAL_RANDOM_SIZE] = {0};
-PAL_PRIVATE bool g_randInitiated = false;
+uint8_t g_randomBuffer[PAL_INITIAL_RANDOM_SIZE] = {0};
+static bool g_randInitiated = false;
 
 typedef struct palThreadFuncWrapper{
     palTimerFuncPtr         realThreadFunc;
@@ -98,7 +98,7 @@ typedef struct palMessageQ{
 }palMessageQ_t;
 
 
-inline PAL_PRIVATE void setDefaultThreadValues(palThread_t* thread)
+inline static void setDefaultThreadValues(palThread_t* thread)
 {
 #if PAL_UNIQUE_THREAD_PRIORITY
     g_palThreadPriorities[thread->osThread.priority+PRIORITY_INDEX_OFFSET] = false;
@@ -132,7 +132,7 @@ inline PAL_PRIVATE void setDefaultThreadValues(palThread_t* thread)
 * @param[in] dbPointer: data base pointer.
 * @param[in] index: the index in the data base to be cleaned.
 */
-PAL_PRIVATE void threadCleanUp(void* dbPointer, uint32_t index)
+static void threadCleanUp(void* dbPointer, uint32_t index)
 {
     palThread_t* threadsDB = (palThread_t*)dbPointer;
 
@@ -149,7 +149,7 @@ PAL_PRIVATE void threadCleanUp(void* dbPointer, uint32_t index)
 *
 *   @param[in] arg: data structure which contains the real data about the thread.
 */
-PAL_PRIVATE void threadFunctionWrapper(void const* arg)
+static void threadFunctionWrapper(void const* arg)
 {
     palThreadFuncWrapper_t* threadWrapper = (palThreadFuncWrapper_t*)arg;
 

@@ -118,9 +118,10 @@ palThreadID_t pal_osThreadGetId(void)
     return result;
 }
 
-void*  pal_osThreadGetLocalStore(void)
+palThreadLocalStore_t*  pal_osThreadGetLocalStore(void)
 {
-    void* result;
+    palThreadLocalStore_t* result = NULL;
+
     result = pal_plat_osThreadGetLocalStore();
     return result;
 }
