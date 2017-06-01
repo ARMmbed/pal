@@ -27,6 +27,8 @@ extern "C" {
 
 #define PAL_SUCCESS 0
 #define NULLPTR 0
+#define PAL_INVALID_THREAD     0xFFFFFFFF
+
 
 typedef int32_t palStatus_t;
 
