@@ -62,6 +62,8 @@ typedef enum {
     PAL_ERR_RTOS_PRIORITY =                                 PAL_ERR_RTOS_ERROR_BASE + 0x84,/*! PAL mapping of CMSIS error osErrorPriority : system cannot determine priority or thread has illegal priority.*/
     PAL_ERR_RTOS_NO_MEMORY =                                PAL_ERR_RTOS_ERROR_BASE + 0x85,/*! PAL mapping of CMSIS error osErrorNoMemory : system is out of memory: it was impossible to allocate or reserve memory for the operation.*/
     PAL_ERR_RTOS_VALUE =                                    PAL_ERR_RTOS_ERROR_BASE + 0x86,/*! PAL mapping of CMSIS error osErrorValue :  value of a parameter is out of range.*/
+    PAL_ERR_RTOS_TRNG_FAILED =                              PAL_ERR_RTOS_ERROR_BASE + 0x87, /*! True Random Number Failed */
+    PAL_ERR_RTOS_TASK =                                     PAL_ERR_RTOS_ERROR_BASE + 0x88,/*! PAL mapping - Cannot kill own task. */
     PAL_ERR_RTOS_OS =                                       PAL_ERR_RTOS_ERROR_BASE + 0xFF,/*! PAL mapping of CMSIS error osErrorOS : unspecified RTOS error: run-time error but no other error message fits.*/
     // network errors
     PAL_ERR_SOCKET_ERROR_BASE =                             (-1 << PAL_ERR_MODULE_NET),             /*! generic socket error */

@@ -27,6 +27,8 @@ extern "C" {
 #include "pal_macros.h"
 #include "pal_types.h"
 
+#define PRIORITY_INDEX_OFFSET 3
+
 //! Wait forever define. used for Semaphores and Mutexes
 #define PAL_RTOS_WAIT_FOREVER PAL_MAX_UINT32
 
@@ -143,7 +145,7 @@ palThreadID_t pal_osThreadGetId(void);
 
 /*! Get the storage of current thread
 * \return the storage of the current thread */
-void* pal_osThreadGetLocalStore(void);
+palThreadLocalStore_t* pal_osThreadGetLocalStore(void);
 
 /*! Wait for a specified time period in milliseconds.
 *

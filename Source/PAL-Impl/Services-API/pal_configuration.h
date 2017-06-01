@@ -30,6 +30,9 @@ extern "C" {
 #define PAL_RTOS_64BIT_TICK_SUPPORTED       false /* add pal support for asynchronous sockets */
 #define PAL_UNIQUE_THREAD_PRIORITY          (!defined(PAL_IGNORE_UNIQUE_THREAD_PRIORITY))/* if defined code skips the uniqueness priority check */
 
+//! This define is used to determine the size of the initial random buffer (in bytes) held by PAL for random the algorithm.
+#define PAL_INITIAL_RANDOM_SIZE 48
+
 //! number of valid priorities limits the number of threads- if priorities are added this value should be increased
 #define PAL_MAX_NUMBER_OF_THREADS 7 
 

@@ -60,7 +60,7 @@ palStatus_t pal_plat_RTOSInitialize(void* opaqueContext);
 
 /*! De-Initialize thread objects.
 */
-void pal_plat_RTOSDestroy(void);
+palStatus_t pal_plat_RTOSDestroy(void);
 
 /*! Get the RTOS kernel system timer counter.
 *
@@ -69,7 +69,7 @@ void pal_plat_RTOSDestroy(void);
 * \note The required tick counter is the OS (platform) kernel system tick counter.
 * \note This counter wraps around very often (for example, once every 42 sec for 100Mhz).
 */
-uint32_t pal_plat_osKernelSysTick();
+uint64_t pal_plat_osKernelSysTick(void);
 
 /*! Get the RTOS kernel system timer counter.
 *
@@ -132,7 +132,7 @@ palThreadID_t pal_plat_osThreadGetId();
 /*! Get the storage of the current thread.
 * \return The storage of the current thread.
 */
-void* pal_plat_osThreadGetLocalStore();
+palThreadLocalStore_t* pal_plat_osThreadGetLocalStore();
 
 /*! Wait for a specified period of time in milliseconds.
 *
