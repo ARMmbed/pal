@@ -26,6 +26,8 @@ extern "C" {
 // PAL success value
 #define PAL_SUCCESS 0
 
+#define PAL_PRIVATE static
+
 // maximum integer types
 #define PAL_MAX_UINT8       0xFFU
 #define PAL_MAX_UINT16      0xFFFFU
