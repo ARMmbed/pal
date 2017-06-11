@@ -36,6 +36,7 @@
 
 #define PAL_NUM_OF_THREAD_INSTANCES 1
 #define PAL_MAX_SEMAPHORE_COUNT 1024
+#define PAL_TICK_TO_MILLI_FACTOR 1000
 
 uint8_t g_randomBuffer[PAL_INITIAL_RANDOM_SIZE] = {0};
 static bool g_randInitiated = false;
@@ -286,7 +287,7 @@ uint64_t pal_plat_osKernelSysTickFrequency()
 
 uint64_t pal_plat_osKernelSysMilliSecTick(uint64_t sysTicks)
 {
-    uint64_t millisec = (PAL_TICK_TO_MILLI_FACTOR * sysTicks)/osKernelSysTickFrequency;
+    uint64_t millisec = (PAL_TICK_TO_MILLI_FACTOR * sysTicks)/pal_plat_osKernelSysTickFrequency();
     return millisec;
 }
 
