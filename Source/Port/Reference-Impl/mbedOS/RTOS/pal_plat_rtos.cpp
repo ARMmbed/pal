@@ -284,6 +284,12 @@ uint64_t pal_plat_osKernelSysTickFrequency()
     return osKernelGetTickFreq();
 }
 
+uint64_t pal_plat_osKernelSysMilliSecTick(uint64_t sysTicks)
+{
+    uint64_t millisec = (PAL_TICK_TO_MILLI_FACTOR * sysTicks)/osKernelSysTickFrequency;
+    return millisec;
+}
+
 palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgument, palThreadPriority_t priority, uint32_t stackSize, uint32_t* stackPtr, palThreadLocalStore_t* store, palThreadID_t* threadID)
 {
     palStatus_t status = PAL_SUCCESS;
