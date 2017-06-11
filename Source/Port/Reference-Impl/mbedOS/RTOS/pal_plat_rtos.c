@@ -21,8 +21,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-#include "cmsis_os2.h" // Revision:    V2.1
-#include "mbed_rtos_storage.h"
+#include "cmsis_os.h" // Revision:    V1.02
 // These includes try to find declaration of NVIC_SystemReset.
 // Note: At least on A9 the cmsis_nvic.h can not be included without previous
 // board specific includes, so it has to be included only when known to work.
@@ -49,14 +48,27 @@ void NVIC_SystemReset(void);
 #define PAL_RTOS_TRANSLATE_CMSIS_ERROR_CODE(cmsisCode)\
     ((int32_t)(cmsisCode + PAL_ERR_RTOS_ERROR_BASE))
 
+//! the size of the memory to allocate was taken from CMSIS header (cmsis_os.h)
+#define PAL_RTOS_MEMORY_POOL_SIZE(blockSize, blockCount)\
+    (sizeof(uint32_t)*(3+((blockSize+3)/4)*(blockCount)))
+
+//! the size of the memory to allocate was taken from CMSIS header (cmsis_os.h)
+#define PAL_RTOS_MESSAGE_Q_SIZE(messageQSize)\
+    (sizeof(uint32_t)*(4 + messageQSize))
+
+
 #ifdef PAL_RTOS_WAIT_FOREVER
 #undef PAL_RTOS_WAIT_FOREVER
 #define PAL_RTOS_WAIT_FOREVER osWaitForever
 #endif //PAL_RTOS_WAIT_FOREVER
 
+//! This definitions should be under #ifdef for different CORTEX-X processors.
+//! The current vaules are for cortex-M these are the sizes of the internal data array in definitions arrays
+#define PAL_TIMER_DATA_SIZE 6
+#define PAL_MUTEX_DATA_SIZE 4
+#define PAL_SEMAPHORE_DATA_SIZE 2
 #define PAL_NUM_OF_THREAD_INSTANCES 1
 #define PAL_TICK_TO_MILLI_FACTOR 1000
-#define PAL_MAX_SEMAPHORE_COUNT 1024
 
 typedef struct palThreadFuncWrapper{
     palTimerFuncPtr         realThreadFunc;
@@ -70,8 +82,7 @@ typedef struct palThread{
     bool                    initialized;
     palThreadLocalStore_t*  threadStore; //! please see pal_rtos.h for documentation
     palThreadFuncWrapper_t  threadFuncWrapper;
-    osThreadAttr_t          osThread;
-    os_thread_t             osThreadStorage;
+    osThreadDef_t           osThread;
 } palThread_t;
 
 static palThread_t g_palThreads[PAL_MAX_NUMBER_OF_THREADS] = {0};
@@ -79,59 +90,52 @@ static palThread_t g_palThreads[PAL_MAX_NUMBER_OF_THREADS] = {0};
 //! Timer structure
 typedef struct palTimer{
     palTimerID_t            timerID;
-    osTimerAttr_t           osTimer;
-    os_timer_t              osTimerStorage;
+    uint32_t                internalTimerData[PAL_TIMER_DATA_SIZE];  ///< pointer to internal data
+    osTimerDef_t            osTimer;
 } palTimer_t;
 
 //! Mutex structure
 typedef struct palMutex{
     palMutexID_t            mutexID;
-    osMutexAttr_t           osMutex;
-    os_mutex_t              osMutexStorage;
+    uint32_t                internalMutexData[PAL_MUTEX_DATA_SIZE];
+    osMutexDef_t            osMutex;
 }palMutex_t;
 
 //! Semaphore structure
 typedef struct palSemaphore{
     palSemaphoreID_t        semaphoreID;
-    osSemaphoreAttr_t       osSemaphore;
-    os_semaphore_t          osSemaphoreStorage;
+    uint32_t                internalSemaphoreData[PAL_SEMAPHORE_DATA_SIZE];
+    osSemaphoreDef_t        osSemaphore;
 }palSemaphore_t;
 
 
 //! Memoey Pool structure
 typedef struct palMemPool{
     palMemoryPoolID_t       memoryPoolID;
-    osMemoryPoolAttr_t      osPool;
-    os_memory_pool_t        osPoolStorage;
-    uint32_t                blockSize;
+    osPoolDef_t             osPool;
 }palMemoryPool_t;
 
 //! Message Queue structure
 typedef struct palMessageQ{
     palMessageQID_t         messageQID;
-    osMessageQueueAttr_t    osMessageQ;
-    os_message_queue_t      osMessageQStorage;
+    osMessageQDef_t         osMessageQ;
 }palMessageQ_t;
 
 
 inline static void setDefaultThreadValues(palThread_t* thread)
 {
 #if PAL_UNIQUE_THREAD_PRIORITY      
-    g_palThreadPriorities[thread->osThread.priority+PRIORITY_INDEX_OFFSET] = false;
+    g_palThreadPriorities[thread->osThread.tpriority+PRIORITY_INDEX_OFFSET] = false;
 #endif //PAL_UNIQUE_THREAD_PRIORITY     
     thread->threadStore = NULL;
     thread->threadFuncWrapper.realThreadArgs = NULL;
     thread->threadFuncWrapper.realThreadFunc = NULL;
     thread->threadFuncWrapper.threadIndex = 0;
-    thread->osThread.name = NULL;
-    thread->osThread.attr_bits = 0;
-    thread->osThread.cb_mem = NULL;
-    thread->osThread.cb_size = 0;
-    thread->osThread.stack_size = 0;
-    thread->osThread.stack_mem = NULL;
-    thread->osThread.priority = (osPriority_t)PAL_osPriorityError;
-    thread->osThread.tz_module = 0;
-
+    thread->osThread.pthread = NULL;
+    thread->osThread.tpriority = PAL_osPriorityError;
+    thread->osThread.instances = PAL_NUM_OF_THREAD_INSTANCES;
+    thread->osThread.stacksize = 0;
+    thread->osThread.stack_pointer = NULL;
     //! This line should be last thing to be done in this function.
     //! in order to prevent double accessing the same index between
     //! this function and the threadCreate function.
@@ -205,7 +209,7 @@ void pal_plat_RTOSDestroy(void)
     {
         if (true == g_palThreads[i].initialized)
         {
-            osThreadTerminate((osThreadId_t)g_palThreads[i].threadID);
+            osThreadTerminate((osThreadId)g_palThreads[i].threadID);
             threadCleanUp(g_palThreads, i);
         }
     }
@@ -214,8 +218,8 @@ void pal_plat_RTOSDestroy(void)
 palStatus_t pal_plat_osDelay(uint32_t milliseconds)
 {
     palStatus_t status;
-    osStatus_t platStatus = osDelay(milliseconds);
-    if (osOK == platStatus)
+    osStatus platStatus = osDelay(milliseconds);
+    if (osEventTimeout == platStatus)
     {
         status = PAL_SUCCESS;
     }
@@ -229,26 +233,26 @@ palStatus_t pal_plat_osDelay(uint32_t milliseconds)
 uint32_t pal_plat_osKernelSysTick()
 {
     uint32_t result;
-    result = osKernelGetTickCount();
+    result = osKernelSysTick();
     return result;
 }
 
 uint64_t pal_plat_osKernelSysTickMicroSec(uint64_t microseconds)
 {
     uint64_t result;
-    result = (((uint64_t)microseconds * (osKernelGetTickFreq())) / 1000000);
+    result = osKernelSysTickMicroSec(microseconds);
     return result;
 }
 
 uint64_t pal_plat_osKernelSysMilliSecTick(uint64_t sysTicks)
 {
-    uint64_t millisec = (PAL_TICK_TO_MILLI_FACTOR * sysTicks)/osKernelGetTickFreq();
+    uint64_t millisec = (PAL_TICK_TO_MILLI_FACTOR * sysTicks)/osKernelSysTickFrequency;
     return millisec;
 }
 
 uint64_t pal_plat_osKernelSysTickFrequency()
 {
-    return osKernelGetTickFreq();
+    return osKernelSysTickFrequency;
 }
 
 palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgument, palThreadPriority_t priority, uint32_t stackSize, uint32_t* stackPtr, palThreadLocalStore_t* store, palThreadID_t* threadID)
@@ -282,12 +286,11 @@ palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgumen
         g_palThreads[firstAvailableThreadIndex].threadFuncWrapper.realThreadArgs = funcArgument;
         g_palThreads[firstAvailableThreadIndex].threadFuncWrapper.realThreadFunc = function;
         g_palThreads[firstAvailableThreadIndex].threadFuncWrapper.threadIndex = firstAvailableThreadIndex;
-        g_palThreads[firstAvailableThreadIndex].osThread.priority = (osPriority_t)priority;
-        g_palThreads[firstAvailableThreadIndex].osThread.stack_size = stackSize;
-        g_palThreads[firstAvailableThreadIndex].osThread.stack_mem = stackPtr;
-        g_palThreads[firstAvailableThreadIndex].osThread.cb_mem = &(g_palThreads[firstAvailableThreadIndex].osThreadStorage);
-        g_palThreads[firstAvailableThreadIndex].osThread.cb_size = sizeof(g_palThreads[firstAvailableThreadIndex].osThreadStorage);
-        memset(&(g_palThreads[firstAvailableThreadIndex].osThreadStorage), 0, sizeof(g_palThreads[firstAvailableThreadIndex].osThreadStorage));
+        g_palThreads[firstAvailableThreadIndex].osThread.pthread = threadFunctionWrapper;
+        g_palThreads[firstAvailableThreadIndex].osThread.tpriority = priority;
+        g_palThreads[firstAvailableThreadIndex].osThread.instances = PAL_NUM_OF_THREAD_INSTANCES;
+        g_palThreads[firstAvailableThreadIndex].osThread.stacksize = stackSize;
+        g_palThreads[firstAvailableThreadIndex].osThread.stack_pointer = stackPtr;
         g_palThreads[firstAvailableThreadIndex].initialized = true;
 #if PAL_UNIQUE_THREAD_PRIORITY      
         g_palThreadPriorities[priority+PRIORITY_INDEX_OFFSET] = true;
@@ -295,7 +298,7 @@ palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgumen
 
         status = PAL_SUCCESS;
     
-        g_palThreads[firstAvailableThreadIndex].threadID = (uintptr_t)osThreadNew(function, funcArgument, &g_palThreads[firstAvailableThreadIndex].osThread);
+        g_palThreads[firstAvailableThreadIndex].threadID = (uintptr_t)osThreadCreate(&g_palThreads[firstAvailableThreadIndex].osThread, &g_palThreads[firstAvailableThreadIndex].threadFuncWrapper);
         *threadID = g_palThreads[firstAvailableThreadIndex].threadID;
         
         if(NULLPTR == *threadID)
@@ -319,7 +322,7 @@ palThreadID_t pal_plat_osThreadGetId()
 palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
 
     if (NULL == threadID || NULLPTR == *threadID)
     {
@@ -330,7 +333,7 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
     {
         if (g_palThreads[i].initialized && (*threadID == g_palThreads[i].threadID))
         {
-            platStatus = osThreadTerminate((osThreadId_t)(*threadID));
+            platStatus = osThreadTerminate((osThreadId)(*threadID));
             if (osOK == platStatus)
             {
                 threadCleanUp(g_palThreads, i);
@@ -386,13 +389,11 @@ palStatus_t pal_plat_osTimerCreate(palTimerFuncPtr function, void* funcArgument,
 
     if (PAL_SUCCESS == status)
     {
-        timer->osTimer.name = NULL;
-        timer->osTimer.attr_bits = 0;
-        timer->osTimer.cb_mem = &(timer->osTimerStorage);
-        timer->osTimer.cb_size = sizeof(timer->osTimerStorage);
-        memset(&(timer->osTimerStorage), 0, sizeof(timer->osTimerStorage));
-
-        timer->timerID = (uintptr_t)osTimerNew(function, (osTimerType_t)timerType, funcArgument, &timer->osTimer);
+        timer->osTimer.ptimer = function;
+        timer->osTimer.timer = timer->internalTimerData;
+        memset(timer->osTimer.timer, 0, sizeof(uint32_t)*PAL_TIMER_DATA_SIZE);
+    
+        timer->timerID = (uintptr_t)osTimerCreate(&timer->osTimer, timerType, funcArgument);
         if (NULLPTR == timer->timerID)
         {
             free(timer);
@@ -410,7 +411,7 @@ palStatus_t pal_plat_osTimerCreate(palTimerFuncPtr function, void* funcArgument,
 palStatus_t pal_plat_osTimerStart(palTimerID_t timerID, uint32_t millisec)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palTimer_t* timer = NULL;
     
     if (NULLPTR == timerID)
@@ -419,8 +420,8 @@ palStatus_t pal_plat_osTimerStart(palTimerID_t timerID, uint32_t millisec)
     }
 
     timer = (palTimer_t*)timerID;
-    platStatus = osTimerStart((osTimerId_t)timer->timerID, millisec);
-    if (osOK == (osStatus_t)platStatus)
+    platStatus = osTimerStart((osTimerId)timer->timerID, millisec);
+    if (osOK == (osStatus)platStatus)
     {
         status = PAL_SUCCESS;
     }
@@ -435,7 +436,7 @@ palStatus_t pal_plat_osTimerStart(palTimerID_t timerID, uint32_t millisec)
 palStatus_t pal_plat_osTimerStop(palTimerID_t timerID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palTimer_t* timer = NULL;
     
     if(NULLPTR == timerID)
@@ -444,7 +445,7 @@ palStatus_t pal_plat_osTimerStop(palTimerID_t timerID)
     }
 
     timer = (palTimer_t*)timerID;
-    platStatus = osTimerStop((osTimerId_t)timer->timerID);
+    platStatus = osTimerStop((osTimerId)timer->timerID);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
@@ -460,7 +461,7 @@ palStatus_t pal_plat_osTimerStop(palTimerID_t timerID)
 palStatus_t pal_plat_osTimerDelete(palTimerID_t* timerID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palTimer_t* timer = NULL;
     
     if(NULL == timerID || NULLPTR == *timerID)
@@ -469,7 +470,7 @@ palStatus_t pal_plat_osTimerDelete(palTimerID_t* timerID)
     }
 
     timer = (palTimer_t*)*timerID;
-    platStatus = osTimerDelete((osTimerId_t)timer->timerID);
+    platStatus = osTimerDelete((osTimerId)timer->timerID);
     if (osOK == platStatus)
     {
         free(timer);
@@ -502,13 +503,10 @@ palStatus_t pal_plat_osMutexCreate(palMutexID_t* mutexID)
 
     if (PAL_SUCCESS == status)
     {
-        mutex->osMutex.name = NULL;
-        mutex->osMutex.attr_bits = 0;
-        mutex->osMutex.cb_mem = &(mutex->osMutexStorage);
-        mutex->osMutex.cb_size = sizeof(mutex->osMutexStorage);
-        memset(&(mutex->osMutexStorage), 0, sizeof(mutex->osMutexStorage));
-
-        mutex->mutexID = (uintptr_t)osMutexNew(&mutex->osMutex);
+        mutex->osMutex.mutex = mutex->internalMutexData;
+        memset(mutex->osMutex.mutex, 0, sizeof(uint32_t)*PAL_MUTEX_DATA_SIZE);
+    
+        mutex->mutexID = (uintptr_t)osMutexCreate(&mutex->osMutex);
         if (NULLPTR == mutex->mutexID)
         {
             free(mutex);
@@ -527,7 +525,7 @@ palStatus_t pal_plat_osMutexCreate(palMutexID_t* mutexID)
 palStatus_t pal_plat_osMutexWait(palMutexID_t mutexID, uint32_t millisec)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palMutex_t* mutex = NULL;
     
     if(NULLPTR == mutexID)
@@ -536,7 +534,7 @@ palStatus_t pal_plat_osMutexWait(palMutexID_t mutexID, uint32_t millisec)
     }
 
     mutex = (palMutex_t*)mutexID;
-    platStatus = osMutexAcquire((osMutexId_t)mutex->mutexID, millisec);
+    platStatus = osMutexWait((osMutexId)mutex->mutexID, millisec);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
@@ -553,7 +551,7 @@ palStatus_t pal_plat_osMutexWait(palMutexID_t mutexID, uint32_t millisec)
 palStatus_t pal_plat_osMutexRelease(palMutexID_t mutexID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palMutex_t* mutex = NULL;
     
     if(NULLPTR == mutexID)
@@ -562,7 +560,7 @@ palStatus_t pal_plat_osMutexRelease(palMutexID_t mutexID)
     }
 
     mutex = (palMutex_t*)mutexID;
-    platStatus = osMutexRelease((osMutexId_t)mutex->mutexID);
+    platStatus = osMutexRelease((osMutexId)mutex->mutexID);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
@@ -578,7 +576,7 @@ palStatus_t pal_plat_osMutexRelease(palMutexID_t mutexID)
 palStatus_t pal_plat_osMutexDelete(palMutexID_t* mutexID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palMutex_t* mutex = NULL;
     
     if(NULL == mutexID || NULLPTR == *mutexID)
@@ -587,7 +585,7 @@ palStatus_t pal_plat_osMutexDelete(palMutexID_t* mutexID)
     }
 
     mutex = (palMutex_t*)*mutexID;
-    platStatus = osMutexDelete((osMutexId_t)mutex->mutexID);
+    platStatus = osMutexDelete((osMutexId)mutex->mutexID);
     if (osOK == platStatus)
     {
         free(mutex);
@@ -619,11 +617,10 @@ palStatus_t pal_plat_osSemaphoreCreate(uint32_t count, palSemaphoreID_t* semapho
 
     if(PAL_SUCCESS == status)
     {
-        semaphore->osSemaphore.cb_mem = &(semaphore->osSemaphoreStorage);
-        semaphore->osSemaphore.cb_size = sizeof(semaphore->osSemaphoreStorage);
-        memset(&(semaphore->osSemaphoreStorage), 0, sizeof(semaphore->osSemaphoreStorage));
-
-        semaphore->semaphoreID = (uintptr_t)osSemaphoreNew(PAL_MAX_SEMAPHORE_COUNT, count, &semaphore->osSemaphore);
+        semaphore->osSemaphore.semaphore = semaphore->internalSemaphoreData;
+        memset(semaphore->osSemaphore.semaphore, 0, sizeof(uint32_t)*PAL_SEMAPHORE_DATA_SIZE);
+    
+        semaphore->semaphoreID = (uintptr_t)osSemaphoreCreate(&semaphore->osSemaphore, count);
         if (NULLPTR == semaphore->semaphoreID)
         {
             free(semaphore);
@@ -642,32 +639,29 @@ palStatus_t pal_plat_osSemaphoreWait(palSemaphoreID_t semaphoreID, uint32_t mill
 {
     palStatus_t status = PAL_SUCCESS;
     palSemaphore_t* semaphore = NULL;
-    osStatus_t platStatus;
     if(NULLPTR == semaphoreID || NULL == countersAvailable)
     {
         return PAL_ERR_INVALID_ARGUMENT;
     }   
 
     semaphore = (palSemaphore_t*)semaphoreID;
-    platStatus = osSemaphoreAcquire((osSemaphoreId_t)semaphore->semaphoreID, millisec);
-    if (osErrorTimeout == platStatus)
+    *countersAvailable = osSemaphoreWait((osSemaphoreId)semaphore->semaphoreID, millisec);
+    if (0 == *countersAvailable)
     {
         status = PAL_ERR_RTOS_TIMEOUT;
     }
-    else if (osOK != status)
+    else if (*countersAvailable < 0)
     {
+        *countersAvailable = 0;
         status = PAL_ERR_RTOS_PARAMETER;
     }
-
-    *countersAvailable = osSemaphoreGetCount((osSemaphoreId_t)semaphore->semaphoreID);
-
     return status;
 }
 
 palStatus_t pal_plat_osSemaphoreRelease(palSemaphoreID_t semaphoreID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palSemaphore_t* semaphore = NULL;
     
     if(NULLPTR == semaphoreID)
@@ -676,7 +670,7 @@ palStatus_t pal_plat_osSemaphoreRelease(palSemaphoreID_t semaphoreID)
     }
 
     semaphore = (palSemaphore_t*)semaphoreID;
-    platStatus = osSemaphoreRelease((osSemaphoreId_t)semaphore->semaphoreID);
+    platStatus = osSemaphoreRelease((osSemaphoreId)semaphore->semaphoreID);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
@@ -692,7 +686,7 @@ palStatus_t pal_plat_osSemaphoreRelease(palSemaphoreID_t semaphoreID)
 palStatus_t pal_plat_osSemaphoreDelete(palSemaphoreID_t* semaphoreID)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palSemaphore_t* semaphore = NULL;
     
     if(NULL == semaphoreID || NULLPTR == *semaphoreID)
@@ -701,7 +695,7 @@ palStatus_t pal_plat_osSemaphoreDelete(palSemaphoreID_t* semaphoreID)
     }
 
     semaphore = (palSemaphore_t*)*semaphoreID;
-    platStatus = osSemaphoreDelete((osSemaphoreId_t)semaphore->semaphoreID);
+    platStatus = osSemaphoreDelete((osSemaphoreId)semaphore->semaphoreID);
     if (osOK == platStatus)
     {
         free(semaphore);
@@ -734,15 +728,10 @@ palStatus_t pal_plat_osPoolCreate(uint32_t blockSize, uint32_t blockCount, palMe
 
     if(PAL_SUCCESS == status)
     {
-        memoryPool->blockSize = blockSize;
-        memoryPool->osPool.name = NULL;
-        memoryPool->osPool.attr_bits = 0;
-        memoryPool->osPool.cb_mem = &(memoryPool->osPoolStorage);
-        memoryPool->osPool.cb_size = sizeof(memoryPool->osPoolStorage);
-        memset(&(memoryPool->osPoolStorage), 0, sizeof(memoryPool->osPoolStorage));
-        memoryPool->osPool.mp_size = blockSize * blockCount;
-        memoryPool->osPool.mp_mem = (uint32_t*)malloc(memoryPool->osPool.mp_size);
-        if (NULL == memoryPool->osPool.mp_mem)
+        //! allocate the actual memory allocation for the memory pool blocks, the size of the memory 
+        //! to allocate was taken from CMSIS header (cmsis_os.h)
+        memoryPool->osPool.pool = (uint32_t*)malloc(PAL_RTOS_MEMORY_POOL_SIZE(blockSize, blockCount));
+        if (NULL == memoryPool->osPool.pool)
         {
             free(memoryPool);
             *memoryPoolID = NULLPTR;
@@ -750,12 +739,14 @@ palStatus_t pal_plat_osPoolCreate(uint32_t blockSize, uint32_t blockCount, palMe
         }
         else
         {
-            memset(memoryPool->osPool.mp_mem, 0, memoryPool->osPool.mp_size);
-
-            memoryPool->memoryPoolID = (uintptr_t)osMemoryPoolNew(blockCount, blockSize, &memoryPool->osPool);
+            memset(memoryPool->osPool.pool, 0, PAL_RTOS_MEMORY_POOL_SIZE(blockSize, blockCount));
+            memoryPool->osPool.pool_sz = blockCount;    ///< number of items (elements) in the pool
+            memoryPool->osPool.item_sz = blockSize;     ///< size of an item
+        
+            memoryPool->memoryPoolID = (uintptr_t)osPoolCreate(&memoryPool->osPool);
             if (NULLPTR == memoryPool->memoryPoolID)
             {
-                free(memoryPool->osPool.mp_mem);
+                free(memoryPool->osPool.pool);
                 free(memoryPool);
                 memoryPool = NULL;
                 status = PAL_ERR_GENERIC_FAILURE;
@@ -780,7 +771,7 @@ void* pal_plat_osPoolAlloc(palMemoryPoolID_t memoryPoolID)
     }
 
     memoryPool = (palMemoryPool_t*)memoryPoolID;
-    result = osMemoryPoolAlloc((osMemoryPoolId_t)memoryPool->memoryPoolID, 0);
+    result = osPoolAlloc((osPoolId)memoryPool->memoryPoolID);
 
     return result;
 }
@@ -796,11 +787,7 @@ void* pal_plat_osPoolCAlloc(palMemoryPoolID_t memoryPoolID)
     }
 
     memoryPool = (palMemoryPool_t*)memoryPoolID;
-    result = osMemoryPoolAlloc((osMemoryPoolId_t)memoryPool->memoryPoolID, 0);
-    if (NULLPTR != result)
-    {
-        memset(result, 0, memoryPool->blockSize);
-    }
+    result = osPoolCAlloc((osPoolId)memoryPool->memoryPoolID);
 
     return result;  
 }
@@ -808,7 +795,7 @@ void* pal_plat_osPoolCAlloc(palMemoryPoolID_t memoryPoolID)
 palStatus_t pal_plat_osPoolFree(palMemoryPoolID_t memoryPoolID, void* block)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palMemoryPool_t* memoryPool = NULL;
     
     if(NULLPTR == memoryPoolID || NULL == block)
@@ -817,7 +804,7 @@ palStatus_t pal_plat_osPoolFree(palMemoryPoolID_t memoryPoolID, void* block)
     }
 
     memoryPool = (palMemoryPool_t*)memoryPoolID;
-    platStatus = osMemoryPoolFree((osMemoryPoolId_t)memoryPool->memoryPoolID, block);
+    platStatus = osPoolFree((osPoolId)memoryPool->memoryPoolID, block);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
@@ -841,7 +828,7 @@ palStatus_t pal_plat_osPoolDestroy(palMemoryPoolID_t* memoryPoolID)
     }   
 
     memoryPool = (palMemoryPool_t*)*memoryPoolID;
-    free(memoryPool->osPool.mp_mem);
+    free(memoryPool->osPool.pool);
     free(memoryPool);
     *memoryPoolID = NULLPTR;
     return status;
@@ -865,14 +852,10 @@ palStatus_t pal_plat_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t
 
     if (PAL_SUCCESS == status)
     {
-        messageQ->osMessageQ.name = NULL;
-        messageQ->osMessageQ.attr_bits = 0;
-        messageQ->osMessageQ.cb_size = sizeof(messageQ->osMessageQStorage);
-        messageQ->osMessageQ.cb_mem = &(messageQ->osMessageQStorage);
-        memset(&(messageQ->osMessageQStorage), 0, sizeof(messageQ->osMessageQStorage));
-        messageQ->osMessageQ.mq_size = sizeof(uint32_t) * messageQSize;
-        messageQ->osMessageQ.mq_mem = (uint32_t*)malloc(messageQ->osMessageQ.mq_size);
-        if (NULL == messageQ->osMessageQ.mq_mem)
+        //! allocate the actual memory allocation for the message queue blocks, the size of the memory 
+        //! to allocate was taken from CMSIS header (cmsis_os.h)
+        messageQ->osMessageQ.pool = (uint32_t*)malloc(PAL_RTOS_MESSAGE_Q_SIZE(messageQSize));
+        if (NULL == messageQ->osMessageQ.pool)
         {
             free(messageQ);
             messageQ = NULL;
@@ -880,12 +863,13 @@ palStatus_t pal_plat_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t
         }
         else
         {
-            memset(messageQ->osMessageQ.mq_mem, 0, messageQ->osMessageQ.mq_size);
-
-            messageQ->messageQID = (uintptr_t)osMessageQueueNew(messageQSize, sizeof(uint32_t), &(messageQ->osMessageQ));
+            memset(messageQ->osMessageQ.pool, 0, PAL_RTOS_MESSAGE_Q_SIZE(messageQSize));
+            messageQ->osMessageQ.queue_sz = messageQSize;   ///< number of items (elements) in the queue
+        
+            messageQ->messageQID = (uintptr_t)osMessageCreate(&(messageQ->osMessageQ), NULL);
             if (NULLPTR == messageQ->messageQID)
             {
-                free(messageQ->osMessageQ.mq_mem);
+                free(messageQ->osMessageQ.pool);
                 free(messageQ);
                 messageQ = NULL;
                 status = PAL_ERR_GENERIC_FAILURE;
@@ -902,7 +886,7 @@ palStatus_t pal_plat_osMessageQueueCreate(uint32_t messageQSize, palMessageQID_t
 palStatus_t pal_plat_osMessagePut(palMessageQID_t messageQID, uint32_t info, uint32_t timeout)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus = osOK;
+    osStatus platStatus = osOK;
     palMessageQ_t* messageQ = NULL;
     
     if(NULLPTR == messageQID)
@@ -911,7 +895,7 @@ palStatus_t pal_plat_osMessagePut(palMessageQID_t messageQID, uint32_t info, uin
     }
 
     messageQ = (palMessageQ_t*)messageQID;
-    platStatus = osMessageQueuePut((osMessageQueueId_t)messageQ->messageQID, (void *)info, NULL, timeout);
+    platStatus = osMessagePut((osMessageQId)messageQ->messageQID, info, timeout);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
@@ -927,25 +911,31 @@ palStatus_t pal_plat_osMessagePut(palMessageQID_t messageQID, uint32_t info, uin
 palStatus_t pal_plat_osMessageGet(palMessageQID_t messageQID, uint32_t timeout, uint32_t* messageValue)
 {
     palStatus_t status = PAL_SUCCESS;
-    osStatus_t platStatus;
+    osEvent event;
     palMessageQ_t* messageQ = NULL;
 
-    if (NULLPTR == messageQID || NULLPTR == messageValue)
+    if (NULLPTR == messageQID)
     {
         return PAL_ERR_INVALID_ARGUMENT;
     }
 
     messageQ = (palMessageQ_t*)messageQID;
-    platStatus = osMessageQueueGet((osMessageQueueId_t)messageQ->messageQID, messageValue, NULL, timeout);
-    if (osOK == platStatus)
+    event = osMessageGet((osMessageQId)messageQ->messageQID, timeout);
+    
+    if ((messageValue != NULL) && (osEventMessage == event.status))
     {
+        *messageValue = event.value.v;
         status = PAL_SUCCESS;
     }
-    else if (osErrorTimeout == platStatus)
+    else if (osEventTimeout == event.status)
     {
         status = PAL_ERR_RTOS_TIMEOUT;
     }
-    else if (osOK != platStatus)
+    else if (osErrorParameter == event.status)
+    {
+        status = PAL_ERR_RTOS_PARAMETER;
+    }
+    else if (osOK == event.status)
     {
         status = PAL_ERR_GENERIC_FAILURE;
     }
@@ -965,7 +955,7 @@ palStatus_t pal_plat_osMessageQueueDestroy(palMessageQID_t* messageQID)
     }   
 
     messageQ = (palMessageQ_t*)*messageQID;
-    free(messageQ->osMessageQ.mq_mem);
+    free(messageQ->osMessageQ.pool);
     free(messageQ);
     *messageQID = NULLPTR;
     return status;
