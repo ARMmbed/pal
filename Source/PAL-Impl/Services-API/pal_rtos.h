@@ -45,10 +45,10 @@ typedef enum  palTimerType {
 } palTimerType_t;
 
 //! PAL timer function prototype
-typedef void(*palTimerFuncPtr)(void *funcArgument);
+typedef void(*palTimerFuncPtr)(void const *funcArgument);
 
 //! PAL thread function prototype
-typedef void(*palThreadFuncPtr)(void *funcArgument);
+typedef void(*palThreadFuncPtr)(void const *funcArgument); 
 
 //! Available priorities in PAL implementation, each priority can appear only once.
 typedef enum    pal_osPriority {
