@@ -214,26 +214,6 @@ static void threadCleanUp(void* dbPointer, uint32_t index)
     setDefaultThreadValues(&threadsDB[index]);
 }
 
-/*! Thread wrapper function, this function will be set as the thread function (for every thread)
-*   and it will get as an argument the real data about the thread and call the REAL thread function
-*   with the REAL argument.
-*
-*   @param[in] arg: data structure which contains the real data about the thread.
-*/
-static void threadFunctionWrapper(void const* arg)
-{
-    palThreadFuncWrapper_t* threadWrapper = (palThreadFuncWrapper_t*)arg;
-
-    if (NULL != threadWrapper)
-    {
-        if(g_palThreads[threadWrapper->threadIndex].threadID == NULLPTR)
-        {
-        	g_palThreads[threadWrapper->threadIndex].threadID = (palThreadID_t)osThreadGetId();
-        }
-        threadWrapper->realThreadFunc(threadWrapper->realThreadArgs);
-        g_palThreads[threadWrapper->threadIndex].threadID = NULLPTR; //Clean thread ID the same ID can be allocated to a different thread now
-    }
-}
 
 
 void pal_plat_osReboot()
