@@ -228,6 +228,7 @@ palStatus_t pal_plat_RTOSInitialize(void* opaqueContext)
     palStatus_t status = PAL_SUCCESS;
     int32_t platStatus = 0;
     size_t actualOutputLen = 0;
+    g_randInitiated = true;
 
 	 memset(g_palThreads,0,sizeof(palThread_t) * PAL_MAX_NUMBER_OF_THREADS);
 
@@ -235,17 +236,6 @@ palStatus_t pal_plat_RTOSInitialize(void* opaqueContext)
     g_palThreads[0].initialized = true;
     g_palThreads[0].threadID = (palThreadID_t)osThreadGetId();
     g_palThreads[0].osThread.stack_mem = NULL;
-
-
-    platStatus = mbedtls_hardware_poll(NULL /*Not used by the function*/, g_randomBuffer, sizeof(g_randomBuffer), &actualOutputLen);
-    if (0 != platStatus || actualOutputLen != sizeof(g_randomBuffer))
-    {
-        status = PAL_ERR_RTOS_TRNG_FAILED;
-    }
-    else
-    {
-        g_randInitiated = true;
-    }
 
     return status;
 }
@@ -1065,51 +1055,3 @@ int32_t pal_plat_osAtomicIncrement(int32_t* valuePtr, int32_t increment)
 	return free(buffer);
 }
 
-palStatus_t pal_plat_osRandomBuffer(uint8_t *randomBuf, size_t bufSizeBytes)
-{
-    palStatus_t status = PAL_SUCCESS;
-    int32_t platStatus = 0;
-    size_t actualOutputLen = 0;
-
-    if (g_randInitiated)
-    {
-        if (bufSizeBytes < sizeof(g_randomBuffer))
-        {
-            memcpy(randomBuf, g_randomBuffer, bufSizeBytes);
-        }
-        else
-        {
-            memcpy(randomBuf, g_randomBuffer, sizeof(g_randomBuffer));
-        }
-    }
-    else
-    {
-        if (bufSizeBytes <= sizeof(g_randomBuffer))
-        {
-            platStatus = mbedtls_hardware_poll(NULL /*Not used by the function*/, g_randomBuffer, sizeof(g_randomBuffer), &actualOutputLen);
-            if (0 != platStatus || actualOutputLen != sizeof(g_randomBuffer))
-            {
-                status = PAL_ERR_RTOS_TRNG_FAILED;
-            }
-            else
-            {
-                memcpy(randomBuf, g_randomBuffer, bufSizeBytes);
-                g_randInitiated = true;
-            }
-        }
-        else
-        {
-            platStatus = mbedtls_hardware_poll(NULL /*Not used by the function*/, randomBuf, bufSizeBytes, &actualOutputLen);
-            if (0 != platStatus || actualOutputLen != bufSizeBytes)
-            {
-                status = PAL_ERR_RTOS_TRNG_FAILED;
-            }
-            else
-            {
-                memcpy(g_randomBuffer, randomBuf, sizeof(g_randomBuffer));
-                g_randInitiated = true;
-            }
-        }     
-    }
-    return status;
-}
