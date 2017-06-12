@@ -16,6 +16,8 @@
 #ifndef __PAL_PLAT_CFSTORE_INTERNAL_H
 #define __PAL_PLAT_CFSTORE_INTERNAL_H
 
+#if (defined(TARGET_K64F))
+
 // From mbedOS
 #include "configuration_store.h"
 
@@ -47,4 +49,5 @@
 #define PAL_CFSTORE ARM_CFSTORE_DRIVER
 #define pal_cfstore cfstore_driver
 
+#endif /* (defined(TARGET_K64F)) */
 #endif /* __PAL_PLAT_CFSTORE_INTERNAL_H */
