@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 
+#if (defined(TARGET_K64F))
 
 #include "pal_plat_update.h"
 #include "pal_update.h"
@@ -123,4 +124,5 @@ palStatus_t pal_imageWriteDataToMemory(palImagePlatformData_t dataId, const palC
     }
     return status;
 }
+#endif /* defined (defined(TARGET_K64F)) */
 

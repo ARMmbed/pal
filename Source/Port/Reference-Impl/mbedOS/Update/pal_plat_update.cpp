@@ -16,6 +16,7 @@
 
 
 #include "pal_plat_update.h"
+#if (defined(TARGET_K64F))
 
 
 
@@ -1139,4 +1140,6 @@ palStatus_t pal_plat_imageFlush(palImageId_t package_id)
 
     return PAL_PI_MBED_Commit_StateMachine_Enter();
 }
+
+#endif /* (defined(TARGET_K64F) */
 
