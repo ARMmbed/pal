@@ -44,7 +44,7 @@ extern "C" {
 //! An array of PAL thread priorities. The size of the array is defined in the Service API (pal_rtos.h) by "PAL_MAX_NUMBER_OF_THREADS"
 extern uint8_t g_palThreadPriorities[PAL_MAX_NUMBER_OF_THREADS];
 
-#define PRIORYT_INDEX_OFFSET 3
+#define PRIORITY_INDEX_OFFSET 3
 #endif //PAL_UNIQUE_THREAD_PRIORITY
 
 /*! Initiate a system reboot.
@@ -127,12 +127,12 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID);
 * \return The ID of the current thread, in case of error return PAL_MAX_UINT32.
 * \note For a thread with real time priority, the function always returns PAL_MAX_UINT32.
 */
-palThreadID_t pal_plat_osThreadGetId();
+palThreadID_t pal_plat_osThreadGetId(void);
 
 /*! Get the storage of the current thread.
 * \return The storage of the current thread.
 */
-palThreadLocalStore_t* pal_plat_osThreadGetLocalStore();
+palThreadLocalStore_t* pal_plat_osThreadGetLocalStore(void);
 
 /*! Wait for a specified period of time in milliseconds.
 *

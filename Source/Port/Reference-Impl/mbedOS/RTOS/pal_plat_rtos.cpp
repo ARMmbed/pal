@@ -99,10 +99,83 @@ typedef struct palMessageQ{
 }palMessageQ_t;
 
 
-inline static void setDefaultThreadValues(palThread_t* thread)
+inline PAL_PRIVATE int mapThreadPriorityToPlatSpecific(palThreadPriority_t priority)
+{
+    int adjustedPriority = -1;
+
+    switch (priority)
+    {
+        case PAL_osPriorityIdle:
+            adjustedPriority = 1;
+            break;
+        case PAL_osPriorityLow:
+            adjustedPriority = 8;        
+            break;
+        case PAL_osPriorityBelowNormal:
+            adjustedPriority = 16;        
+            break;
+        case PAL_osPriorityNormal:
+            adjustedPriority = 24;        
+            break;
+        case PAL_osPriorityAboveNormal:
+            adjustedPriority = 32;        
+            break;
+        case PAL_osPriorityHigh:
+            adjustedPriority = 40;        
+            break;
+        case PAL_osPriorityRealtime:
+            adjustedPriority = 48;        
+            break;
+        case PAL_osPriorityError:
+            adjustedPriority = -1;        
+            break;
+    }
+
+    return adjustedPriority;
+}
+
+
+inline PAL_PRIVATE palThreadPriority_t mapThreadPriorityToPalGeneric(int priority)
+{
+    palThreadPriority_t adjustedPriority = PAL_osPriorityError;
+
+    switch (priority)
+    {
+        case 1:
+            adjustedPriority = PAL_osPriorityIdle;
+            break;
+        case 8:
+            adjustedPriority = PAL_osPriorityLow;        
+            break;
+        case 16:
+            adjustedPriority = PAL_osPriorityBelowNormal;        
+            break;
+        case 24:
+            adjustedPriority = PAL_osPriorityNormal;        
+            break;
+        case 32:
+            adjustedPriority = PAL_osPriorityAboveNormal;        
+            break;
+        case 40:
+            adjustedPriority = PAL_osPriorityHigh;        
+            break;
+        case 48:
+            adjustedPriority = PAL_osPriorityRealtime;        
+            break;
+        case -1:
+            adjustedPriority = PAL_osPriorityError;        
+            break;
+    }
+
+    return adjustedPriority;
+}
+
+
+inline PAL_PRIVATE void setDefaultThreadValues(palThread_t* thread)
 {
 #if PAL_UNIQUE_THREAD_PRIORITY
-    g_palThreadPriorities[thread->osThread.priority+PRIORITY_INDEX_OFFSET] = false;
+    palThreadPriority_t threadGenericPriority = mapThreadPriorityToPalGeneric(thread->osThread.priority);      
+    g_palThreadPriorities[threadGenericPriority+PRIORITY_INDEX_OFFSET] = false;
 #endif //PAL_UNIQUE_THREAD_PRIORITY     
     thread->threadStore = NULL;
     thread->threadFuncWrapper.realThreadArgs = NULL;
@@ -118,7 +191,7 @@ inline static void setDefaultThreadValues(palThread_t* thread)
     {
         free(thread->osThread.stack_mem);
     }
-	thread->osThread.priority = (osPriority_t)PAL_osPriorityError;
+	thread->osThread.priority = (osPriority_t)mapThreadPriorityToPlatSpecific(PAL_osPriorityError);
     thread->osThread.tz_module = 0;
 
     thread->threadID = NULLPTR;
@@ -144,26 +217,6 @@ static void threadCleanUp(void* dbPointer, uint32_t index)
     setDefaultThreadValues(&threadsDB[index]);
 }
 
-/*! Thread wrapper function, this function will be set as the thread function (for every thread)
-*   and it will get as an argument the real data about the thread and call the REAL thread function
-*   with the REAL argument.
-*
-*   @param[in] arg: data structure which contains the real data about the thread.
-*/
-static void threadFunctionWrapper(void const* arg)
-{
-    palThreadFuncWrapper_t* threadWrapper = (palThreadFuncWrapper_t*)arg;
-
-    if (NULL != threadWrapper)
-    {
-        if(g_palThreads[threadWrapper->threadIndex].threadID == NULLPTR)
-        {
-        	g_palThreads[threadWrapper->threadIndex].threadID = (palThreadID_t)osThreadGetId();
-        }
-        threadWrapper->realThreadFunc(threadWrapper->realThreadArgs);
-        g_palThreads[threadWrapper->threadIndex].threadID = NULLPTR; //Clean thread ID the same ID can be allocated to a different thread now
-    }
-}
 
 
 void pal_plat_osReboot()
@@ -284,7 +337,7 @@ palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgumen
         g_palThreads[firstAvailableThreadIndex].threadFuncWrapper.realThreadArgs = funcArgument;
         g_palThreads[firstAvailableThreadIndex].threadFuncWrapper.realThreadFunc = function;
         g_palThreads[firstAvailableThreadIndex].threadFuncWrapper.threadIndex = firstAvailableThreadIndex;
-        g_palThreads[firstAvailableThreadIndex].osThread.priority = (osPriority_t)priority;
+        g_palThreads[firstAvailableThreadIndex].osThread.priority = (osPriority_t)mapThreadPriorityToPlatSpecific(priority);
         g_palThreads[firstAvailableThreadIndex].osThread.stack_size = stackSize;
         g_palThreads[firstAvailableThreadIndex].osThread.stack_mem = stackAllocPtr;
         g_palThreads[firstAvailableThreadIndex].osThread.cb_mem = &(g_palThreads[firstAvailableThreadIndex].osThreadStorage);
@@ -885,7 +938,7 @@ palStatus_t pal_plat_osMessageQueueCreate(uint32_t messageQCount, palMessageQID_
         messageQ->osMessageQ.cb_size = sizeof(messageQ->osMessageQStorage);
         messageQ->osMessageQ.cb_mem = &messageQ->osMessageQStorage;
         memset(&messageQ->osMessageQStorage, 0, sizeof(messageQ->osMessageQStorage));
-        messageQ->osMessageQ.mq_size = sizeof(uint32_t) * messageQCount;
+        messageQ->osMessageQ.mq_size = (sizeof(uint32_t) + sizeof(mbed_rtos_storage_message_t)) * messageQCount ;
         messageQ->osMessageQ.mq_mem = (uint32_t*)malloc(messageQ->osMessageQ.mq_size);
         if (NULL == messageQ->osMessageQ.mq_mem)
         {
@@ -926,7 +979,7 @@ palStatus_t pal_plat_osMessagePut(palMessageQID_t messageQID, uint32_t info, uin
     }
 
     messageQ = (palMessageQ_t*)messageQID;
-    platStatus = osMessageQueuePut((osMessageQueueId_t)messageQ->messageQID, (void *)info, 0, timeout);
+    platStatus = osMessageQueuePut((osMessageQueueId_t)messageQ->messageQID, (void *)&info, 0, timeout);
     if (osOK == platStatus)
     {
         status = PAL_SUCCESS;
