@@ -37,7 +37,7 @@ $(OUTOBJ):
 INIT_SRC   = $(PAL_ROOT)/Source/PAL-Impl/pal_init.c 
 
 RTOS_SRC   = $(PAL_ROOT)/Source/PAL-Impl/Modules/RTOS/pal_rtos.c \
-			 $(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/RTOS/pal_plat_rtos.c \
+			 $(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/RTOS/pal_plat_rtos.cpp \
 			 
 SOCKET_SRC = $(PAL_ROOT)/Source/PAL-Impl/Modules/Networking/pal_network.c \
 			 $(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/Networking/pal_plat_network.cpp
