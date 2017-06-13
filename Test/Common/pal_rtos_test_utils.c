@@ -26,7 +26,7 @@ timerArgument_t timerArgs;
 void palThreadFunc1(void const *argument)
 {
     palThreadID_t threadID = 10;
-    pal_osThreadGetLocalStore* threadStorage = NULL;
+	palThreadLocalStore_t * threadStorage = NULL;
     threadsArgument_t *tmp = (threadsArgument_t*)argument;
 #ifdef MUTEX_UNITY_TEST
     palStatus_t status = PAL_SUCCESS;
