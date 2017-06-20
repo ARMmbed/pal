@@ -217,6 +217,25 @@ static void threadCleanUp(void* dbPointer, uint32_t index)
     setDefaultThreadValues(&threadsDB[index]);
 }
 
+/*! Thread wrapper function, this function will be set as the thread function (for every thread)
+*   and it will get as an argument the real data about the thread and call the REAL thread function
+*   with the REAL argument.
+*
+*   @param[in] arg: data structure which contains the real data about the thread.
+*/
+static void threadFunctionWrapper(void* arg)
+{
+    palThreadFuncWrapper_t* threadWrapper = (palThreadFuncWrapper_t*)arg;
+
+    if (NULL != threadWrapper)
+    {
+        if(g_palThreads[threadWrapper->threadIndex].threadID == NULLPTR)
+        {
+        	g_palThreads[threadWrapper->threadIndex].threadID = (palThreadID_t)osThreadGetId();
+        }
+        threadWrapper->realThreadFunc(threadWrapper->realThreadArgs);
+    }
+}
 
 
 void pal_plat_osReboot()
@@ -349,7 +368,7 @@ palStatus_t pal_plat_osThreadCreate(palThreadFuncPtr function, void* funcArgumen
 #endif //PAL_UNIQUE_THREAD_PRIORITY     
 
 
-        osThreadID = osThreadNew((osThreadFunc_t)function, funcArgument, &g_palThreads[firstAvailableThreadIndex].osThread);
+        osThreadID = osThreadNew(threadFunctionWrapper, &g_palThreads[firstAvailableThreadIndex].threadFuncWrapper, &g_palThreads[firstAvailableThreadIndex].osThread);
         g_palThreads[firstAvailableThreadIndex].threadID = (palThreadID_t)osThreadID;
         if(NULL == osThreadID)
         {
@@ -389,6 +408,7 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
 {
     palStatus_t status = PAL_ERR_INVALID_ARGUMENT;
     osStatus_t platStatus = osOK;
+    osThreadState_t threadState = osThreadError;
 
     if (*threadID >= PAL_MAX_NUMBER_OF_THREADS)
     {
@@ -399,7 +419,15 @@ palStatus_t pal_plat_osThreadTerminate(palThreadID_t* threadID)
     {//Kill only if not trying to kill from running task
     	if (g_palThreads[*threadID].initialized)
     	{
-    		platStatus = osThreadTerminate((osThreadId_t)(g_palThreads[*threadID].threadID));
+            if (g_palThreads[*threadID].threadID != NULL)
+    		{
+                threadState = osThreadGetState((osThreadId_t)(g_palThreads[*threadID].threadID));
+                if ((threadState != osThreadTerminated) && (threadState != osThreadError) && (threadState != osThreadInactive))
+                {
+                    platStatus = osThreadTerminate((osThreadId_t)(g_palThreads[*threadID].threadID));
+                }
+            }
+
             if (platStatus != osErrorISR) // osErrorISR: osThreadTerminate cannot be called from interrupt service routines.
     		{
                 threadCleanUp(g_palThreads, *threadID);
@@ -568,12 +596,12 @@ palStatus_t pal_plat_osMutexCreate(palMutexID_t* mutexID)
     if (PAL_SUCCESS == status)
     {
         mutex->osMutex.name = NULL;
-        mutex->osMutex.attr_bits = 0;
+        mutex->osMutex.attr_bits = osMutexRecursive | osMutexRobust;
         mutex->osMutex.cb_mem = &mutex->osMutexStorage;
         mutex->osMutex.cb_size = sizeof(mutex->osMutexStorage);
         memset(&mutex->osMutexStorage, 0, sizeof(mutex->osMutexStorage));
 
-        mutex->mutexID = (uintptr_t)osMutexCreate(&mutex->osMutex);
+        mutex->mutexID = (uintptr_t)osMutexNew(&mutex->osMutex);
         if (NULLPTR == mutex->mutexID)
         {
             free(mutex);
