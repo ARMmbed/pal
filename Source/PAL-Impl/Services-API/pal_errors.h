@@ -39,7 +39,7 @@ typedef enum {
 
 typedef enum {
     // generic errors
-    PAL_ERR_GENERAL_BASE =          (-1 << PAL_ERR_MODULE_GENERAL),
+    PAL_ERR_GENERAL_BASE =          -(1U << PAL_ERR_MODULE_GENERAL),
     PAL_ERR_GENERIC_FAILURE =       PAL_ERR_GENERAL_BASE,           /*! generic failure*/ // try to use a more specific error message whenever possible
     PAL_ERR_INVALID_ARGUMENT =      PAL_ERR_GENERAL_BASE + 1,   /*! one or more of the functions arguments is invalid */
     PAL_ERR_NO_MEMORY =             PAL_ERR_GENERAL_BASE + 2,   /*! failure due to a failed attempt to allocate memory */
@@ -50,10 +50,10 @@ typedef enum {
     PAL_ERR_NULL_POINTER     =      PAL_ERR_GENERAL_BASE + 7,   /*! received a null pointer when it should be initialized */
     PAL_ERR_CREATION_FAILED =       PAL_ERR_GENERAL_BASE + 8,   /*! failure in creation of given type, like: mutex, thread , etc */
     // pal errors
-    PAL_ERR_NOT_IMPLEMENTED =                               (-1 << PAL_ERR_MODULE_PAL), /*!Currently not implemented will be in the future*/
+    PAL_ERR_NOT_IMPLEMENTED =                               -(1U << PAL_ERR_MODULE_PAL), /*!Currently not implemented will be in the future*/
     // c errors
     // RTOS errors
-    PAL_ERR_RTOS_ERROR_BASE =                               (-1 << PAL_ERR_MODULE_RTOS),    /*! generic failure in RTOS module*/ // try to use a more specific error message whenever possible
+    PAL_ERR_RTOS_ERROR_BASE =                               -(1U << PAL_ERR_MODULE_RTOS),    /*! generic failure in RTOS module*/ // try to use a more specific error message whenever possible
     PAL_ERR_RTOS_PARAMETER =                                PAL_ERR_RTOS_ERROR_BASE + 0x80,/*! PAL mapping of CMSIS error osErrorParameter : parameter error: a mandatory parameter was missing or specified an incorrect object.*/
     PAL_ERR_RTOS_RESOURCE =                                 PAL_ERR_RTOS_ERROR_BASE + 0x81,/*! PAL mapping of CMSIS error osErrorResource : resource not available: a specified resource was not available.*/
     PAL_ERR_RTOS_TIMEOUT =                                  PAL_ERR_RTOS_ERROR_BASE + 0xC1,/*! PAL mapping of CMSIS error osErrorTimeoutResource : resource not available within given time: a specified resource was not available within the timeout period*/
@@ -66,7 +66,7 @@ typedef enum {
     PAL_ERR_RTOS_TASK =                                     PAL_ERR_RTOS_ERROR_BASE + 0x88,/*! PAL mapping - Cannot kill own task. */
     PAL_ERR_RTOS_OS =                                       PAL_ERR_RTOS_ERROR_BASE + 0xFF,/*! PAL mapping of CMSIS error osErrorOS : unspecified RTOS error: run-time error but no other error message fits.*/
     // network errors
-    PAL_ERR_SOCKET_ERROR_BASE =                             (-1 << PAL_ERR_MODULE_NET),             /*! generic socket error */
+    PAL_ERR_SOCKET_ERROR_BASE =                             -(1U << PAL_ERR_MODULE_NET),             /*! generic socket error */
     PAL_ERR_SOCKET_GENERIC =                                PAL_ERR_SOCKET_ERROR_BASE,              /*! generic socket error */
     PAL_ERR_SOCKET_NO_BUFFERS =                             PAL_ERR_SOCKET_ERROR_BASE + 1,          /*! no buffers -  PAL mapping of posix error ENOBUFS*/ 
     PAL_ERR_SOCKET_HOST_UNREACHABLE =                       PAL_ERR_SOCKET_ERROR_BASE + 2,          /*! host unreachable (routing error)-  PAL mapping of posix error EHOSTUNREACH*/
@@ -88,7 +88,7 @@ typedef enum {
     PAL_ERR_SOCKET_AUTH_ERROR =                             PAL_ERR_SOCKET_ERROR_BASE + 18,         /*! authentication error*/
     PAL_ERR_SOCKET_OPTION_NOT_SUPPORTED =                   PAL_ERR_SOCKET_ERROR_BASE + 19,         /*! socket option not supported*/
     //update Error
-    PAL_ERR_UPDATE_ERROR_BASE           =                   (-1 << PAL_ERR_MODULE_UPDATE),          /*! generic error */
+    PAL_ERR_UPDATE_ERROR_BASE           =                   -(1U << PAL_ERR_MODULE_UPDATE),          /*! generic error */
     PAL_ERR_UPDATE_ERROR                =                   PAL_ERR_UPDATE_ERROR_BASE,              /*! unknown error */
     PAL_ERR_UPDATE_BUSY                 =                   PAL_ERR_UPDATE_ERROR_BASE + 1,          /*! unknown error */
     PAL_ERR_UPDATE_TIMEOUT              =                   PAL_ERR_UPDATE_ERROR_BASE + 2,          /*! unknown error */
