@@ -336,7 +336,7 @@ palStatus_t pal_connect(palSocket_t socket, const palSocketAddress_t* address, p
 palStatus_t pal_recv(palSocket_t socket, void* buf, size_t len, size_t* recievedDataSize)
 {
     palStatus_t result = PAL_SUCCESS;
-    if ((NULL == recievedDataSize) ||  (NULL == recievedDataSize))
+    if ((NULL == buf) ||  (NULL == recievedDataSize))
     {
         return PAL_ERR_RTOS_PARAMETER;
     }
