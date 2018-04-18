@@ -192,7 +192,7 @@ palStatus_t pal_socket(palSocketDomain_t domain, palSocketType_t type, bool nonB
 palStatus_t pal_getSocketOptions(palSocket_t socket, palSocketOptionName_t optionName, void* optionValue, palSocketLength_t* optionLength)
 {
     palStatus_t result = PAL_SUCCESS;
-    if ((NULL == optionValue) || (NULL == optionLength))
+    if ((NULL == optionValue) || (NULL == optionLength) || (NULL == socket ))
     {
         return PAL_ERR_RTOS_PARAMETER;
     }
@@ -204,7 +204,7 @@ palStatus_t pal_getSocketOptions(palSocket_t socket, palSocketOptionName_t optio
 palStatus_t pal_setSocketOptions(palSocket_t socket, int optionName, const void* optionValue, palSocketLength_t optionLength)
 {
     palStatus_t result = PAL_SUCCESS;
-    if (NULL == optionValue)
+    if ((NULL == optionValue) || (NULL == socket ))
     {
         return PAL_ERR_RTOS_PARAMETER;
     }
@@ -216,7 +216,7 @@ palStatus_t pal_setSocketOptions(palSocket_t socket, int optionName, const void*
 palStatus_t pal_bind(palSocket_t socket, palSocketAddress_t* myAddress, palSocketLength_t addressLength)
 {
     palStatus_t result = PAL_SUCCESS;
-    if (NULL == myAddress)
+    if ((NULL == myAddress) || (NULL == socket ))
     {
         return PAL_ERR_RTOS_PARAMETER;
     }
@@ -228,7 +228,7 @@ palStatus_t pal_bind(palSocket_t socket, palSocketAddress_t* myAddress, palSocke
 palStatus_t pal_receiveFrom(palSocket_t socket, void* buffer, size_t length, palSocketAddress_t* from, palSocketLength_t* fromLength, size_t* bytesReceived)
 {
     palStatus_t result = PAL_SUCCESS;
-    if ((NULL == buffer) || (NULL == bytesReceived))
+    if ((NULL == buffer) || (NULL == bytesReceived) || (NULL == socket ))
     {
         return PAL_ERR_RTOS_PARAMETER;
     }
@@ -240,7 +240,7 @@ palStatus_t pal_receiveFrom(palSocket_t socket, void* buffer, size_t length, pal
 palStatus_t pal_sendTo(palSocket_t socket, const void* buffer, size_t length, const palSocketAddress_t* to, palSocketLength_t toLength, size_t* bytesSent)
 {
     palStatus_t result = PAL_SUCCESS;
-    if ((NULL == buffer) || (NULL == bytesSent) || (NULL == to))
+    if ((NULL == buffer) || (NULL == bytesSent) || (NULL == to) || (NULL == socket ))
     {
         return PAL_ERR_RTOS_PARAMETER;
     }
