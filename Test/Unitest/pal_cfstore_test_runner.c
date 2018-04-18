@@ -21,6 +21,9 @@
 // pal Socket API tests
 TEST_GROUP_RUNNER(pal_cfstore)
 {
+#if (PAL_RUN_ALL_TESTS || cfstorePersistantAfterReset)
+	RUN_TEST_CASE(pal_cfstore, cfstorePersistantAfterReset);
+#endif
 #if (PAL_RUN_ALL_TESTS || cfstoreTest)
 	RUN_TEST_CASE(pal_cfstore, cfstoreTest);
 #endif
@@ -30,10 +33,6 @@ TEST_GROUP_RUNNER(pal_cfstore)
 #if (PAL_RUN_ALL_TESTS || cfstoreTestRewrite)
 	RUN_TEST_CASE(pal_cfstore, cfstoreTestRewrite);
 #endif
-#if (PAL_RUN_ALL_TESTS || cfstorePersistantAfterReset)
-	RUN_TEST_CASE(pal_cfstore, cfstorePersistantAfterReset);
-#endif
-
 }
 
 // Each of these should be in a separate file.

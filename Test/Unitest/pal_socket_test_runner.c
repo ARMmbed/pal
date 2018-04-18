@@ -17,45 +17,35 @@
 #include "unity.h"
 #include "unity_fixture.h"
 
+#define PAL_RUN_ALL_TESTS 1
 
 // pal Socket API tests
 TEST_GROUP_RUNNER(pal_socket)
 {
-#if (PAL_INCLUDE || socketUDPCreationOptionsTest)
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || socketUDPCreationOptionsTest)
     RUN_TEST_CASE(pal_socket, socketUDPCreationOptionsTest);
 #endif
-#if (PAL_INCLUDE || basicTCPclinetSendRecieve)
-    RUN_TEST_CASE(pal_socket, basicTCPclinetSendRecieve);
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || basicTCPclientSendRecieve)
+	RUN_TEST_CASE(pal_socket, basicTCPclientSendRecieve);
 #endif
-#if (PAL_INCLUDE || basicUDPclinetSendRecieve)
-    RUN_TEST_CASE(pal_socket, basicUDPclinetSendRecieve);
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || basicUDPclientSendRecieve)
+	RUN_TEST_CASE(pal_socket, basicUDPclientSendRecieve);
 #endif
-#if (PAL_INCLUDE || basicSocketScenario3)
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || basicSocketScenario3)
     RUN_TEST_CASE(pal_socket, basicSocketScenario3);
 #endif
-#if (PAL_INCLUDE || basicSocketScenario4)
-    RUN_TEST_CASE(pal_socket, basicSocketScenario4);
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || basicSocketScenario4)
+    //RUN_TEST_CASE(pal_socket, basicSocketScenario4);
 #endif
-#if (PAL_INCLUDE || tProvUDPTest)
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || tProvUDPTest)
     RUN_TEST_CASE(pal_socket, tProvUDPTest);
 #endif
-#if (PAL_INCLUDE || basicSocketScenario5)
-    RUN_TEST_CASE(pal_socket, basicSocketScenario5);
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || nonBlockingAsyncTest)
+    RUN_TEST_CASE(pal_socket, nonBlockingAsyncTest);
 #endif
+#if (PAL_RUN_ALL_TESTS || PAL_TEST_GROUP_SOCKET || ServerSocketScenario)
+    //RUN_TEST_CASE(pal_socket, ServerSocketScenario);
+#endif
+
 }
-
-// Each of these should be in a separate file.
-
-
-// pal OS API tests
-//TEST_GROUP_RUNNER(pal_OS)
-//{
-//}
-
-/* Run all the tests
-void RunAllTests(void)
-{
-      RUN_TEST_GROUP(pal_socket);
-      //RUN_TEST_GROUP(pal_OS);
-}*/
 

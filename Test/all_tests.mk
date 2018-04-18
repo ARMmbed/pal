@@ -46,7 +46,7 @@ UPDATE_SRC  = $(PAL_ROOT)/Source/PAL-Impl/Modules/Update/pal_update.c \
 			        $(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/Update/pal_plat_update.cpp
 
 CFSTORE_SRC = $(PAL_ROOT)/Source/PAL-Impl/Modules/CFStore/pal_cfstore.c \
-			 		$(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/CFStore/pal_plat_cfstore.c \
+			 		$(PAL_ROOT)/Source/Port/Reference-Impl/$(TARGET_PLATFORM)/CFStore \
 			 		
 
 
@@ -64,17 +64,19 @@ $(PROJECT)_ADDITIONAL_SOURCES:= $(ALL_SRC) \
 								$(PAL_ROOT)/Test/$(TYPE)/pal_socket_test_runner.c \
 								$(PAL_ROOT)/Test/$(TYPE)/pal_rtos_test.c \
 								$(PAL_ROOT)/Test/$(TYPE)/pal_rtos_test_runner.c \
+								$(PAL_ROOT)/Test/$(TYPE)/pal_cfstore_test.c \
+								$(PAL_ROOT)/Test/$(TYPE)/pal_cfstore_test_runner.c \
 
 
 include BUILD_TEST_$(TARGET_PLATFORM).mk
-else
+endif
 #========================================================================
 #=======================================================================
 ifeq ($(findstring HAS_SOCKET,$(TARGET_CONFIGURATION_DEFINES)),HAS_SOCKET)
 PROJECT=pal_socket
 TYPE=Unitest
 
-$(PROJECT)_ADDITIONAL_SOURCES:=  $(INIT_SRC) $(RTOS_SRC)  $(SOCKET_SRC)
+$(PROJECT)_ADDITIONAL_SOURCES:=  $(ALL_SRC)
 
 
 
@@ -85,7 +87,7 @@ ifeq ($(findstring HAS_RTOS,$(TARGET_CONFIGURATION_DEFINES)),HAS_RTOS)
 PROJECT=pal_rtos
 TYPE=Unitest
 
-$(PROJECT)_ADDITIONAL_SOURCES:= $(INIT_SRC) $(RTOS_SRC) $(SOCKET_SRC)
+$(PROJECT)_ADDITIONAL_SOURCES:= $(ALL_SRC)
 
 include BUILD_TEST_$(TARGET_PLATFORM).mk
 endif
@@ -108,10 +110,10 @@ ifeq ($(findstring HAS_CFSTORE,$(TARGET_CONFIGURATION_DEFINES)),HAS_CFSTORE)
 PROJECT=pal_cfstore
 TYPE=Unitest
 
-$(PROJECT)_ADDITIONAL_SOURCES:= $(CFSTORE_SRC)  $(RTOS_SRC) $(INIT_SRC) $(SOCKET_SRC)
+$(PROJECT)_ADDITIONAL_SOURCES:= $(ALL_SRC)
 
 include BUILD_TEST_$(TARGET_PLATFORM).mk
 endif
 #========================================================================
 
-endif
+

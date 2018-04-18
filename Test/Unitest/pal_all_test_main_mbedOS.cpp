@@ -15,16 +15,23 @@
 */
 
 #include "mbed.h"
-
+#include <flash-journal-strategy-sequential/flash_journal_strategy_sequential.h>
+#include <storage-volume-manager/storage_volume_manager.h>
+#include "flash-journal-strategy-sequential/flash_journal_crc.h"
 
 extern "C" int UnityMain(int argc, const char* argv[], void (*runAllTests)(void));
-
-extern "C" void TEST_pal_update_GROUP_RUNNER(void);
+extern "C" void TEST_pal_cfstore_GROUP_RUNNER(void);
 extern "C" void TEST_pal_rtos_GROUP_RUNNER(void);
 extern "C" void TEST_pal_socket_GROUP_RUNNER(void);
 
+/*MBED_LIBRARY_VERSION 129 stands for mbed-os 5.2.2*/
+#if (MBED_LIBRARY_VERSION < 129)
+    StorageVolumeManager volumeManager;
+#endif
+
 void TEST_pal_all_GROUPS_RUNNER(void)
 {
+    TEST_pal_cfstore_GROUP_RUNNER();
 	TEST_pal_rtos_GROUP_RUNNER();
 	TEST_pal_socket_GROUP_RUNNER();
 }
